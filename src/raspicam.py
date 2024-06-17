@@ -74,7 +74,7 @@ class Raspicam:
             self.camera.set_controls({"ExposureTime": exposure_time, "Saturation": saturation, 
                                       "Sharpness": sharpness})
 
-    def start_cam(self) -> None:
+    def start(self) -> None:
         """
         Starts the camera.
 
@@ -82,9 +82,9 @@ class Raspicam:
             None
         """
         if not self.use_usb:
-            self.camera.start_preview()
+            self.camera.start()
     
-    def stop_cam(self) -> None:
+    def stop(self) -> None:
         """
         Stops the camera.
 
@@ -92,7 +92,7 @@ class Raspicam:
             None
         """
         if not self.use_usb:
-            self.camera.stop_preview()
+            self.camera.stop()
 
     def print_settings(self) -> None:
         """
@@ -136,6 +136,9 @@ class Raspicam:
             None
         """
         image = self.capture_img()
-        if not os.path.exists(folder_path):
+        if not os.path.exists(folder_path) and not folder_path == "":
             os.makedirs(folder_path)
-        cv2.imwrite(os.path.join(folder_path, filename), image)
+        if folder_path == "":
+            cv2.imwrite(filename, image)
+        else:
+            cv2.imwrite(folder_path+"/"+filename, image) #FIXME: cant write, rewrite
