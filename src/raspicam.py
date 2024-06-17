@@ -111,7 +111,7 @@ class Raspicam:
         Captures the current img
         
         Returns:
-            img (np.array) - 3D numpy array containing the current img
+            img (np.array) - 3D numpy array containing the current img (row, height, RGB)
         """
         if self.use_usb:
             ret, image = self.camera.read()
