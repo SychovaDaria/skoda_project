@@ -99,7 +99,7 @@ class Raspicam:
             image = self.camera.capture_array()
         return image
 
-    def capture_img_and_save(self, folder_path: str, filename: str) -> None:
+    def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:
         """
         Saves the current img to the desired folder (if folder doesnt exist, it creates it)
         using the provided filename.
