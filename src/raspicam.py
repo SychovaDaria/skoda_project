@@ -35,8 +35,7 @@ class Raspicam:
         use_usb (bool): Whether to use a USB camera.
         camera (Union[Picamera2, cv2.VideoCapture]): The camera object.
     """
-    # default resolution --> 2028x1520
-    def __init__(self, resolution: Tuple[int,int], exposure_value: float = 0.0,
+    def __init__(self, resolution: Tuple[int,int] = (2028, 1520), exposure_value: float = 0.0,
                  saturation: float = 1.0, sharpness: float = 1.0, use_usb: bool = False) -> None: 
         self.resolution = resolution
         self.exposure_value = exposure_value
