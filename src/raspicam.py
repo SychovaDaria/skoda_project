@@ -136,7 +136,7 @@ class Raspicam:
             None
         """
         image = self.capture_img()
-        if not os.path.exists(folder_path) and not folder_path == "":
+        if not os.path.exists(folder_path) and folder_path != "":
             os.makedirs(folder_path)
         if folder_path == "":
             cv2.imwrite(filename, image)
