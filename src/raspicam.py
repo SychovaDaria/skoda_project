@@ -39,13 +39,17 @@ class Raspicam:
     def __init__(self, resolution: Tuple[int,int], framerate: float = 32.0, exposure_time: int = 1000,
                  saturation: float = 16.0, sharpness: float = 8.0, use_usb: bool = False) -> None: 
         self.resolution = resolution
-        self.exposition = exposure_time
+        self.exposure_time = exposure_time
         self.framerate = framerate
+        self.saturation = saturation
+        self.sharpness = sharpness
+        self.use_usb = use_usb
         if not use_usb: # start picam if not using usb
             self.camera = Picamera2()
             self.camera.create_preview_configuration(sensor={'output_size': resolution, 'fps': framerate})
             self.camera.set_controls({"ExposureTime": exposure_time, "Saturation": saturation, 
                                       "Sharpness": sharpness})
+            self.camera.start()
         else:
             # FIXME: add camera settings
             self.camera = cv2.VideoCapture(0)
@@ -69,6 +73,26 @@ class Raspicam:
         if not self.use_usb:
             self.camera.set_controls({"ExposureTime": exposure_time, "Saturation": saturation, 
                                       "Sharpness": sharpness})
+
+    def start_cam(self) -> None:
+        """
+        Starts the camera.
+
+        Returns:
+            None
+        """
+        if not self.use_usb:
+            self.camera.start_preview()
+    
+    def stop_cam(self) -> None:
+        """
+        Stops the camera.
+
+        Returns:
+            None
+        """
+        if not self.use_usb:
+            self.camera.stop_preview()
 
     def print_settings(self) -> None:
         """
