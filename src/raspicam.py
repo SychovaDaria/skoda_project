@@ -34,6 +34,14 @@ class Raspicam:
         sharpness (float): The sharpness value of the camera.
         use_usb (bool): Whether to use a USB camera.
         camera (Union[Picamera2, cv2.VideoCapture]): The camera object.
+    
+    Example:
+        cam = Raspicam()
+        cam.set_controls(exposure_value=1000, saturation=16.0, sharpness=8.0)
+        cam.start()
+        img = cam.capture_img() # returns a numpy array that can be used for further processing
+        cam.capture_img_and_save("image.jpg") # saves the image to the current directory
+        cam.stop()
     """
     def __init__(self, resolution: Tuple[int,int] = (2028, 1520), exposure_value: float = 0.0,
                  saturation: float = 1.0, sharpness: float = 1.0, use_usb: bool = False) -> None: 
