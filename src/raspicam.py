@@ -21,57 +21,57 @@ class Raspicam:
     Args:
         resolution (Tuple[int, int]): The resolution of the camera.
         framerate (int): The framerate of the camera.
-        exposure_time (int): The exposure time of the camera, measured in microseconds
+        exposure_value (int): The exposure value of camera, ranging -8.0 to 8.0, more being brighter
         saturation (float): The saturation value of the camera, Floating point number from 0.0 to 32.0
         sharpness (float): The sharpness value of the camera, Floating point number from 0.0 to 16.0
         use_usb (bool, optional): Whether to use a USB camera. Defaults to False.
 
     Attributes:
         resolution (Tuple[int, int]): The resolution of the camera.
-        exposure_time (int): The exposure time of the camera.
+        exposure_value (int): The exposure time of the camera.
         framerate (int): The framerate of the camera.
         saturation (float): The saturation value of the camera.
         sharpness (float): The sharpness value of the camera.
         use_usb (bool): Whether to use a USB camera.
         camera (Union[Picamera2, cv2.VideoCapture]): The camera object.
     """
-
-    def __init__(self, resolution: Tuple[int,int], framerate: float = 32.0, exposure_time: int = 1000,
-                 saturation: float = 16.0, sharpness: float = 8.0, use_usb: bool = False) -> None: 
+    # default resolution --> 2028x1520
+    def __init__(self, resolution: Tuple[int,int], exposure_value: float = 0.0,
+                 saturation: float = 1.0, sharpness: float = 1.0, use_usb: bool = False) -> None: 
         self.resolution = resolution
-        self.exposure_time = exposure_time
-        self.framerate = framerate
+        self.exposure_value = exposure_value
         self.saturation = saturation
         self.sharpness = sharpness
         self.use_usb = use_usb
         if not use_usb: # start picam if not using usb
             self.camera = Picamera2()
-            self.camera.create_preview_configuration(sensor={'output_size': resolution, 'fps': framerate})
-            self.camera.set_controls({"ExposureTime": exposure_time, "Saturation": saturation, 
+            camera_config = self.camera.create_preview_configuration(main={'size': resolution})
+            self.camera.configure(camera_config)
+            self.camera.set_controls({"ExposureValue": exposure_value, "Saturation": saturation, 
                                       "Sharpness": sharpness})
             self.camera.start()
         else:
             # FIXME: add camera settings
             self.camera = cv2.VideoCapture(0)
 
-    def set_controls(self, exposure_time: int = 1000, saturation: float = 16.0,
+    def set_controls(self, exposure_value: int = 1000, saturation: float = 16.0,
                      sharpness: float = 8.0) -> None:
         """
         Sets the camera controls.
 
         Args:
-            exposure_time (int): The exposure time to set.
+            exposure_value (int): The exposure time to set.
             saturation (float): The saturation value to set.
             sharpness (float): The sharpness value to set.
 
         Returns:
             None
         """
-        self.exposure_time = exposure_time
+        self.exposure_value = exposure_value
         self.saturation = saturation
         self.sharpness = sharpness
         if not self.use_usb:
-            self.camera.set_controls({"ExposureTime": exposure_time, "Saturation": saturation, 
+            self.camera.set_controls({"ExposureTime": exposure_value, "Saturation": saturation, 
                                       "Sharpness": sharpness})
 
     def start(self) -> None:
@@ -103,8 +103,7 @@ class Raspicam:
         """
         print("Current camera settings:")
         print(f"\tResolution: {self.resolution}")
-        print(f"\tFramerate: {self.framerate}")
-        print(f"\tExposure time: {self.exposure_time}")
+        print(f"\tExposure time: {self.exposure_value}")
         print(f"\tSaturation: {self.saturation}")
         print(f"\tSharpness: {self.sharpness}")
 
@@ -135,10 +134,9 @@ class Raspicam:
         Returns:
             None
         """
-        image = self.capture_img()
         if not os.path.exists(folder_path) and folder_path != "":
             os.makedirs(folder_path)
         if folder_path == "":
-            cv2.imwrite(filename, image)
+            self.camera.capture_file(filename)
         else:
-            cv2.imwrite(folder_path+"/"+filename, image) #FIXME: cant write, rewrite
+            self.camera.capture_file(folder_path+"/"+filename)
