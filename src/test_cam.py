@@ -9,12 +9,11 @@ def main():
     color_ref = [252, 57, 3]
     color_threshold = 0.25
     intensity_threshold = 0.05
-    reg_of_interest = [0, 0, 100, 100]
     min_width = 10
     min_height = 10
     min_area = 100
-    detector = ColorDetector(color_ref, color_threshold, intensity_threshold, reg_of_interest, 
-                              min_width, min_height, min_area)
+    detector = ColorDetector(color_ref, color_threshold, intensity_threshold)
+    detector.set_parameters(min_area= min_area, min_height=min_height, min_width=min_width)
     bounding_boxes = detector.get_blobs(img)
     for box in bounding_boxes:
         print(box)

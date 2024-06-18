@@ -1,7 +1,16 @@
+"""
+Module for segmenting color blobs in an image.
+
+Author: Josef Kahoun
+Date: 18.06.2024
+"""
+
 import cv2
 import numpy as np
 from typing import List,Tuple
 import copy
+
+#TODO: add comments
 
 class ColorDetector:
     """
@@ -67,7 +76,7 @@ class ColorDetector:
         final_mask = copy.deepcopy(mask)
         final_mask[:] = 0
         good_labels = []
-        for label in range(1,len(stats)):#0 is background
+        for label in range(1,len(stats)):# 0 is background
             if (stats[label, cv2.CC_STAT_WIDTH] > self.min_width and stats[label, cv2.CC_STAT_HEIGHT] > self.min_height
                 and stats[label, cv2.CC_STAT_AREA] > self.min_area):
                 good_labels.append(label)
@@ -87,14 +96,15 @@ class ColorDetector:
             bounding_boxes.append((start_point, end_point))
         return bounding_boxes
                 
-    def set_parameters(self, color_reference: Tuple[int, int, int], color_threshold: float = None, intensity_threshold: float = None,
+    def set_parameters(self, color_reference: Tuple[int, int, int] = None, color_threshold: float = None, intensity_threshold: float = None,
                        reg_of_interest: Tuple[int, int, int, int] = None, min_width: int = None, min_height: int = None,
                        min_area: int = None, box_line_color: Tuple[int, int, int] = None, box_line_width : float = None,
                        roi_line_color: Tuple[int, int, int] = None, roi_line_width : float = None) -> None:
         """
         Sets the parameters for the color detector.
         """
-        self.color_reference = color_reference
+        if color_reference is not None:
+            self.color_reference = color_reference
         if color_threshold is not None:
             self.color_threshold = color_threshold
         if intensity_threshold is not None:

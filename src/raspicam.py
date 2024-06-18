@@ -148,6 +148,7 @@ class Raspicam:
                 raise KeyError("Failed to read image from USB camera")
         else:
             image = self.camera.capture_array()
+            image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
         return image
 
     def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:
@@ -164,7 +165,7 @@ class Raspicam:
         """
         if not filename.endswith((".jpg", ".png")):
             raise ValueError("Invalid filename. Filename must end with .jpg or .png")
-        image = cv2.cvtColor(self.capture_img(),cv2.COLOR_RGB2BGR)
+        image = self.capture_img()
         if not os.path.exists(folder_path) and folder_path != "":
             os.makedirs(folder_path)
         if folder_path == "":
