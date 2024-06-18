@@ -1,5 +1,5 @@
 #from raspicam import Raspicam
-from color_blobs import Color_detector
+from color_blobs import ColorDetector
 import cv2
 import numpy as np
 import copy
@@ -13,7 +13,7 @@ def main():
     min_width = 10
     min_height = 10
     min_area = 100
-    detector = Color_detector(color_ref, color_threshold, intensity_threshold, reg_of_interest, 
+    detector = ColorDetector(color_ref, color_threshold, intensity_threshold, reg_of_interest, 
                               min_width, min_height, min_area)
     bounding_boxes = detector.get_blobs(img)
     for box in bounding_boxes:
