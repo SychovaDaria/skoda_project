@@ -1,6 +1,6 @@
 """
 Module for providing camera functionality on a Raspberry Pi either using the camera module,
- or a USB camera.
+or a USB camera.
 
 Author: Josef Kahoun
 Date: 17.06.2024
@@ -12,6 +12,13 @@ import os
 
 from picamera2 import Picamera2
 from typing import List, Tuple
+
+# Constants for default values
+DEFAULT_RESOLUTION = (2028, 1520)
+DEFAULT_EXPOSURE_VALUE = 0.0
+DEFAULT_SATURATION = 1.0
+DEFAULT_SHARPNESS = 1.0
+
 
 
 class Raspicam:
@@ -37,14 +44,13 @@ class Raspicam:
     
     Example:
         cam = Raspicam()
-        cam.set_controls(exposure_value=1000, saturation=16.0, sharpness=8.0)
-        cam.start()
+        cam.set_controls(exposure_value=4.0, saturation=16.0, sharpness=8.0)
         img = cam.capture_img() # returns a numpy array that can be used for further processing
         cam.capture_img_and_save("image.jpg") # saves the image to the current directory
         cam.stop()
     """
-    def __init__(self, resolution: Tuple[int,int] = (2028, 1520), exposure_value: float = 0.0,
-                 saturation: float = 1.0, sharpness: float = 1.0, use_usb: bool = False) -> None: 
+    def __init__(self, resolution: Tuple[int,int] = DEFAULT_RESOLUTION, exposure_value: float = DEFAULT_EXPOSURE_VALUE,
+                 saturation: float =DEFAULT_SATURATION, sharpness: float = DEFAULT_SHARPNESS, use_usb: bool = False) -> None: 
         self.resolution = resolution
         self.exposure_value = exposure_value
         self.saturation = saturation
@@ -58,11 +64,11 @@ class Raspicam:
                                       "Sharpness": sharpness})
             self.camera.start()
         else:
-            # FIXME: add camera settings
-            self.camera = cv2.VideoCapture(0)
+            # TODO: add camera settings
+            self.camera = cv2.VideoCapture()
 
-    def set_controls(self, exposure_value: int = 1000, saturation: float = 16.0,
-                     sharpness: float = 8.0) -> None:
+    def set_controls(self, exposure_value: float = DEFAULT_EXPOSURE_VALUE, saturation: float = DEFAULT_SATURATION,
+                     sharpness: float = DEFAULT_SHARPNESS) -> None:
         """
         Sets the camera controls.
 
@@ -80,10 +86,25 @@ class Raspicam:
         if not self.use_usb:
             self.camera.set_controls({"ExposureTime": exposure_value, "Saturation": saturation, 
                                       "Sharpness": sharpness})
+        else:
+            pass
+            #TODO: add settings for USB camera
+
+    def set_default_controls(self) -> None:
+        """
+        Sets the camera controls to default
+
+        Args:
+            None
+        
+        Returns:
+            None
+        """
+        self.set_controls(exposure_value=DEFAULT_EXPOSURE_VALUE,saturation=DEFAULT_SATURATION,sharpness=DEFAULT_SHARPNESS)
 
     def start(self) -> None:
         """
-        Starts the camera.
+        Starts the camera, it is automatically called when creating raspicam object.
 
         Returns:
             None
@@ -131,7 +152,7 @@ class Raspicam:
 
     def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:
         """
-        Saves the current img to the desired folder (if folder doesnt exist, it creates it)
+        Saves the current img to the desired folder (if folder doesn't exist, it creates it)
         using the provided filename.
 
         Args:
@@ -141,9 +162,12 @@ class Raspicam:
         Returns:
             None
         """
+        if not filename.endswith((".jpg", ".png")):
+            raise ValueError("Invalid filename. Filename must end with .jpg or .png")
+        image = cv2.cvtColor(self.capture_img(),cv2.COLOR_RGB2BGR)
         if not os.path.exists(folder_path) and folder_path != "":
             os.makedirs(folder_path)
         if folder_path == "":
-            self.camera.capture_file(filename)
+            cv2.imwrite(filename,image)
         else:
-            self.camera.capture_file(folder_path+"/"+filename)
+            cv2.imwrite(folder_path+"/"+filename,image)
