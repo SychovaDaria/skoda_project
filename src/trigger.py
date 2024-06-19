@@ -29,7 +29,8 @@ class Trigger:
         folder_name (str): The folder where the pictures will be saved.
         trigger_delay (float, optional): The delay between the trigger and the start of the acquisition. Defaults to DEFAULT_TRIGGER_DELAY.
         num_of_pictures (int, optional): The number of pictures to take. Defaults to DEFAULT_NUM_OF_PICTURES.
-        times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats. Defaults to DEFAULT_TIMES_BETWEEN_PICTURES.
+        times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats. If it is a float, the times between the pictures are 
+        the same. Defaults to DEFAULT_TIMES_BETWEEN_PICTURES.
     
     Attributes:
         camera (Raspicam): Object for handling the camera controls.
@@ -57,19 +58,20 @@ class Trigger:
         """
         if not isinstance(self.camera, Raspicam):
             raise ValueError("The camera attribute must be an instance of the Raspicam class.")
-        if not isinstance(self.trigger_delay, float) or self.trigger_delay < 0:
+        if not isinstance(self.trigger_delay, float|int) or self.trigger_delay < 0:
             raise ValueError("The trigger_delay attribute must be a non-negative float.")
         if not isinstance(self.num_of_pictures, int) or self.num_of_pictures < 1:
             raise ValueError("The num_of_pictures attribute must be a positive integer.")
-        if not isinstance(self.times_between_pictures, (float, List[float])):
-            raise ValueError("The times_between_pictures attribute must be a float or a list of floats.")
-        elif isinstance(self.times_between_pictures, float) and self.times_between_pictures < 0:
-            raise ValueError("The times_between_pictures attribute must be a non-negative float.")
-        elif isinstance(self.times_between_pictures, List[float]):
-            if any(not isinstance(time, float) or time < 0 for time in self.times_between_pictures):
-                raise ValueError("The times_between_pictures attribute must be a list of non-negative floats.")
+        if isinstance(self.times_between_pictures, float|int):
+            if self.times_between_pictures < 0:
+                raise ValueError("The times_between_pictures attribute must be a non-negative float or a list of non-negative floats.")
+        elif isinstance(self.times_between_pictures, list):
+            if any(not isinstance(time, float|int) or time < 0 for time in self.times_between_pictures):
+                raise ValueError("The times_between_pictures attribute must be a non-negative float or a list of non-negative floats.")
             if len(self.times_between_pictures) != self.num_of_pictures - 1:
                 raise ValueError("The length of the times_between_pictures list must be equal to num_of_pictures - 1., or times_between_pictures must be a float.")
+        else:
+            raise ValueError("The times_between_pictures attribute must be a non-negative float or a list of non-negative floats.")
         if not (isinstance(self.folder_name, str) and os.path.isdir(self.folder_name)):
             raise ValueError("The folder_name attribute must be a string representing a valid directory path.")
 
@@ -81,9 +83,9 @@ class Trigger:
         Args:
             camera (Raspicam, optional): Object for handling the camera controls.
             folder_name (str, optional): The folder where the pictures will be saved.
-            trigger_delay (float, optional): The delay between the trigger and the start of the acquisition. Defaults to DEFAULT_TRIGGER_DELAY.
-            num_of_pictures (int, optional): The number of pictures to take. Defaults to DEFAULT_NUM_OF_PICTURES.
-            times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats. Defaults to DEFAULT_TIMES_BETWEEN_PICTURES.
+            trigger_delay (float, optional): The delay between the trigger and the start of the acquisition.
+            num_of_pictures (int, optional): The number of pictures to take.
+            times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats.
 
         Returns:
             None
@@ -102,7 +104,7 @@ class Trigger:
 
     def trigg(self) -> None:
         """
-        Trigger the camera to take pictures using the settings in the attributes.
+        Take pictures from the camera using the settings in the attributes.
 
         Returns:
             None
@@ -111,13 +113,13 @@ class Trigger:
         # wait for the trigger delay
         time.sleep(self.trigger_delay)
         # transform times_between_pictures to a list if it is a float
-        if isinstance(self.times_between_pictures, float):
+        if isinstance(self.times_between_pictures, float|int):
             times_between_pictures = [self.times_between_pictures] * (self.num_of_pictures - 1)
         else:
             times_between_pictures = self.times_between_pictures
         # capture the imgs
         for i in range(self.num_of_pictures):
-            filename = f"{current_time}_{i}"
+            filename = f"{current_time}_{i}.jpg" # create the filename
             self.camera.capture_img_and_save(filename=filename, folder_path=self.folder_name)
             if i < self.num_of_pictures - 1:
                 time.sleep(times_between_pictures[i])

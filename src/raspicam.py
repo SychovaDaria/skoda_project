@@ -22,7 +22,6 @@ import os
 from picamera2 import Picamera2
 from typing import List, Tuple
 
-#TODO: update docstrings
 
 # Constants for default values
 DEFAULT_RESOLUTION = (2028, 1520)
@@ -55,7 +54,7 @@ class Raspicam:
         resolution (Tuple[int, int], optional): The resolution of the camera. Defaults to None.
         framerate (int, optional): The framerate of the camera. Defaults to None.
         exposure_value (float, optional): The exposure value of the camera.
-        saturation (float, optional): The saturation value of the camera.
+        saturation (float|int, optional): The saturation value of the camera.
         sharpness (float, optional): The sharpness value of the camera.
         use_usb (bool, optional): Whether to use a USB camera. Defaults to False.
         brightness (float, optional): The brightness value of the camera.
@@ -67,7 +66,7 @@ class Raspicam:
         resolution (Tuple[int, int]): The resolution of the camera.
         exposure_value (float): The exposure time of the camera.
         framerate (int): The framerate of the camera.
-        saturation (float): The saturation value of the camera.
+        saturation (float|int): The saturation value of the camera.
         sharpness (float): The sharpness value of the camera.
         use_usb (bool): Whether to use a USB camera.
         brightness (float): The brightness value of the camera.
@@ -91,7 +90,6 @@ class Raspicam:
         self.use_usb = use_usb
         if use_usb: # create defaults
             self.resolution = USB_DEFAULT_RESOLUTION
-            self.resolution = USB_DEFAULT_RESOLUTION
             self.saturation = USB_DEFAULT_SATURATION
             self.exposure_value = DEFAULT_EXPOSURE_VALUE
             self.sharpness = USB_DEFAULT_SHARPNESS
@@ -111,6 +109,7 @@ class Raspicam:
         self.auto_brightness_value = auto_brightness_value
         if resolution is not None:
             self.resolution = resolution
+        self.check_attributes()
         # start the cam and set desired controls
         if not use_usb: # start picam if not using usb
             self.camera = Picamera2()
@@ -126,8 +125,8 @@ class Raspicam:
             self.set_controls(exposure_value=exposure_value,saturation=saturation,sharpness=sharpness,
                           framerate=framerate,brightness=brightness, contrast=contrast)
 
-    def set_controls(self, exposure_value: float = None, saturation: float = None,
-                     sharpness: float = None, framerate: int = None, brightness: float = None,
+    def set_controls(self, exposure_value: float = None, saturation: float|int = None,
+                     sharpness: float|int = None, framerate: int = None, brightness: float = None,
                      contrast : float = None, auto_exposure_on: bool = None, 
                      auto_brightness_value : float = None) -> None:
         """
@@ -162,6 +161,7 @@ class Raspicam:
             self.contrast = contrast
         if auto_brightness_value is not None:
             self.auto_brightness_value = auto_brightness_value
+        self.check_attributes()
         if not self.use_usb:
             self.camera.set_controls({"ExposureValue": self.exposure_value, "Saturation": self.saturation, 
                                       "Sharpness": self.sharpness, "FrameRate": self.framerate,
@@ -208,6 +208,7 @@ class Raspicam:
             None
         """
         self.resolution = resolution
+        self.check_attributes()
         if not self.use_usb:
             self.stop() # the camera needs to be stopped to change the resolution
             camera_config = self.camera.create_preview_configuration(main={'size': resolution})
@@ -364,4 +365,63 @@ class Raspicam:
         mean_brightness = np.mean(gray_image)
 
         return mean_brightness
+    
+    def check_attributes(self):
+        """
+        Check if the attributes are valid.
+
+        Check if the attributes are valid. Raises a ValueError if the attributes are invalid.
+
+        Returns:
+            None
+        """
+        if not (isinstance(self.resolution, tuple) and len(self.resolution) == 2 and all(isinstance(res, int) for res in self.resolution)):
+            raise ValueError("The resolution attribute must be a tuple of two integers.")
+        if not isinstance(self.framerate,int):
+            raise ValueError("The framerate attribute must be an integer.")
+        if not isinstance(self.turn_auto_exposure_on, bool):
+            raise ValueError("The auto_exposure_on attribute must be a boolean.")
+        if not isinstance(self.use_usb, bool):
+            raise ValueError("The use_usb attribute must be a boolean.")
+        else:
+            if self.use_usb:
+                self.check_attributes_usb()
+            else:
+                self.check_attributes_picamera()
+    
+    def check_attributes_usb(self):
+        """
+        Checks the attributes for USB camera
+
+        Returns: 
+            None
+        """
+        if not isinstance(self.saturation, float|int) or self.saturation < 0 or self.saturation > 200:
+            raise ValueError("The USB saturation attribute must be a float in range [0; 200].")
+        if not isinstance(self.sharpness, float|int) or self.saturation < 0 or self.saturation > 50:
+            raise ValueError("The USB sharpness attribute must be a float in range [0; 50].")
+        if not isinstance(self.brightness, float|int) or self.brightness < 30 or self.brightness > 255:
+            raise ValueError("The USB brightness attribute must be a float in range [30; 255].")
+        if not isinstance(self.contrast, float|int) or self.contrast < 0 or self.contrast > 10:
+            raise ValueError("The USB contrast attribute must be a float in range [0; 10].")
+        
+
+    def check_attributes_picamera(self):
+        """
+        Checks the attributes for picamera
+
+        Returns:
+            None
+        """
+        if not isinstance(self.exposure_value, float|int) or self.exposure_value < -8.0 or self.exposure_value > 8.0:
+            raise ValueError("The picamera2 exposure value attribute must be a float in range [-8.0; 8.0]")
+        if not isinstance(self.saturation, float|int) or self.saturation < 0.0 or self.saturation > 32.0:
+            raise ValueError("The picamera2 saturation attribute must be a float in range [0.0; 32.0]")
+        if not isinstance(self.sharpness, float|int) or self.saturation < 0.0 or self.saturation > 16.0:
+            raise ValueError("The picamera2 sharpness attribute must be a float in range [0.0; 16.0]")
+        if not isinstance(self.brightness, float|int) or self.brightness< -1.0 or self.brightness > 1.0:
+            raise ValueError("The picamera2 brightness attribute must be a float in range [-1.0; 1.0]")
+        if not isinstance(self.contrast, float|int) or self.contrast < 0.0 or self.contrast > 32.0:
+            raise ValueError("The picamera2 contrast attribute must be a float in range [0.0; 32.0]")
+    
         
