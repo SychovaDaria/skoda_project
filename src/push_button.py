@@ -39,12 +39,12 @@ def start_stream(camera : Raspicam) -> None:
             break
     cv2.destroyAllWindows()
 
-def start_gpio(camera : Raspicam, folder_name : str,button:DigitalInputDevice) -> None:
+def start_gpio(camera : Raspicam, folder_name : str, button:DigitalInputDevice) -> None:
     global running
     print("START GPIO")
     threads = []
     while running:
-        if button.value:
+        if button.value: # WARNING: if this is ever going to be used, replace it with thread pool
             print("Button pressed")
             thread = threading.Thread(target=take_pictures, args=(camera,folder_name))
             threads.append(thread)
