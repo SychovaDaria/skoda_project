@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module raspicam</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>raspicam</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cme%5Cskoda%5Craspicam_project%5Cskoda_project%5Csrc%5Craspicam.py">c:\me\skoda\raspicam_project\skoda_project\src\raspicam.py</a></font></td></tr></table>
+    <p><tt>Module&nbsp;for&nbsp;providing&nbsp;camera&nbsp;functionality&nbsp;on&nbsp;a&nbsp;Raspberry&nbsp;Pi&nbsp;either&nbsp;using&nbsp;the&nbsp;camera&nbsp;module,<br>
+or&nbsp;a&nbsp;USB&nbsp;camera.<br>
+&nbsp;<br>
+Author:&nbsp;Josef&nbsp;Kahoun<br>
+Date:&nbsp;19.06.2024<br>
+Version:&nbsp;0.3<br>
+Comments:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;v4l2-ctl&nbsp;--list-devices&nbsp;to&nbsp;list&nbsp;USB&nbsp;cameras,&nbsp;select&nbsp;the&nbsp;first&nbsp;one&nbsp;under&nbsp;the&nbsp;camera&nbsp;as&nbsp;the&nbsp;usb_camera_index<br>
+&nbsp;<br>
+Improvements:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Add&nbsp;a&nbsp;functionality,&nbsp;that&nbsp;will&nbsp;write&nbsp;default&nbsp;values&nbsp;based&nbsp;on&nbsp;the&nbsp;connected&nbsp;sensor&nbsp;to&nbsp;a&nbsp;file&nbsp;at&nbsp;the&nbsp;start&nbsp;of&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;program.&nbsp;This&nbsp;will&nbsp;ensure&nbsp;functionality&nbsp;across&nbsp;all&nbsp;sensors.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Make&nbsp;it&nbsp;so&nbsp;you&nbsp;don't&nbsp;have&nbsp;to&nbsp;manually&nbsp;write&nbsp;USB&nbsp;camera&nbsp;index.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Add&nbsp;error&nbsp;handling&nbsp;and&nbsp;arguments&nbsp;checker.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="cv2.html">cv2</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="raspicam.html#Raspicam">Raspicam</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Raspicam">class <strong>Raspicam</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Raspicam">Raspicam</a>(resolution:&nbsp;Tuple[int,&nbsp;int]&nbsp;=&nbsp;None,&nbsp;exposure_value:&nbsp;float&nbsp;=&nbsp;None,&nbsp;saturation:&nbsp;float&nbsp;=&nbsp;None,&nbsp;sharpness:&nbsp;float&nbsp;=&nbsp;None,&nbsp;framerate:&nbsp;int&nbsp;=&nbsp;None,&nbsp;use_usb:&nbsp;bool&nbsp;=&nbsp;False,&nbsp;brightness:&nbsp;float&nbsp;=&nbsp;None,&nbsp;contrast:&nbsp;float&nbsp;=&nbsp;None,&nbsp;auto_exposure_on:&nbsp;bool&nbsp;=&nbsp;False,&nbsp;auto_brightness_value:&nbsp;float&nbsp;=&nbsp;133)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Object&nbsp;for&nbsp;handling&nbsp;the&nbsp;camera&nbsp;on&nbsp;a&nbsp;Raspberry&nbsp;Pi.<br>
+&nbsp;<br>
+Object&nbsp;for&nbsp;handling&nbsp;the&nbsp;camera&nbsp;on&nbsp;a&nbsp;Raspberry&nbsp;Pi.&nbsp;It&nbsp;is&nbsp;designed&nbsp;to&nbsp;drive&nbsp;both&nbsp;pi&nbsp;camera&nbsp;module&nbsp;connected&nbsp;<br>
+with&nbsp;ribbon&nbsp;cable,&nbsp;or&nbsp;an&nbsp;external&nbsp;USB&nbsp;camera.&nbsp;The&nbsp;default&nbsp;settings&nbsp;were&nbsp;set&nbsp;for&nbsp;the&nbsp;13MP&nbsp;camera&nbsp;module&nbsp;and&nbsp;<br>
+Microsoft&nbsp;LifeCam&nbsp;Studio&nbsp;camera.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;resolution&nbsp;(Tuple[int,&nbsp;int],&nbsp;optional):&nbsp;The&nbsp;resolution&nbsp;of&nbsp;the&nbsp;camera.&nbsp;Defaults&nbsp;to&nbsp;None.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;framerate&nbsp;(int,&nbsp;optional):&nbsp;The&nbsp;framerate&nbsp;of&nbsp;the&nbsp;camera.&nbsp;Defaults&nbsp;to&nbsp;None.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exposure_value&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;exposure&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;saturation&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;saturation&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sharpness&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;sharpness&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;use_usb&nbsp;(bool,&nbsp;optional):&nbsp;Whether&nbsp;to&nbsp;use&nbsp;a&nbsp;USB&nbsp;camera.&nbsp;Defaults&nbsp;to&nbsp;False.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;brightness&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;brightness&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;contrast&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;contrast&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;auto_exposure_on&nbsp;(bool,&nbsp;optional):&nbsp;Whether&nbsp;to&nbsp;turn&nbsp;on&nbsp;auto&nbsp;exposure.&nbsp;Defaults&nbsp;to&nbsp;False.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;auto_brightness_value&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;target&nbsp;brightness&nbsp;value&nbsp;for&nbsp;auto&nbsp;brightness&nbsp;adjustment.&nbsp;Defaults&nbsp;to&nbsp;DEFAULT_AUTO_BRIGHTNESS_VALUE.<br>
+&nbsp;<br>
+Attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;resolution&nbsp;(Tuple[int,&nbsp;int]):&nbsp;The&nbsp;resolution&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exposure_value&nbsp;(float):&nbsp;The&nbsp;exposure&nbsp;time&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;framerate&nbsp;(int):&nbsp;The&nbsp;framerate&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;saturation&nbsp;(float):&nbsp;The&nbsp;saturation&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sharpness&nbsp;(float):&nbsp;The&nbsp;sharpness&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;use_usb&nbsp;(bool):&nbsp;Whether&nbsp;to&nbsp;use&nbsp;a&nbsp;USB&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;brightness&nbsp;(float):&nbsp;The&nbsp;brightness&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;contrast&nbsp;(float):&nbsp;The&nbsp;contrast&nbsp;value&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;auto_exposure_on&nbsp;(bool):&nbsp;Whether&nbsp;auto&nbsp;exposure&nbsp;is&nbsp;turned&nbsp;on.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;auto_brightness_value&nbsp;(float):&nbsp;The&nbsp;target&nbsp;brightness&nbsp;value&nbsp;for&nbsp;auto&nbsp;brightness&nbsp;adjustment.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;camera&nbsp;(Union[Picamera2,&nbsp;cv2.VideoCapture]):&nbsp;The&nbsp;camera&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Example:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cam&nbsp;=&nbsp;<a href="#Raspicam">Raspicam</a>()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cam.<a href="#Raspicam-set_controls">set_controls</a>(exposure_value=4.0,&nbsp;saturation=16.0,&nbsp;sharpness=8.0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;=&nbsp;cam.<a href="#Raspicam-capture_img">capture_img</a>()&nbsp;#&nbsp;returns&nbsp;a&nbsp;numpy&nbsp;array&nbsp;that&nbsp;can&nbsp;be&nbsp;used&nbsp;for&nbsp;further&nbsp;processing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cam.<a href="#Raspicam-capture_img_and_save">capture_img_and_save</a>("image.jpg")&nbsp;#&nbsp;saves&nbsp;the&nbsp;image&nbsp;to&nbsp;the&nbsp;current&nbsp;directory<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cam.<a href="#Raspicam-stop">stop</a>()<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Raspicam-__init__"><strong>__init__</strong></a>(self, resolution: Tuple[int, int] = None, exposure_value: float = None, saturation: float = None, sharpness: float = None, framerate: int = None, use_usb: bool = False, brightness: float = None, contrast: float = None, auto_exposure_on: bool = False, auto_brightness_value: float = 133) -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-auto_brightness"><strong>auto_brightness</strong></a>(self, image: &lt;built-in function array&gt; = None) -&gt; None</dt><dd><tt>Automatically&nbsp;adjusts&nbsp;the&nbsp;brightness&nbsp;of&nbsp;the&nbsp;image.<br>
+&nbsp;<br>
+Automatically&nbsp;adjusts&nbsp;the&nbsp;brightness&nbsp;of&nbsp;the&nbsp;image&nbsp;by&nbsp;changing&nbsp;exposure&nbsp;value<br>
+using&nbsp;P&nbsp;regulator.&nbsp;Need&nbsp;to&nbsp;call&nbsp;the&nbsp;capture_img&nbsp;function&nbsp;in&nbsp;a&nbsp;loop&nbsp;in&nbsp;order&nbsp;for&nbsp;this&nbsp;to&nbsp;work.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;image&nbsp;(np.array,&nbsp;optional):&nbsp;The&nbsp;image&nbsp;to&nbsp;adjust&nbsp;the&nbsp;brightness.&nbsp;If&nbsp;not&nbsp;provided,&nbsp;the&nbsp;current&nbsp;image&nbsp;will&nbsp;be&nbsp;used.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-calculate_brightness"><strong>calculate_brightness</strong></a>(self, image: &lt;built-in function array&gt; = None) -&gt; float</dt><dd><tt>Calculates&nbsp;the&nbsp;brightness&nbsp;of&nbsp;the&nbsp;image.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;image&nbsp;(np.array,&nbsp;optional):&nbsp;The&nbsp;image&nbsp;to&nbsp;calculate&nbsp;the&nbsp;brightness.&nbsp;If&nbsp;not&nbsp;provided,&nbsp;the&nbsp;image&nbsp;from&nbsp;camera&nbsp;will&nbsp;be&nbsp;used.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;float:&nbsp;The&nbsp;brightness&nbsp;value.</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-capture_img"><strong>capture_img</strong></a>(self) -&gt; &lt;built-in function array&gt;</dt><dd><tt>Captures&nbsp;the&nbsp;current&nbsp;img<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;img&nbsp;(np.array)&nbsp;-&nbsp;3D&nbsp;numpy&nbsp;array&nbsp;containing&nbsp;the&nbsp;current&nbsp;img&nbsp;(row,&nbsp;height,&nbsp;RGB)</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-capture_img_and_save"><strong>capture_img_and_save</strong></a>(self, filename: str, folder_path: str = '') -&gt; None</dt><dd><tt>Saves&nbsp;the&nbsp;current&nbsp;img&nbsp;to&nbsp;the&nbsp;desired&nbsp;folder.&nbsp;(if&nbsp;folder&nbsp;doesn't&nbsp;exist,&nbsp;it&nbsp;creates&nbsp;it)<br>
+using&nbsp;the&nbsp;provided&nbsp;filename.<br>
+&nbsp;<br>
+Saves&nbsp;the&nbsp;current&nbsp;img&nbsp;to&nbsp;the&nbsp;desired&nbsp;folder.&nbsp;If&nbsp;the&nbsp;folder&nbsp;doesn't&nbsp;exist,&nbsp;it&nbsp;creates&nbsp;it<br>
+using&nbsp;the&nbsp;provided&nbsp;folder_path&nbsp;name.&nbsp;Can&nbsp;save&nbsp;pictures&nbsp;in&nbsp;.jpg&nbsp;and&nbsp;in&nbsp;.png&nbsp;format.<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;image&nbsp;file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;folder_path&nbsp;(str,&nbsp;optional):&nbsp;The&nbsp;path&nbsp;of&nbsp;the&nbsp;folder&nbsp;where&nbsp;the&nbsp;image&nbsp;will&nbsp;be&nbsp;saved.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-change_camera_feed"><strong>change_camera_feed</strong></a>(self) -&gt; None</dt><dd><tt>Changes&nbsp;the&nbsp;camera&nbsp;feed&nbsp;from&nbsp;the&nbsp;picamera&nbsp;to&nbsp;the&nbsp;usb&nbsp;camera&nbsp;and&nbsp;vice&nbsp;versa.<br>
+&nbsp;<br>
+Changes&nbsp;the&nbsp;camera&nbsp;feed&nbsp;from&nbsp;the&nbsp;picamera&nbsp;to&nbsp;the&nbsp;usb&nbsp;camera&nbsp;and&nbsp;vice&nbsp;versa.&nbsp;Sets&nbsp;all&nbsp;the&nbsp;settings&nbsp;to&nbsp;default,<br>
+so&nbsp;manual&nbsp;change&nbsp;of&nbsp;the&nbsp;settings&nbsp;is&nbsp;needed&nbsp;if&nbsp;desired.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-change_resolution"><strong>change_resolution</strong></a>(self, resolution: Tuple[int, int]) -&gt; None</dt><dd><tt>Changes&nbsp;the&nbsp;resolution&nbsp;of&nbsp;the&nbsp;camera.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;resolution&nbsp;(Tuple[int,&nbsp;int]):&nbsp;The&nbsp;resolution&nbsp;to&nbsp;set.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-print_settings"><strong>print_settings</strong></a>(self) -&gt; None</dt><dd><tt>Prints&nbsp;the&nbsp;current&nbsp;camera&nbsp;settings.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-set_controls"><strong>set_controls</strong></a>(self, exposure_value: float = None, saturation: float = None, sharpness: float = None, framerate: int = None, brightness: float = None, contrast: float = None, auto_exposure_on: bool = None, auto_brightness_value: float = None) -&gt; None</dt><dd><tt>Sets&nbsp;the&nbsp;camera&nbsp;controls.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exposure_value&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;exposure&nbsp;value&nbsp;to&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;saturation&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;saturation&nbsp;value&nbsp;to&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sharpness&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;sharpness&nbsp;value&nbsp;to&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;framerate&nbsp;(int,&nbsp;optional):&nbsp;The&nbsp;framerate&nbsp;value&nbsp;to&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;brightness&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;brightness&nbsp;value&nbsp;to&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;contrast&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;contrast&nbsp;value&nbsp;to&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;auto_exposure_on&nbsp;(bool,&nbsp;optional):&nbsp;Whether&nbsp;to&nbsp;turn&nbsp;on&nbsp;auto&nbsp;exposure.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;auto_brightness_value&nbsp;(float,&nbsp;optional):&nbsp;The&nbsp;target&nbsp;brightness&nbsp;value&nbsp;for&nbsp;auto&nbsp;brightness&nbsp;adjustment.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-set_default_controls"><strong>set_default_controls</strong></a>(self)</dt><dd><tt>Sets&nbsp;the&nbsp;default&nbsp;controls&nbsp;for&nbsp;the&nbsp;camera.<br>
+&nbsp;<br>
+If&nbsp;`use_usb`&nbsp;is&nbsp;True,&nbsp;the&nbsp;controls&nbsp;for&nbsp;a&nbsp;USB&nbsp;camera&nbsp;are&nbsp;set&nbsp;to&nbsp;the&nbsp;default&nbsp;values.<br>
+If&nbsp;`use_usb`&nbsp;is&nbsp;False,&nbsp;the&nbsp;controls&nbsp;for&nbsp;a&nbsp;default&nbsp;camera&nbsp;are&nbsp;set&nbsp;to&nbsp;the&nbsp;default&nbsp;values.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-start"><strong>start</strong></a>(self) -&gt; None</dt><dd><tt>Starts&nbsp;the&nbsp;camera,&nbsp;it&nbsp;is&nbsp;automatically&nbsp;called&nbsp;when&nbsp;creating&nbsp;raspicam&nbsp;<a href="builtins.html#object">object</a>.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="Raspicam-stop"><strong>stop</strong></a>(self) -&gt; None</dt><dd><tt>Stops&nbsp;the&nbsp;camera.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>AUTO_BRIGHTNESS_ERROR_THRESHOLD</strong> = 3<br>
+<strong>DEFAULT_AUTO_BRIGHTNESS_VALUE</strong> = 133<br>
+<strong>DEFAULT_BRIGHTNESS</strong> = 0<br>
+<strong>DEFAULT_CONTRAST</strong> = 1<br>
+<strong>DEFAULT_EXPOSURE_VALUE</strong> = 0<br>
+<strong>DEFAULT_FRAMERATE</strong> = 30<br>
+<strong>DEFAULT_RESOLUTION</strong> = (2028, 1520)<br>
+<strong>DEFAULT_SATURATION</strong> = 1<br>
+<strong>DEFAULT_SHARPNESS</strong> = 1<br>
+<strong>List</strong> = typing.List<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>USB_DEFAULT_BRIGHTNESS</strong> = 133.0<br>
+<strong>USB_DEFAULT_CONTRAST</strong> = 5.0<br>
+<strong>USB_DEFAULT_FRAMERATE</strong> = 30<br>
+<strong>USB_DEFAULT_RESOLUTION</strong> = (640, 480)<br>
+<strong>USB_DEFAULT_SATURATION</strong> = 100<br>
+<strong>USB_DEFAULT_SHARPNESS</strong> = 25</td></tr></table>
+</body></html>

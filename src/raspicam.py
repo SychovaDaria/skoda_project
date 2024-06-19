@@ -298,7 +298,7 @@ class Raspicam:
         else:
             cv2.imwrite(folder_path+"/"+filename,image)
 
-    def change_camera_feed(self):
+    def change_camera_feed(self) -> None:
         """
         Changes the camera feed from the picamera to the usb camera and vice versa.
 
