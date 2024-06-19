@@ -31,4 +31,4 @@ When it is set, we can call the .trig() when an event occurs (GPIO, color blobs,
 - the trigger module
 
 ## Critical sections ?
-- ¯\_(ツ)_/¯
+- ¯\\_(ツ)_/¯
