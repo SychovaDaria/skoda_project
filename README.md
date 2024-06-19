@@ -18,6 +18,7 @@ A module for taking the pictures with the .trigg() function. You have to provide
 - number of pictures
 - the delay between the trigger and the aquisition of the first picture
 - the delay between the capture of different pictures, either as a float (every delay will then be the same), or as a list of floats (with length num_of_pictures - 1) that will specify each delay
+
 Everything is specified in the docstring. 
 IT WILL NEED IT'S OWN THREAD, because the module uses time.sleep() for the delay, which freezes everything else (if we don't want to use threads, need to replace the sleep() function with something that doesn't freeze everything, but this is the easiest way)
 When it is set, we can call the .trig() when an event occurs (GPIO, color blobs, edge detection, AI, ...)
