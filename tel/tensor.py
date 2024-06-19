@@ -3,16 +3,16 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import time
 import os
-from raspicam import Picamera2
+from raspicam import Raspicam
 
 # trained model
 model = load_model('phone_detector_model.h5')
 
-# params
+#preprocessing
 img_height, img_width = 150, 150
 
-# Initialize camera
-camera = Picamera2()
+# Initialize 
+camera = Raspicam()
 
 def preprocess_image(image):
     image = cv2.resize(image, (img_height, img_width))
@@ -25,25 +25,34 @@ def detect_phone(frame):
     prediction = model.predict(processed_image)
     return prediction[0][0] > 0.5
 
+
 os.makedirs('mobil', exist_ok=True)
 
-while True:
-    frame = camera.capture_img()
-    if detect_phone(frame):
-        for _ in range(3):
-            timestamp = time.strftime("%Y%m%d-%H%M%S")
-            filename = os.path.join('mobil', f'phone_detected_{timestamp}.jpg')
-            cv2.imwrite(filename, frame)
-            print(f'Phone detected! Saved {filename}')
-            time.sleep(0.5)  # Delay between captures
-        time.sleep(20)  # Wait 20 seconds before next detection attempt
-    else:
-        time.sleep(0.5)  # Check for phone every 0.5 seconds if not detected
+last_detection_time = 0  # last detection time
+check_interval = 20      # checking again
 
+while True:
+    current_time = time.time()
+    frame = camera.capture_img()
+
+    # Check if the current time is at least 20 seconds after the last detection
+    if current_time - last_detection_time > check_interval:
+        if detect_phone(frame):
+            for i in range(3):  # Capture three images
+                timestamp = time.strftime("%Y%m%d-%H%M%S")
+                filename = os.path.join('mobil', f'phone_detected_{timestamp}.jpg')
+                cv2.imwrite(filename, frame)
+                print(f'Phone detected! Saved {filename}')
+                time.sleep(0.5)  # Wait 0.5 
+            last_detection_time = time.time()  # Update last detection time
+
+    # stream
     cv2.imshow('Camera Stream', frame)
 
-    if cv2.waitKey(1) == 27:  # Escape key
+    # Break esc
+    if cv2.waitKey(1) == 27:
         break
 
-camera.stop()
+# Cleanup
+camera.stop()  
 cv2.destroyAllWindows()
