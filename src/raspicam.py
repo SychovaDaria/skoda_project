@@ -11,6 +11,8 @@ Comments:
 Improvements:
     Add a functionality, that will write default values based on the connected sensor to a file at the start of the
     program. This will ensure functionality across all sensors.
+    Make it so you don't have to manually write USB camera index.
+    Add error handling and arguments checker.
 """
 
 import cv2
@@ -24,7 +26,7 @@ from typing import List, Tuple
 
 # Constants for default values
 DEFAULT_RESOLUTION = (2028, 1520)
-DEFAULT_EXPOSURE_VALUE = 0 # range -8.0 to 8.0 # FIXME: doesnt do anything, delete
+DEFAULT_EXPOSURE_VALUE = 0 # range -8.0 to 8.0
 DEFAULT_SATURATION = 1 # range 0 to 32.0
 DEFAULT_SHARPNESS = 1 # range 0 to 16.0
 DEFAULT_FRAMERATE = 30
@@ -45,6 +47,10 @@ class Raspicam:
     """
     Object for handling the camera on a Raspberry Pi.
 
+    Object for handling the camera on a Raspberry Pi. It is designed to drive both pi camera module connected 
+    with ribbon cable, or an external USB camera. The default settings were set for the 13MP camera module and 
+    Microsoft LifeCam Studio camera.
+
     Args:
         resolution (Tuple[int, int], optional): The resolution of the camera. Defaults to None.
         framerate (int, optional): The framerate of the camera. Defaults to None.
@@ -54,6 +60,8 @@ class Raspicam:
         use_usb (bool, optional): Whether to use a USB camera. Defaults to False.
         brightness (float, optional): The brightness value of the camera.
         contrast (float, optional): The contrast value of the camera.
+        auto_exposure_on (bool, optional): Whether to turn on auto exposure. Defaults to False.
+        auto_brightness_value (float, optional): The target brightness value for auto brightness adjustment. Defaults to DEFAULT_AUTO_BRIGHTNESS_VALUE.
 
     Attributes:
         resolution (Tuple[int, int]): The resolution of the camera.
@@ -64,6 +72,8 @@ class Raspicam:
         use_usb (bool): Whether to use a USB camera.
         brightness (float): The brightness value of the camera.
         contrast (float): The contrast value of the camera.
+        auto_exposure_on (bool): Whether auto exposure is turned on.
+        auto_brightness_value (float): The target brightness value for auto brightness adjustment.
         camera (Union[Picamera2, cv2.VideoCapture]): The camera object.
     
     Example:
@@ -130,6 +140,8 @@ class Raspicam:
             framerate (int, optional): The framerate value to set.
             brightness (float, optional): The brightness value to set.
             contrast (float, optional): The contrast value to set.
+            auto_exposure_on (bool, optional): Whether to turn on auto exposure.
+            auto_brightness_value (float, optional): The target brightness value for auto brightness adjustment.
 
         Returns:
             None
@@ -240,6 +252,8 @@ class Raspicam:
         print(f"\tFramerate: {self.framerate}")
         print(f"\tBrightness: {self.brightness}")
         print(f"\tContrast: {self.contrast}")
+        print(f"\tAuto Exposure On: {self.auto_exposure_on}")
+        print(f"\tAuto Brightness Value: {self.auto_brightness_value}")
 
 
     def capture_img(self) -> np.array:
@@ -262,12 +276,14 @@ class Raspicam:
 
     def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:
         """
-        Saves the current img to the desired folder (if folder doesn't exist, it creates it)
+        Saves the current img to the desired folder. (if folder doesn't exist, it creates it)
         using the provided filename.
 
+        Saves the current img to the desired folder. If the folder doesn't exist, it creates it
+        using the provided folder_path name. Can save pictures in .jpg and in .png format.
         Args:
-            folder_path (str): The path of the folder where the image will be saved.
             filename (str): The name of the image file.
+            folder_path (str, optional): The path of the folder where the image will be saved.
 
         Returns:
             None
@@ -285,6 +301,9 @@ class Raspicam:
     def change_camera_feed(self):
         """
         Changes the camera feed from the picamera to the usb camera and vice versa.
+
+        Changes the camera feed from the picamera to the usb camera and vice versa. Sets all the settings to default,
+        so manual change of the settings is needed if desired.
 
         Returns:
             None 
@@ -316,6 +335,7 @@ class Raspicam:
         correction = K_p * error
         if abs(error) < AUTO_BRIGHTNESS_ERROR_THRESHOLD:
             return
+        # cap the exposure_value
         if self.exposure_value + correction < -8.0:
             self.set_controls(exposure_value=-8.0)
         elif self.exposure_value + correction > 8.0:
@@ -329,7 +349,7 @@ class Raspicam:
         Calculates the brightness of the image.
 
         Args:
-            image (np.array, optional): The image to calculate the brightness. If not provided, the current image will be used.
+            image (np.array, optional): The image to calculate the brightness. If not provided, the image from camera will be used.
 
         Returns:
             float: The brightness value.
