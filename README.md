@@ -48,3 +48,6 @@ When it is set, we can call the .trig() when an event occurs (GPIO, color blobs,
 
 ## Example
 Example shown in src/thread_test.py (je to celkem ez, jediny co, tak hlidat, jestli nekde neni kriticka sekce (napr. kdyz jsou dva thready, jeden do sdilene promenne zapisuje a druhy z ni cte, pak je to undefined behavior), pak jsou treba mutexy/cond var, ale v tom pythonu jsou hezky na radek vytvoreny)
+
+# GPIO inputs
+via push_button.py

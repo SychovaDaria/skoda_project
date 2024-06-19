@@ -12,15 +12,12 @@ import cv2
 import time
 
 def start_stream(camera : Raspicam) -> None:
-    print("jupii")
-    """
     while True:
         image = camera.capture_img()
         cv2.imshow("Stream", image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
-    """
 
 def take_pictures(camera : Raspicam, folder_name : str) -> None:
     print("TAKE PICTURES")
