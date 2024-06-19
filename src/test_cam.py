@@ -11,6 +11,7 @@ def main():
         cv2.imshow("image", img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+        
 
 
 if __name__ == "__main__":

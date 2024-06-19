@@ -22,10 +22,10 @@ from typing import List, Tuple
 
 # Constants for default values
 DEFAULT_RESOLUTION = (2028, 1520)
-DEFAULT_EXPOSURE_VALUE = 0 # range -8.0 to 8.0
+DEFAULT_EXPOSURE_VALUE = 0 # range -8.0 to 8.0 # FIXME: doesnt do anything, delete
 DEFAULT_SATURATION = 1 # range 0 to 32.0
 DEFAULT_SHARPNESS = 1 # range 0 to 16.0
-DEFAULT_FRAMERATE = 15
+DEFAULT_FRAMERATE = 30
 DEFAULT_BRIGHTNESS = 0 # range -1.0 to 1.0
 DEFAULT_CONTRAST = 1 # range 0.0 to 32.0
 
@@ -140,7 +140,7 @@ class Raspicam:
             self.contrast = contrast
 
         if not self.use_usb:
-            self.camera.set_controls({"ExposureTime": self.exposure_value, "Saturation": self.saturation, 
+            self.camera.set_controls({"ExposureValue": self.exposure_value, "Saturation": self.saturation, 
                                       "Sharpness": self.sharpness, "FrameRate": self.framerate,
                                       "Brightness": self.brightness,"Contrast": self.contrast})
         else:
@@ -276,3 +276,64 @@ class Raspicam:
         """
         self.stop()
         self.__init__(use_usb=not self.use_usb)
+
+    def auto_brightness(self, target_brightness: float, brightness_threshold : float = 0.2,
+                        max_iterations: int = 10): # FIXME: doesnt work
+        """
+        Adjusts the exposure value to achieve the target brightness in the image.
+
+        Args:
+            target_brightness (float): The desired target brightness value.
+            max_iterations (int, optional): The maximum number of iterations to adjust the exposure value. Defaults to 10.
+
+        Returns:
+            None
+        """
+        if self.use_usb:
+            raise ValueError("Auto brightness adjustment is only supported for the PiCamera.")
+
+        # Initialize the exposure value
+        exposure_value = self.exposure_value
+
+        # Iterate to adjust the exposure value
+        for i in range(max_iterations):
+            # Capture an image
+            image = self.capture_img()
+
+            # Calculate the current brightness
+            current_brightness = self.calculate_brightness(image)
+
+            # Check if the current brightness is close to the target brightness
+            if abs(current_brightness - target_brightness) < brightness_threshold:
+                break
+
+            # Adjust the exposure value based on the difference between the current and target brightness
+            exposure_value += (target_brightness - current_brightness) * brightness_threshold
+
+            # Set the new exposure value
+            print("DONE")
+            self.set_controls(exposure_value=max(min(-8.0,exposure_value),8.0))
+
+        # Print the final settings
+        self.print_settings()
+
+    def calculate_brightness(self, image: np.array = None) -> float:
+        """
+        Calculates the brightness of the image.
+
+        Args:
+            image (np.array, optional): The image to calculate the brightness. If not provided, the current image will be used.
+
+        Returns:
+            float: The brightness value.
+        """
+        if image is None:
+            image = self.capture_img()
+
+        # Convert the image to grayscale
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        # Calculate the mean brightness
+        mean_brightness = np.mean(gray_image)
+
+        return mean_brightness
