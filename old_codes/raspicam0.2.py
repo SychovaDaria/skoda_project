@@ -3,8 +3,8 @@ Module for providing camera functionality on a Raspberry Pi either using the cam
 or a USB camera.
 
 Author: Josef Kahoun
-Date: 19.06.2024
-Version: 0.3
+Date: 18.06.2024
+Version: 0.2
 Comments: 
     v4l2-ctl --list-devices to list USB cameras, select the first one under the camera as the usb_camera_index
 
@@ -19,8 +19,6 @@ import os
 
 from picamera2 import Picamera2
 from typing import List, Tuple
-
-#TODO: update docstrings
 
 # Constants for default values
 DEFAULT_RESOLUTION = (2028, 1520)
@@ -292,8 +290,7 @@ class Raspicam:
         self.stop()
         self.__init__(use_usb=not self.use_usb)
         
-    # INFO: the picamera has some auto exposure settings, so probably not needed, but does offer more customization
-    # regarding setting up the parameter, which the picamera does not have
+'''
     def auto_brightness(self, image: np.array = None) -> None:
         """
         Automatically adjusts the brightness of the image.
@@ -324,6 +321,9 @@ class Raspicam:
             self.set_controls(exposure_value=self.exposure_value + correction)
         self.set_controls(exposure_value=self.exposure_value+correction)
 
+
+
+
     def calculate_brightness(self, image: np.array = None) -> float:
         """
         Calculates the brightness of the image.
@@ -344,4 +344,4 @@ class Raspicam:
         mean_brightness = np.mean(gray_image)
 
         return mean_brightness
-        
+'''
