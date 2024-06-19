@@ -29,7 +29,8 @@ class Trigger:
         folder_name (str): The folder where the pictures will be saved.
         trigger_delay (float, optional): The delay between the trigger and the start of the acquisition. Defaults to DEFAULT_TRIGGER_DELAY.
         num_of_pictures (int, optional): The number of pictures to take. Defaults to DEFAULT_NUM_OF_PICTURES.
-        times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats. Defaults to DEFAULT_TIMES_BETWEEN_PICTURES.
+        times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats. If it is a float, the times between the pictures are 
+        the same. Defaults to DEFAULT_TIMES_BETWEEN_PICTURES.
     
     Attributes:
         camera (Raspicam): Object for handling the camera controls.
@@ -81,9 +82,9 @@ class Trigger:
         Args:
             camera (Raspicam, optional): Object for handling the camera controls.
             folder_name (str, optional): The folder where the pictures will be saved.
-            trigger_delay (float, optional): The delay between the trigger and the start of the acquisition. Defaults to DEFAULT_TRIGGER_DELAY.
-            num_of_pictures (int, optional): The number of pictures to take. Defaults to DEFAULT_NUM_OF_PICTURES.
-            times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats. Defaults to DEFAULT_TIMES_BETWEEN_PICTURES.
+            trigger_delay (float, optional): The delay between the trigger and the start of the acquisition.
+            num_of_pictures (int, optional): The number of pictures to take.
+            times_between_pictures (float|List[float], optional): The time between pictures. Can be a single float or a list of floats.
 
         Returns:
             None
