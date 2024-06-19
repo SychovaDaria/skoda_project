@@ -22,3 +22,13 @@ A module for taking the pictures with the .trigg() function. You have to provide
 Everything is specified in the docstring. 
 IT WILL NEED IT'S OWN THREAD, because the module uses time.sleep() for the delay, which freezes everything else (if we don't want to use threads, need to replace the sleep() function with something that doesn't freeze everything, but this is the easiest way). <br />
 When it is set, we can call the .trig() when an event occurs (GPIO, color blobs, edge detection, AI, ...)
+
+# Multithreading
+## What will need its own thread?
+- GUI - stream
+- GUI - settings
+- computation --> AI, edges, blobs, ...
+- the trigger module
+
+## Critical sections ?
+- ¯\_(ツ)_/¯
