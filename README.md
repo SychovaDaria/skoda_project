@@ -51,3 +51,8 @@ Example shown in src/thread_test.py (je to celkem ez, jediny co, tak hlidat, jes
 
 # GPIO inputs
 via push_button.py
+
+# Pepa tasks:
+Threads
+Raspicam auto brightness just based on ROI
+Remote controled raspberry
