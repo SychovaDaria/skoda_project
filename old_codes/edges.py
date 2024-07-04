@@ -24,11 +24,11 @@ class EdgeDetector:
     A class for edge detection in a picture.
 
     Args:
-        min_val (int): The minimum value for edge detection.
-        max_val (int): The maximum value for edge detection.
-        min_value_of_votes (int): The minimum value of votes for line extraction.
-        min_length_of_straight_line (int): The minimum length of a line for extraction.
-        max_gap_between_lines (int): The maximum gap between lines for extraction.
+    min_val (int): The minimum value for edge detection.
+    max_val (int): The maximum value for edge detection.
+    min_value_of_votes (int): The minimum value of votes for line extraction.
+    min_length_of_straight_line (int): The minimum length of a line for extraction.
+    max_gap_between_lines (int): The maximum gap between lines for extraction.
 
     Attributes:
         min_val (int): The minimum value for edge detection.

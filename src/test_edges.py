@@ -9,9 +9,10 @@ import cv2
 import numpy as np
 
 def main():
-    img = cv2.imread("../test_img/phone.jpeg")
-    edge_detector = EdgeDetector(min_val=200, max_val=400, min_value_of_votes=20, 
-                                 min_length_of_line=30,max_gap_between_lines=5)
+    img = cv2.imread("../test_img/blob_test.jpg")
+    img = cv2.blur(img,(2,2))
+    edge_detector = EdgeDetector(min_val=200, max_val=400, min_value_of_votes=60, 
+                                 min_length_of_straight_line=50,max_gap_between_lines=4)
     edges = edge_detector.detect_edges(img)
 
     boxes,centroids,new_img = edge_detector.extract_connected_objects(img)
