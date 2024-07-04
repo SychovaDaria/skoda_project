@@ -9,11 +9,6 @@ import cv2
 import numpy as np
 from typing import List, Tuple
 
-#TODO: add docstrings
-#TODO: test the class
-#TODO: add type hints
-#TODO: add variables to the class
-
 DEFAULT_MIN_VALUE_OF_VOTES = 50
 DEFAULT_MIN_LENGTH_OF_STRAIGHT_LINE = 50
 DEFAULT_MAX_GAP_BETWEEN_LINES = 5
@@ -132,8 +127,29 @@ class EdgeDetector:
             x1,y1,x2,y2 = line
             cur_angle = np.arctan2(y2-y1,x2-x1)*180/np.pi
             if abs(cur_angle-self.angle) < self.angle_tolerance or abs(cur_angle-self.angle-180) < self.angle_tolerance or abs(cur_angle-self.angle+180) < self.angle_tolerance:
-                ret_lines.append(line)
+                ret_lines.append([x1,y1,x2,y2])
         return ret_lines
+        #TODO: sometimes the lines overlap, make a function that will remove the smaller line inside the bigger one
+
+    def extract_rectangles(self, img: np.array) -> List[Tuple[int,int,int,int]]:
+        """
+        Extract rectangles from the image with detected edges.
+
+        Args:
+            img (np.array): The image with detected edges.
+
+        Returns:
+            list: List of rectangles in the image.
+        """
+        bin = self.detect_edges(img)
+        contours,_ = cv2.findContours(bin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        ret_rectangles = []
+        for contour in contours:
+            approx = cv2.approxPolyDP(contour, 0.01*cv2.arcLength(contour, True), True)
+            if len(approx) == 4:
+                x,y,w,h = cv2.boundingRect(approx)
+                ret_rectangles.append((x,y,w,h))
+        return ret_rectangles
 
 
     def update_attributes(self, min_val: int = None, max_val: int = None, min_value_of_votes: int = None,
@@ -188,5 +204,5 @@ class EdgeDetector:
         for attr_name, attr_value in attributes.items():
             if not isinstance(attr_value, int) or attr_value <= 0:
                 raise ValueError(f"{attr_name} attribute must be a positive integer.")
-        if self.angle < 0 or self.angle > 180:
-            raise ValueError("The angle must be between 0 and 180 degrees.")
+        if self.angle < -90 or self.angle > 90:
+            raise ValueError("The angle must be between -90 and 90 degrees.")
