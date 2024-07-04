@@ -14,7 +14,7 @@ from tkinter import filedialog
 Nadpis = "ŠKODA SmartCam"
 pad = 10
 
-ctk.set_default_color_theme("D:/Python/Programy/Škoda/skoda_project/skodaCI.json")
+ctk.set_default_color_theme("dark-blue")
 ctk.set_appearance_mode("dark")
 
 class App(ctk.CTk):
