@@ -16,7 +16,6 @@ DEFAULT_ACCUMULATOR_VALUE = 100
 DEFAULT_MIN_RADIUS = 10
 DEFAULT_MAX_RADIUS = 60
 
-#TODO: add type hints and docstrings
 
 class CircleDetector:
     """

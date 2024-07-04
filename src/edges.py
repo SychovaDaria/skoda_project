@@ -31,13 +31,9 @@ class EdgeDetector:
         min_value_of_votes (int): The minimum value of votes for line extraction.
         min_length_of_straight_line (int): The minimum length of a line for extraction.
         max_gap_between_lines (int): The maximum gap between lines for extraction.
-
-    Attributes:
-        min_val (int): The minimum value for edge detection.
-        max_val (int): The maximum value for edge detection.
-        min_value_of_votes (int): The minimum value of votes for line extraction.
-        min_length_of_straight_line (int): The minimum length of a straight line for extraction.
-        max_gap_between_lines (int): The maximum gap between lines for extraction.
+        min_length (int): The minimum length of a line for first extraction.
+        angle (int): The desired angle for line extraction.
+        angle_tolerance (int): The tolerance for the desired angle.
     """
     def __init__(self, min_val: int, max_val: int, min_value_of_votes: int = DEFAULT_MIN_VALUE_OF_VOTES,
                  min_length_of_straight_line: int = DEFAULT_MIN_LENGTH_OF_STRAIGHT_LINE,
@@ -63,10 +59,10 @@ class EdgeDetector:
         Detects edges in an image using the Canny edge detection algorithm.
 
         Args:
-                img (np.array): The image to detect edges in.
+            img (np.array): The image to detect edges in.
 
         Returns:
-                np.array: The image with detected edges.
+            np.array: The image with detected edges.
         """
         gray_img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) # convert to grayscale
         edges = cv2.Canny(gray_img, self.min_val, self.max_val)
