@@ -14,15 +14,16 @@ import cv2
 import numpy as np
 from typing import Tuple
 
-DEFAULT_KERNEL_SIZE = (2,2)
+DEFAULT_KERNEL_SIZE = (3,3)
 DEFAULT_MEDIAN_KERNEL_SIZE = 5
 DEFAULT_BILATERAL_DIAMETER = 9
 DEFAULT_BILATERAL_SIGMA_COLOR = 75 
 
 class Filter:
-    def __init__(self, kernel_size = DEFAULT_KERNEL_SIZE,median_kernel_size = DEFAULT_MEDIAN_KERNEL_SIZE,
-                 bilat_diameter = DEFAULT_BILATERAL_DIAMETER, 
-                 bilat_sigma_color = DEFAULT_BILATERAL_SIGMA_COLOR) -> None:
+    def __init__(self, kernel_size : Tuple[int, int] = DEFAULT_KERNEL_SIZE,
+                 median_kernel_size : int = DEFAULT_MEDIAN_KERNEL_SIZE,
+                 bilat_diameter : int = DEFAULT_BILATERAL_DIAMETER, 
+                 bilat_sigma_color : int = DEFAULT_BILATERAL_SIGMA_COLOR) -> None:
         # average and gaussian filter parameters
         self.kernel_size = kernel_size
         # median filter parameters
@@ -86,7 +87,7 @@ class Filter:
         """
         if not isinstance(self.kernel_size, tuple) or len(self.kernel_size) != 2:
             raise ValueError("The kernel size must be a tuple of 2 integers.")
-        if not all(isinstance(x, int) for x in self.kernel_size):
+        if not all(isinstance(x, int) for x in self.kernel_size) and all(x > 0 for x in self.kernel_size) and all(x % 2 != 0 for x in self.kernel_size):
             raise ValueError("The kernel size must be a tuple of 2 integers.")
         if not isinstance(self.median_kernel_size, int):
             raise ValueError("The median kernel size must be an integer.")
