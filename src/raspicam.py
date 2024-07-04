@@ -398,7 +398,7 @@ class Raspicam:
         """
         if not isinstance(self.saturation, float|int) or self.saturation < 0 or self.saturation > 200:
             raise ValueError("The USB saturation attribute must be a float in range [0; 200].")
-        if not isinstance(self.sharpness, float|int) or self.saturation < 0 or self.saturation > 50:
+        if not isinstance(self.sharpness, float|int) or self.sharpness < 0 or self.sharpness > 50:
             raise ValueError("The USB sharpness attribute must be a float in range [0; 50].")
         if not isinstance(self.brightness, float|int) or self.brightness < 30 or self.brightness > 255:
             raise ValueError("The USB brightness attribute must be a float in range [30; 255].")
@@ -417,7 +417,7 @@ class Raspicam:
             raise ValueError("The picamera2 exposure value attribute must be a float in range [-8.0; 8.0]")
         if not isinstance(self.saturation, float|int) or self.saturation < 0.0 or self.saturation > 32.0:
             raise ValueError("The picamera2 saturation attribute must be a float in range [0.0; 32.0]")
-        if not isinstance(self.sharpness, float|int) or self.saturation < 0.0 or self.saturation > 16.0:
+        if not isinstance(self.sharpness, float|int) or self.sharpness < 0.0 or self.sharpness > 16.0:
             raise ValueError("The picamera2 sharpness attribute must be a float in range [0.0; 16.0]")
         if not isinstance(self.brightness, float|int) or self.brightness< -1.0 or self.brightness > 1.0:
             raise ValueError("The picamera2 brightness attribute must be a float in range [-1.0; 1.0]")
