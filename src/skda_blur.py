@@ -18,7 +18,7 @@ DEFAULT_KERNEL_SIZE = (3,3)
 DEFAULT_MEDIAN_KERNEL_SIZE = 5
 DEFAULT_BILATERAL_DIAMETER = 9
 DEFAULT_BILATERAL_SIGMA_COLOR = 75 
-
+#TODO: add docstrings and type hints
 class Filter:
     def __init__(self, kernel_size : Tuple[int, int] = DEFAULT_KERNEL_SIZE,
                  median_kernel_size : int = DEFAULT_MEDIAN_KERNEL_SIZE,
