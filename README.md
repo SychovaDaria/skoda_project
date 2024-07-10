@@ -37,22 +37,14 @@ IT WILL NEED IT'S OWN THREAD, because the module uses time.sleep() for the delay
 When it is set, we can call the .trig() when an event occurs (GPIO, color blobs, edge detection, AI, ...)
 
 # Multithreading
-## What will need its own thread?
-- GUI - stream
-- GUI - settings
-- computation --> AI, edges, blobs, ...
-- the trigger module
-
-## Critical sections ?
-- ¯\\_(ツ)_/¯
-
-## Example
-Example shown in src/thread_test.py (je to celkem ez, jediny co, tak hlidat, jestli nekde neni kriticka sekce (napr. kdyz jsou dva thready, jeden do sdilene promenne zapisuje a druhy z ni cte, pak je to undefined behavior), pak jsou treba mutexy/cond var, ale v tom pythonu jsou hezky na radek vytvoreny)
+The GUI library has some sort of multithreading already implemented, so it is not recommended to try multithreading. However, multiprocessing can be implemented, the only restriction being the GUI has to be implemented in just one process.<br /> 
+The app should be faster if we implement the computation modules (AI, edges, ...) into seperate processes. The communication between them can be utilized using a pipe/queue. Our raspberry pi has 4 cores, so max 4 processes, one of which will be the GUI.
+Example shown in the tryouts directory. 
 
 # GPIO inputs
 via push_button.py
 
 # Pepa tasks:
-Threads
-Raspicam auto brightness just based on ROI
-Remote controled raspberry
+- Threads
+- Raspicam auto brightness just based on ROI
+- Remote controled raspberry
