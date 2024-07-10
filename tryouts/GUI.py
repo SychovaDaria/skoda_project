@@ -28,7 +28,7 @@ class App(ctk.CTk):
         self.minsize(400, 300)
         self.title(Nadpis)
 
-        self.settings_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/settings_icon.png"), size=(26, 26))
+        #self.settings_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/settings_icon.png"), size=(26, 26))
 
         # Initialize tkinter variables
         self.Sour = ctk.StringVar()
@@ -103,7 +103,7 @@ class App(ctk.CTk):
         self.video_label.grid(row=0, column=0, sticky="nsew")
 
         # Widgets - Left frame
-        self.btNastaveni = ctk.CTkButton(self.frOvladani, text="Nastavení", height=30, width=30, anchor='center', image=self.settings_icon, command=self.openTopLevel)
+        self.btNastaveni = ctk.CTkButton(self.frOvladani, text="Nastavení", height=30, width=30, anchor='center', command=self.openTopLevel)
         self.btNastaveni.grid(row=0, column=0, padx=pad, pady=pad, sticky='e')
 
         self.btFunkce1 = ctk.CTkButton(self.frOvladani, text="Trenink sl.", height=30, width=30, anchor='center', command=self.selectTrainpicfolder)
