@@ -14,19 +14,23 @@ from tkinter import filedialog
 Nadpis = "ŠKODA SmartCam"
 pad = 10
 
-ctk.set_default_color_theme("dark-blue")
+#ctk.set_default_color_theme("D:/Python/Programy/Škoda/skoda_project/skodaCI.json")
 ctk.set_appearance_mode("dark")
 
 class App(ctk.CTk):
-    def __init__(self):
+    def __init__(self,data_queue,settings_queue):
         super().__init__()
-        self.stop_stream = False
+
         # Window properties
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
         self.geometry("%dx%d" % (width, height))
         self.minsize(400, 300)
         self.title(Nadpis)
+
+        self.data_queue = data_queue
+        self.settings_queue = settings_queue
+
 
         #self.settings_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/settings_icon.png"), size=(26, 26))
 
@@ -250,6 +254,10 @@ class App(ctk.CTk):
             ctk_image = ctk.CTkImage(light_image=image, dark_image=image,size=(self.tabview.tab("Blank").winfo_width(),self.tabview.tab("Blank").winfo_height()))
             self.video_label.image = ctk_image
             self.video_label.configure(image=ctk_image)
+        while not self.data_queue.empty():
+            data = self.data_queue.get()
+            print(data)
+        self.after(10, self.video_stream)
 
     def selectTrainpicfolder(self):
         self.Lpicture_path=filedialog.askdirectory()
@@ -266,8 +274,8 @@ class App(ctk.CTk):
     # Closing routine for saving of variables and termination of window
     def on_closing(self):
         self.save_variables()
+        self.settings_queue.put(True)
         self.camera.release()
-        self.stop_stream = True
         self.destroy()
 
 if __name__ == "__main__":
@@ -275,3 +283,4 @@ if __name__ == "__main__":
     app = App()
     app.protocol("WM_DELETE_WINDOW", app.on_closing)
     app.mainloop()
+    print("end")

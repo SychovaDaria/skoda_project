@@ -1,38 +1,41 @@
 from GUI import App
-import threading
-stop_stream = threading.Condition()
+import multiprocessing
+import time
 
-def stream(app):
-    global stop_stream
-    while True:
-        app.video_stream()
-        with stop_stream:
-            stop_stream.wait(timeout=10)
-            break
-        
-        
+end_app = False
 
-NUM_OF_THREADS = 1
-functions = [stream]
-
-def main():
-    global stop_stream
-    app = App()
-    arguments = [(app,)]
-    threads = []
-    for i in range(NUM_OF_THREADS):
-        thread = threading.Thread(target=functions[i], args=arguments[i])
-        threads.append(thread)
-    print("starting threads")
-    for thread in threads:
-        thread.start()
+def start_gui(data_queue,settings_queue):
+    print("START GUI")
+    app = App(data_queue,settings_queue)
     app.protocol("WM_DELETE_WINDOW", app.on_closing)
     app.mainloop()
-    stop_stream = True
-    print("joining threads")
-    for thread in threads:
-        thread.join()
-    print("threads finished")
+
+def start_circle_detection(data_queue,settings_queue):
+    print("START COMP")
+    while True:
+        if not settings_queue.empty():
+            finish = settings_queue.get()
+            if finish == True:
+                break
+        # put the circles in the data queue
+        data_queue.put("circles")
+        time.sleep(0.1)
+    print("END COMP")
+
+def main():
+    # start the gui process
+    data_queue = multiprocessing.SimpleQueue()
+    settings_queue = multiprocessing.SimpleQueue()
+    gui_process = multiprocessing.Process(target=start_gui, args=(data_queue,settings_queue))
+    comp_process = multiprocessing.Process(target=start_circle_detection, args=(data_queue,settings_queue))
+    # start the computation process
+    gui_process.start()
+    comp_process.start()
+    gui_process.join()
+    comp_process.join()
+
+    
+    
 
 if __name__ == "__main__":
     main()
