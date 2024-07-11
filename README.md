@@ -53,6 +53,14 @@ class implemented in codes_detector.py
 # Stitching images
 cv2.Stitcher_create(), but its not perfect. Good for creating panorama, but fe if we would have a moving part on a conveyer belt, then it would try to stitch it according to the background if it was visible an non-uniform (fe on all white background this is not a problem, but when there are a lot of features, it is). Could be fixed by either cropping all the images, or make a roi where the algorhytm would look for the features, but that would mean to write our own algo (img to grayscale, extract features from roi, knn, RANSAC, ..., but cv2 has most of this implemented so its not that hard)
 
+# Connecting to rapsberry pi remotely
+## Raspberry pi connect
+Very easy way to do this, but since it goes through the raspberry servers we can't use it, but if you want to use it just for development, check the (https://www.raspberrypi.com/software/connect/ "Rasberry Pi Connect") webpage.
+## VNC server
+Start a VNC server on the raspberry and then connect through a VNC reader app, for example (https://www.realvnc.com/en/connect/download/viewer/?lai_sr=0-4&lai_sl=l, "RealVNC Viewer").
+## NoVNC
+This should be a way so no app is needed, you are supposed to just open a link in a browser, but I could not get it to work, here is the link to their github: (https://github.com/novnc/noVNC#browser-requirements)
+
 # Pepa tasks:
 - Threads
 - Raspicam auto brightness just based on ROI
