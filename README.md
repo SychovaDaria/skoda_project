@@ -59,7 +59,7 @@ Very easy way to do this, but since it goes through the raspberry servers we can
 ## VNC server
 Start a VNC server on the raspberry and then connect through a VNC reader app, for example [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/?lai_sr=0-4&lai_sl=l,).
 ## NoVNC
-This should be a way so no app is needed, you are supposed to just open a link in a browser, but I could not get it to work, here is the link to their github: (https://github.com/novnc/noVNC#browser-requirements)
+This should be a way so no app is needed, you are supposed to just open a link in a browser, but I could not get it to work, here is the link to their github: https://github.com/novnc/noVNC#browser-requirements
 
 # Pepa tasks:
 - Threads
