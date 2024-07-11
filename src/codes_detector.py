@@ -29,7 +29,7 @@ class CodeDetector:
         self.qr_detector = cv2.QRCodeDetector()
         self.barcode_detector = cv2.barcode.BarcodeDetector()
 
-    def detect_codes(self, image: np.array) -> Dict[Dict[str, List]]:
+    def detect_codes(self, image: np.array) -> Dict[str,Dict[str, List]]:
         """
         Detect and decode codes in the image.
 
@@ -37,7 +37,7 @@ class CodeDetector:
             image (np.array): The image to detect codes in.
 
         Returns:
-            tuple: A touple of list of found codes and list of their positions.
+            dict: A dictionary of detected QR codes and barcodes.
         """
         result = {'qr' : {}, 'barcode' : {}}
         if self.find_qr_codes:
@@ -73,9 +73,8 @@ class CodeDetector:
         Returns:
             dict: A dictionary of decoded barcode, its position and type.
         """
-        ret_barcode, decoded_info, decoded_type, points = self.barcode_detector.detectAndDecodeMulti(image)
+        ret_barcode, decoded_info, points, _ = self.barcode_detector.detectAndDecodeMulti(image)
         if not ret_barcode:
             decoded_info = ()
             points = []
-            decoded_type = ()
-        return {'decoded_info': decoded_info, 'points':points, 'decoded_type':decoded_type}
+        return {'decoded_info': decoded_info, 'points':points}
