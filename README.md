@@ -55,9 +55,9 @@ cv2.Stitcher_create(), but its not perfect. Good for creating panorama, but fe i
 
 # Connecting to rapsberry pi remotely
 ## Raspberry pi connect
-Very easy way to do this, but since it goes through the raspberry servers we can't use it, but if you want to use it just for development, check the (https://www.raspberrypi.com/software/connect/ "Rasberry Pi Connect") webpage.
+Very easy way to do this, but since it goes through the raspberry servers we can't use it, but if you want to use it just for development, check the [Rasberry Pi Connect](https://www.raspberrypi.com/software/connect/) webpage.
 ## VNC server
-Start a VNC server on the raspberry and then connect through a VNC reader app, for example (https://www.realvnc.com/en/connect/download/viewer/?lai_sr=0-4&lai_sl=l, "RealVNC Viewer").
+Start a VNC server on the raspberry and then connect through a VNC reader app, for example [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/?lai_sr=0-4&lai_sl=l,).
 ## NoVNC
 This should be a way so no app is needed, you are supposed to just open a link in a browser, but I could not get it to work, here is the link to their github: (https://github.com/novnc/noVNC#browser-requirements)
 
