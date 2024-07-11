@@ -314,7 +314,7 @@ class Raspicam:
         
     # INFO: the picamera has some auto exposure settings, so probably not needed, but does offer more customization
     # regarding setting up the parameter, which the picamera does not have
-    def auto_brightness(self, image: np.array = None) -> None:
+    def auto_brightness(self, image: np.array = None, roi : List[int] = None) -> None:
         """
         Automatically adjusts the brightness of the image.
         
@@ -323,13 +323,15 @@ class Raspicam:
 
         Args:
             image (np.array, optional): The image to adjust the brightness. If not provided, the current image will be used.
+            roi (List[int], optional): The region of interest to calculate the brightness. If not provided, the whole image will be used. x1, y1, x2, y2
 
         Returns:
             None
         """
         if image is None:
             image = self.capture_img()
-
+        if roi is not None:
+            image = image[roi[0]:roi[2], roi[1]:roi[3]]
         brightness = self.calculate_brightness(image)
         K_p = 0.0005 # the P regulator constant
         error = self.auto_brightness_value - brightness
