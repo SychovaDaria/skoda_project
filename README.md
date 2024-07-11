@@ -44,7 +44,10 @@ Example shown in the tryouts directory.
 # GPIO inputs
 via push_button.py
 
+
+
 # Pepa tasks:
 - Threads
 - Raspicam auto brightness just based on ROI
 - Remote controled raspberry
+- can you flash the sd card with the app already preinstalled ??
