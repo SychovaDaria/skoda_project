@@ -44,7 +44,14 @@ Example shown in the tryouts directory.
 # GPIO inputs
 via push_button.py
 
+# YOLO navigation
+tried with ultralytics in yolo_nav.py, there are functions there that take the bounding boxes of objects detected as 'person', then they are converted either to array containing 2^6 booleans (can be converted to one int using binary), or a matrix 2^6x2^4, which hold the information about position of people in the scene
 
+# QR and barcode reading 
+class implemented in codes_detector.py
+
+# Stitching images
+cv2.Stitcher_create(), but its not perfect. Good for creating panorama, but fe if we would have a moving part on a conveyer belt, then it would try to stitch it according to the background if it was visible an non-uniform (fe on all white background this is not a problem, but when there are a lot of features, it is). Could be fixed by either cropping all the images, or make a roi where the algorhytm would look for the features, but that would mean to write our own algo (img to grayscale, extract features from roi, knn, RANSAC, ..., but cv2 has most of this implemented so its not that hard)
 
 # Pepa tasks:
 - Threads
