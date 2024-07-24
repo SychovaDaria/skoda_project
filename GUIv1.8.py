@@ -4,7 +4,7 @@ Main window + settings window
 20.6. 2024 - Aded tab view, Variables - loading, saving, handling; Auto creation of settings file
 24.6. 2024 - Modified usage of tkinter variables
 5.7. 2024 - Škoda CI rulles added
-24.7. 2024 - Experiments with multithreading
+24.7. 2024 - Experiments with multithreading, adding photo function+ disabling buttons 
 
 škoda-(vyblednutí 10%) světlezelená -#86fbb6
 škoda-světlezelená - #78faae
