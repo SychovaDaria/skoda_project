@@ -171,6 +171,9 @@ class App(ctk.CTk):
         self.btFunkce7 = ctk.CTkButton(self.frVyhodnoceni, text="Trigger", height=30, image=self.icon_stop, anchor='center', command=self.stop_trigger)
         self.btFunkce7.grid(row=4, column=0, padx=pad, pady=(2,pad), sticky='nsew')
 
+        self.btRoi = ctk.CTkButton(self.frVyhodnoceni, text="ROI", height=30, image=self.icon_stop, anchor='center', command=self.select_roi)
+        self.btRoi.grid(row=5, column=0, padx=pad, pady=(2,pad), sticky='nsew')
+        
 
 
     # Settings window
@@ -319,7 +322,7 @@ class App(ctk.CTk):
         self.after(20, self.video_stream)
 
     def select_roi(self):
-        self.video_label_webcam
+        pass
 
     def selectTrainpicfolder(self):
         self.Tpicture_path=filedialog.askdirectory()

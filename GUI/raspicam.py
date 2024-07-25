@@ -119,7 +119,7 @@ class Raspicam:
                           framerate=framerate,brightness=brightness, contrast=contrast)
             self.camera.start()
         else:
-            self.camera = cv2.VideoCapture(8) # TODO: automatically learn index of the camera
+            self.camera = cv2.VideoCapture(0) # TODO: automatically learn index of the camera
             self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution[0])
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution[1])
             self.set_controls(exposure_value=exposure_value,saturation=saturation,sharpness=sharpness,
