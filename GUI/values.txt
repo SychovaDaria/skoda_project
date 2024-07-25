@@ -1,0 +1,8 @@
+Sour=USB
+Res=1280x720
+Bri=30.0
+Con=0.0
+Fram=28.1
+Exp=10.0
+Sat=200.0
+Sha=50.0

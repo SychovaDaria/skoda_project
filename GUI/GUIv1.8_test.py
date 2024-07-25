@@ -21,7 +21,7 @@ Main window + settings window
 
 import customtkinter as ctk
 import os
-from PIL import Image
+from PIL import Image, ImageTk
 from raspicam import Raspicam  # Assuming the camera module code is saved as camera_module.py
 from tkinter import filedialog, PhotoImage
 import threading
@@ -30,7 +30,7 @@ from datetime import datetime
 Nadpis = "ŠKODA SmartCam"
 pad = 10
 
-ctk.set_default_color_theme("D:/Python/Programy/Škoda/skoda_project/skodaCI.json")
+#ctk.set_default_color_theme("skodaCI.json")
 ctk.set_appearance_mode("dark")
 
 #created with png2HEX.py program - HEX codes for icons
@@ -54,8 +54,8 @@ class App(ctk.CTk):
         self.title(Nadpis)
         self.Tpicture_path=""
 
-        self.settings_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/settings_icon.png"), size=(26, 26))
-        self.logo_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/skodalogo.png"), size=(150,30))
+        #self.settings_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/settings_icon.jpeg"), size=(26, 26))
+        #self.logo_icon = ctk.CTkImage(Image.open(os.path.dirname(__file__) + "/skodalogo.png"), size=(150,30))
 
         self.icon_setting=PhotoImage(data=icon_setting)
         self.icon_start=PhotoImage(data=icon_start)
@@ -201,7 +201,7 @@ class App(ctk.CTk):
         # Framerate
         ctk.CTkLabel(self.topLevel, text="Framerate:",font=ctk.CTkFont(weight="bold"), anchor='w').grid(row=5, column=0, padx=pad, pady=pad, sticky='nsew')
 
-        ctk.CTkSlider(self.topLevel, from_=-0.8, to=0.8, variable=self.Fram, number_of_steps=16).grid(row=5, column=1, padx=pad, pady=pad)
+        ctk.CTkSlider(self.topLevel, from_=0, to=30, variable=self.Fram, number_of_steps=16).grid(row=5, column=1, padx=pad, pady=pad)
         ctk.CTkLabel(self.topLevel, textvariable=self.Fram, anchor='w', fg_color="#0e3a2f", text_color="#78faae").grid(row=5, column=2, padx=pad, pady=pad, sticky='nsew')
 
         # Exposure
@@ -308,7 +308,7 @@ class App(ctk.CTk):
                 ctk_image = ctk.CTkImage(light_image=image, dark_image=image,size=(self.tabview.tab("Blank").winfo_width(),self.tabview.tab("Blank").winfo_height()))
                 self.video_label_blank.image = ctk_image
                 self.video_label_blank.configure(image=ctk_image)
-        self.video=self.after(10, self.video_stream)
+        self.video=self.after(300, self.video_stream)
 
     def selectTrainpicfolder(self):
         self.Tpicture_path=filedialog.askdirectory()
@@ -353,7 +353,7 @@ class App(ctk.CTk):
     # Closing routine for saving of variables and termination of window
     def on_closing(self):
         self.save_variables()
-        self.camera.release()
+        self.camera.stop()
         self.destroy()
 
 if __name__ == "__main__":

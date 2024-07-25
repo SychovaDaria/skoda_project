@@ -8,7 +8,7 @@
 import customtkinter as ctk
 import os
 from PIL import Image
-from camera_module import Raspicam  # Assuming the camera module code is saved as camera_module.py
+from raspicam import Raspicam  # Assuming the camera module code is saved as camera_module.py
 from tkinter import filedialog
 
 Nadpis = "ŠKODA SmartCam"
@@ -49,7 +49,7 @@ class App(ctk.CTk):
         # Loading variables at start
         self.variables_file_path = "values.txt"
         self.load_variables()
-        self.camera = Raspicam()
+        #self.camera = Raspicam()
         self.nactiGUI()
         self.video_stream()
         
@@ -248,16 +248,25 @@ class App(ctk.CTk):
         print("done")
 
     def video_stream(self):
+        """
         img = self.camera.capture_img()
         if img is not None:
             image = Image.fromarray(img)
             ctk_image = ctk.CTkImage(light_image=image, dark_image=image,size=(self.tabview.tab("Blank").winfo_width(),self.tabview.tab("Blank").winfo_height()))
             self.video_label.image = ctk_image
             self.video_label.configure(image=ctk_image)
-        while not self.data_queue.empty():
-            data = self.data_queue.get()
-            print(data)
-        self.after(10, self.video_stream)
+        """            
+        if self.data_queue.empty():
+            #print("NO IMG")
+            pass
+        else:
+            img = self.data_queue.get()
+            image = Image.fromarray(img)
+            ctk_image = ctk.CTkImage(light_image=image, dark_image=image,size=(self.tabview.tab("Blank").winfo_width(),self.tabview.tab("Blank").winfo_height()))
+            self.video_label.image = ctk_image
+            self.video_label.configure(image=ctk_image)
+            #print("Showed img fro queue")
+        self.after(1000, self.video_stream)
 
     def selectTrainpicfolder(self):
         self.Lpicture_path=filedialog.askdirectory()
@@ -275,7 +284,7 @@ class App(ctk.CTk):
     def on_closing(self):
         self.save_variables()
         self.settings_queue.put(True)
-        self.camera.release()
+        #self.camera.stop()
         self.destroy()
 
 if __name__ == "__main__":
