@@ -93,7 +93,9 @@ class App(ctk.CTk):
         self.video_thread = threading.Thread(target=self.video_stream, daemon=True)
         self.video_thread.start()
         
-        
+        # roi variables
+        self.roi = []
+        self.roi_bool = False
 
     # GUI init
     def nactiGUI(self):
@@ -136,6 +138,9 @@ class App(ctk.CTk):
         self.video_label_blank = ctk.CTkLabel(master=self.tabview.tab("Blank"), text="")
         self.video_label_blank.grid(row=0, column=0, sticky="nsew")
 
+        self.video_label_webcam.bind("<Button-1>", self.on_click)
+        self.video_label_webcam.bind("<ButtonRelease-1>", self.on_release)
+
         # Widgets - Left frame
 
         self.logo_label = ctk.CTkLabel(self.frOvladani, text="",fg_color="#0e3a2f", image =self.skoda_logo)
@@ -173,7 +178,21 @@ class App(ctk.CTk):
 
         self.btRoi = ctk.CTkButton(self.frVyhodnoceni, text="ROI", height=30, image=self.icon_stop, anchor='center', command=self.select_roi)
         self.btRoi.grid(row=5, column=0, padx=pad, pady=(2,pad), sticky='nsew')
-        
+
+    def on_click(self, event):
+        if self.roi_bool:
+            self.roi.append([event.x, event.y])
+
+    def on_release(self, event):
+        if self.roi_bool:
+            self.roi[-1].append([event.x, event.y])
+            self.roi_bool = False
+            print(self.roi)
+
+
+    def start_roi_selection(self):
+        self.roi_bool = True
+
 
 
     # Settings window
