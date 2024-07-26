@@ -77,7 +77,8 @@ class RoiSelector(ctk.CTk):
         img = self.camera.capture_img()
         img = cv2.resize(img, (self.canvas.winfo_width(), self.canvas.winfo_height()))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img))
+        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
+        # if i dont have the reference, garbage colector will delete the img and canvas will show jacksh*t :)
         self.canvas.itemconfigure(self.background_img, image=self.current_img_ref)
         self.after(10, self.update_video_stream)
 
