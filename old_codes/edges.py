@@ -9,38 +9,32 @@ import cv2
 import numpy as np
 from typing import List, Tuple
 
-#TODO: add docstrings
-#TODO: test the class
-#TODO: add type hints
-#TODO: add variables to the class
-
 DEFAULT_MIN_VALUE_OF_VOTES = 50
 DEFAULT_MIN_LENGTH_OF_STRAIGHT_LINE = 50
 DEFAULT_MAX_GAP_BETWEEN_LINES = 5
 DEFAULT_MIN_LENGTH = 150
+DEFAULT_ANGLE = 0
+DEFAULT_ANGLE_TOLERANCE = 5
 
 class EdgeDetector:
     """
     A class for edge detection in a picture.
 
     Args:
-    min_val (int): The minimum value for edge detection.
-    max_val (int): The maximum value for edge detection.
-    min_value_of_votes (int): The minimum value of votes for line extraction.
-    min_length_of_straight_line (int): The minimum length of a line for extraction.
-    max_gap_between_lines (int): The maximum gap between lines for extraction.
-
-    Attributes:
         min_val (int): The minimum value for edge detection.
         max_val (int): The maximum value for edge detection.
         min_value_of_votes (int): The minimum value of votes for line extraction.
-        min_length_of_straight_line (int): The minimum length of a straight line for extraction.
+        min_length_of_straight_line (int): The minimum length of a line for extraction.
         max_gap_between_lines (int): The maximum gap between lines for extraction.
+        min_length (int): The minimum length of a line for first extraction.
+        angle (int): The desired angle for line extraction.
+        angle_tolerance (int): The tolerance for the desired angle.
     """
     def __init__(self, min_val: int, max_val: int, min_value_of_votes: int = DEFAULT_MIN_VALUE_OF_VOTES,
                  min_length_of_straight_line: int = DEFAULT_MIN_LENGTH_OF_STRAIGHT_LINE,
                  max_gap_between_lines: int = DEFAULT_MAX_GAP_BETWEEN_LINES,
-                 min_length: int = DEFAULT_MIN_LENGTH):
+                 min_length: int = DEFAULT_MIN_LENGTH, angle : int = DEFAULT_ANGLE,
+                 angle_tolerance : int = DEFAULT_ANGLE_TOLERANCE) -> None:
         # edge detection parameters
         self.min_val = min_val
         self.max_val = max_val
@@ -48,7 +42,11 @@ class EdgeDetector:
         self.min_value_of_votes = min_value_of_votes
         self.min_length_of_straight_line = min_length_of_straight_line
         self.max_gap_between_lines = max_gap_between_lines
+        # parameter for first contour extraction
         self.min_length = min_length
+        # parameters for wanted lines
+        self.angle = angle
+        self.angle_tolerance = angle_tolerance
         self.check_attributes()
 
     def detect_edges(self, img: np.array) -> np.array:
@@ -56,10 +54,10 @@ class EdgeDetector:
         Detects edges in an image using the Canny edge detection algorithm.
 
         Args:
-                img (np.array): The image to detect edges in.
+            img (np.array): The image to detect edges in.
 
         Returns:
-                np.array: The image with detected edges.
+            np.array: The image with detected edges.
         """
         gray_img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) # convert to grayscale
         edges = cv2.Canny(gray_img, self.min_val, self.max_val)
@@ -112,8 +110,51 @@ class EdgeDetector:
 
         return bounding_boxes,ret_centroids,np.uint8(ret_img*255)
     
+    def get_lines(self, img : np.array) -> List[Tuple[int,int,int,int]]:
+        """
+        Get the lines from the img having the desired characteristics.
+
+        Args:
+            img (np.array): The image with detected edges.
+        
+        Returns:
+            list: List of lines in the image.
+        """
+        _,_,edges = self.extract_connected_objects(img)
+        lines = self.extract_straight_lines(edges)
+        ret_lines = []
+        for line in lines:
+            x1,y1,x2,y2 = line
+            cur_angle = np.arctan2(y2-y1,x2-x1)*180/np.pi
+            if abs(cur_angle-self.angle) < self.angle_tolerance or abs(cur_angle-self.angle-180) < self.angle_tolerance or abs(cur_angle-self.angle+180) < self.angle_tolerance:
+                ret_lines.append([x1,y1,x2,y2])
+        return ret_lines
+        #TODO: sometimes the lines overlap, make a function that will remove the smaller line inside the bigger one
+
+    def extract_rectangles(self, img: np.array) -> List[Tuple[int,int,int,int]]:
+        """
+        Extract rectangles from the image with detected edges.
+
+        Args:
+            img (np.array): The image with detected edges.
+
+        Returns:
+            list: List of rectangles in the image.
+        """
+        bin = self.detect_edges(img)
+        contours,_ = cv2.findContours(bin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        ret_rectangles = []
+        for contour in contours:
+            approx = cv2.approxPolyDP(contour, 0.01*cv2.arcLength(contour, True), True)
+            if len(approx) == 4:
+                x,y,w,h = cv2.boundingRect(approx)
+                ret_rectangles.append((x,y,w,h))
+        return ret_rectangles
+
+
     def update_attributes(self, min_val: int = None, max_val: int = None, min_value_of_votes: int = None,
-                         min_length_of_straight_line: int = None, max_gap_between_lines: int = None, min_length: int = None):
+                         min_length_of_straight_line: int = None, max_gap_between_lines: int = None, 
+                         min_length: int = None, angle: int = None, angle_tolerance: int = None):
         """
         Update the attributes of the EdgeDetector class.
 
@@ -121,8 +162,12 @@ class EdgeDetector:
             min_val (int): The minimum value for edge detection.
             max_val (int): The maximum value for edge detection.
             min_value_of_votes (int): The minimum value of votes for line extraction.
-            min_length_of_straight_line (int): The minimum length of a line for extraction.
+            min_length_of_straight_line (int): The minimum length of a straight line for extraction.
             max_gap_between_lines (int): The maximum gap between lines for extraction.
+            min_length (int): The minimum length of a line for first extraction.
+            angle (int): The desired angle for line extraction.
+            angle_tolerance (int): The tolerance for the desired angle.
+
         """
         if min_val is not None:
             self.min_val = min_val
@@ -136,14 +181,15 @@ class EdgeDetector:
             self.max_gap_between_lines = max_gap_between_lines
         if min_length is not None:
             self.min_length = min_length
+        if angle is not None:
+            self.angle = angle
+        if angle_tolerance is not None:
+            self.angle_tolerance = angle_tolerance
         self.check_attributes()
-    
+
     def check_attributes(self):
         """
         Check the current attributes of the EdgeDetector class and validate their correctness.
-    
-        Returns:
-            dict: A dictionary containing the current attribute values.
         """
         attributes = {
             'min_val': self.min_val,
@@ -151,9 +197,18 @@ class EdgeDetector:
             'min_value_of_votes': self.min_value_of_votes,
             'min_length_of_straight_line': self.min_length_of_straight_line,
             'max_gap_between_lines': self.max_gap_between_lines,
-            'min_area': self.min_length
+            'min_length': self.min_length,
+            'angle_tolerance': self.angle_tolerance
         }
         # Add attribute validation logic here
         for attr_name, attr_value in attributes.items():
             if not isinstance(attr_value, int) or attr_value <= 0:
                 raise ValueError(f"{attr_name} attribute must be a positive integer.")
+        if self.angle < -90 or self.angle > 90:
+            raise ValueError("The angle must be between -90 and 90 degrees.")
+        
+    def plot_lines(self, img: np.array, final_lines:List[List[int]]) -> np.array:
+        for line in final_lines:
+            x1,y1,x2,y2 = line
+            cv2.line(img, (x1,y1), (x2,y2), (0,255,0), 2)
+        return img

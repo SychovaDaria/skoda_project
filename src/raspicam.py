@@ -273,6 +273,7 @@ class Raspicam:
             image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
             if self.turn_auto_exposure_on: # only turn auto brightness on picamera2, not when using USB
                 self.auto_brightness(image)
+        image = np.flip(image, axis = (0,1))
         return image
 
     def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:

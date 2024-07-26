@@ -6,15 +6,16 @@ Date: 19.06.2024
 """
 from trigger import Trigger
 from raspicam import Raspicam
+import cv2
 
 def main():
     cam = Raspicam()
-    my_trigg = Trigger(cam, "test_folder", trigger_delay = 5, num_of_pictures = 5, times_between_pictures = 2)
+    my_trigg = Trigger(cam, "test_folder")
     while True:
-        if input() == 'q':
-            print("Starting the trigger")
+        img = cam.capture_img()
+        cv2.imshow("Stream",img)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            print("capture img")
             my_trigg.trigg()
-            print("Trigger finished")
-            break
 if __name__ == "__main__":
     main()
