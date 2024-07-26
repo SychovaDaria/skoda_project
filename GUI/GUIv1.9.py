@@ -30,6 +30,7 @@ import multiprocessing
 import cv2
 from datetime import datetime
 import time
+import numpy as np
 
 Nadpis = "ŠKODA SmartCam"
 pad = 10
@@ -140,7 +141,7 @@ class App(ctk.CTk):
 
         self.video_label_webcam.bind("<Button-1>", self.on_click)
         self.video_label_webcam.bind("<ButtonRelease-1>", self.on_release)
-
+        self.video_label_webcam.bind("<B1-Motion>", self.on_motion)
         # Widgets - Left frame
 
         self.logo_label = ctk.CTkLabel(self.frOvladani, text="",fg_color="#0e3a2f", image =self.skoda_logo)
@@ -176,22 +177,27 @@ class App(ctk.CTk):
         self.btFunkce7 = ctk.CTkButton(self.frVyhodnoceni, text="Trigger", height=30, image=self.icon_stop, anchor='center', command=self.stop_trigger)
         self.btFunkce7.grid(row=4, column=0, padx=pad, pady=(2,pad), sticky='nsew')
 
-        self.btRoi = ctk.CTkButton(self.frVyhodnoceni, text="ROI", height=30, image=self.icon_stop, anchor='center', command=self.select_roi)
+        self.btRoi = ctk.CTkButton(self.frVyhodnoceni, text="ROI", height=30, image=self.icon_stop, anchor='center', command=self.start_roi_selection)
         self.btRoi.grid(row=5, column=0, padx=pad, pady=(2,pad), sticky='nsew')
 
     def on_click(self, event):
         if self.roi_bool:
-            self.roi.append([event.x, event.y])
+            self.roi.append(np.floor(np.array([event.x, event.y])/np.array([self.video_label_webcam.winfo_width(), self.video_label_webcam.winfo_height()])*self.camera.resolution))
 
     def on_release(self, event):
         if self.roi_bool:
-            self.roi[-1].append([event.x, event.y])
+            self.roi[-1] = list(self.roi[-1]) + list(np.floor(np.array([event.x, event.y])/np.array([self.video_label_webcam.winfo_width(), self.video_label_webcam.winfo_height()])*self.camera.resolution))
+            for i in range(len(self.roi[-1])):
+                self.roi[-1][i] = int(self.roi[-1][i])
             self.roi_bool = False
             print(self.roi)
 
+    def on_motion(self, event):
+        pass
 
     def start_roi_selection(self):
         self.roi_bool = True
+        print("ROI selection started")
 
 
 
@@ -325,7 +331,10 @@ class App(ctk.CTk):
 
     def video_stream(self):
         img = self.camera.capture_img()
-        
+        for roi in self.roi:
+            if len(roi) == 4:
+                cv2.rectangle(img, (roi[0], roi[1]), (roi[2], roi[3]), (0, 255, 0), 2)
+                #TODO: roi is now in pixels of the label, we need to convert it to pixels of the image
         #print(self.frOvladani.winfo_width())
         if img is not None:
             img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB) # because raspicam converts it to bgr (thats what cv2 uses defaultly)
@@ -339,9 +348,6 @@ class App(ctk.CTk):
                 self.video_label_blank.image = ctk_image
                 self.video_label_blank.configure(image=ctk_image)
         self.after(20, self.video_stream)
-
-    def select_roi(self):
-        pass
 
     def selectTrainpicfolder(self):
         self.Tpicture_path=filedialog.askdirectory()
