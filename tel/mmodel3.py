@@ -9,8 +9,8 @@ from PIL import Image
 from sklearn.metrics import accuracy_score, f1_score
 
 # Параметры
-dataset_path = 'images'  # Здесь телефон
-dataset_path2 = 'ar1'    # Здесь не телефон
+dataset_path = 'images'  # here mobil
+dataset_path2 = 'ar1'    # here not mobil
 img_height, img_width = 150, 150
 batch_size = 32
 epochs = 30  # Increase number of epochs
@@ -22,12 +22,12 @@ labels = []
 for filename in os.listdir(dataset_path):
     if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
         data.append(os.path.join(dataset_path, filename))
-        labels.append(1)  # телефон
+        labels.append(1)  # mobil
 
 for filename in os.listdir(dataset_path2):
     if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
         data.append(os.path.join(dataset_path2, filename))
-        labels.append(0)  # не телефон
+        labels.append(0)  # not mobil
 
 train_data, val_data, train_labels, val_labels = train_test_split(
     data, labels, test_size=0.2, random_state=42
