@@ -18,6 +18,7 @@ Improvements:
 import cv2
 import numpy as np
 import os
+import sys
 
 from picamera2 import Picamera2
 from typing import List, Tuple
@@ -34,7 +35,7 @@ DEFAULT_CONTRAST = 1 # range 0.0 to 32.0
 
 USB_DEFAULT_RESOLUTION = (640, 480)
 USB_DEFAULT_SATURATION = 100 # range 0 - 200
-USB_DEFAULT_SHARPNESS = 25 # range 0 - 50
+USB_DEFAULT_SHARPNESS = 25.0 # range 0 - 50
 USB_DEFAULT_FRAMERATE = 30
 USB_DEFAULT_CONTRAST = 5.0 # range 0 - 10.0
 USB_DEFAULT_BRIGHTNESS = 133.0 # range 30.0 - 255.0
@@ -84,7 +85,7 @@ class Raspicam:
     """
     def __init__(self, resolution: Tuple[int,int] = None, exposure_value: float = None,
                  saturation: float =None, sharpness: float = None, 
-                 framerate : int = None, use_usb: bool = False, brightness: float = None,
+                 framerate : int = None, use_usb: bool = True, brightness: float = None,
                  contrast: float = None, auto_exposure_on: bool = False, 
                  auto_brightness_value : float = DEFAULT_AUTO_BRIGHTNESS_VALUE) -> None: 
         self.use_usb = use_usb
@@ -119,7 +120,11 @@ class Raspicam:
                           framerate=framerate,brightness=brightness, contrast=contrast)
             self.camera.start()
         else:
-            self.camera = cv2.VideoCapture(0) # TODO: automatically learn index of the camera
+            # TODO: JP: vyzkoušet, jak to funguje i jinde než na win32
+            if sys.platform == "win32":
+                self.camera = cv2.VideoCapture(0, cv2.CAP_DSHOW) # TODO: automatically learn index of the camera
+            else:
+                self.camera = cv2.VideoCapture(0, cv2.CAP_ANY) # TODO: automatically learn index of the camera
             self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution[0])
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution[1])
             self.set_controls(exposure_value=exposure_value,saturation=saturation,sharpness=sharpness,
@@ -161,8 +166,6 @@ class Raspicam:
             self.contrast = contrast
         if auto_brightness_value is not None:
             self.auto_brightness_value = auto_brightness_value
-        if self.use_usb:
-            self.convert_rpi_to_usb() # convert the values to the correct range
         self.check_attributes()
         if not self.use_usb:
             self.camera.set_controls({"ExposureValue": self.exposure_value, "Saturation": self.saturation, 
@@ -174,20 +177,6 @@ class Raspicam:
             self.camera.set(cv2.CAP_PROP_FPS, self.framerate)
             self.camera.set(cv2.CAP_PROP_BRIGHTNESS, self.brightness)
             self.camera.set(cv2.CAP_PROP_CONTRAST, self.contrast)
-
-    def convert_rpi_to_usb(self) -> None:
-        """
-        Converts the RPi camera values to USB camera values.
-
-        Converts the RPi camera values to USB camera values. The values are converted to the range of the USB camera.
-
-        Returns:
-            None
-        """
-        self.saturation = self.saturation * 200/32
-        self.sharpness = self.sharpness * 50/16
-        self.brightness = (self.brightness+1) * 255/2
-        self.contrast = self.contrast * 10/32
 
     def set_default_controls(self):
         """
@@ -284,12 +273,12 @@ class Raspicam:
             ret, image = self.camera.read()
             if ret is False:
                 raise KeyError("Failed to read image from USB camera")
+            image=cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         else:
             image = self.camera.capture_array()
             image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
             if self.turn_auto_exposure_on: # only turn auto brightness on picamera2, not when using USB
                 self.auto_brightness(image)
-        image = np.flip(image, axis = (0,1))
         return image
 
     def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:
@@ -331,7 +320,7 @@ class Raspicam:
         
     # INFO: the picamera has some auto exposure settings, so probably not needed, but does offer more customization
     # regarding setting up the parameter, which the picamera does not have
-    def auto_brightness(self, image: np.array = None, roi : List[int] = None) -> None:
+    def auto_brightness(self, image: np.array = None) -> None:
         """
         Automatically adjusts the brightness of the image.
         
@@ -340,15 +329,13 @@ class Raspicam:
 
         Args:
             image (np.array, optional): The image to adjust the brightness. If not provided, the current image will be used.
-            roi (List[int], optional): The region of interest to calculate the brightness. If not provided, the whole image will be used. x1, y1, x2, y2
 
         Returns:
             None
         """
         if image is None:
             image = self.capture_img()
-        if roi is not None:
-            image = image[roi[0]:roi[2], roi[1]:roi[3]]
+
         brightness = self.calculate_brightness(image)
         K_p = 0.0005 # the P regulator constant
         error = self.auto_brightness_value - brightness
@@ -442,5 +429,6 @@ class Raspicam:
             raise ValueError("The picamera2 brightness attribute must be a float in range [-1.0; 1.0]")
         if not isinstance(self.contrast, float|int) or self.contrast < 0.0 or self.contrast > 32.0:
             raise ValueError("The picamera2 contrast attribute must be a float in range [0.0; 32.0]")
-    
         
+    def release(self):
+        self.camera.release()
