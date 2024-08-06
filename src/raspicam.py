@@ -88,7 +88,7 @@ class Raspicam:
                  contrast: float = None, auto_exposure_on: bool = False, 
                  auto_brightness_value : float = DEFAULT_AUTO_BRIGHTNESS_VALUE) -> None: 
         self.use_usb = use_usb
-        if use_usb: # create defaults
+        if self.use_usb:
             self.resolution = USB_DEFAULT_RESOLUTION
             self.saturation = USB_DEFAULT_SATURATION
             self.exposure_value = DEFAULT_EXPOSURE_VALUE
@@ -98,8 +98,8 @@ class Raspicam:
             self.contrast = USB_DEFAULT_CONTRAST
         else:
             self.resolution = DEFAULT_RESOLUTION
-            self.exposure_value = DEFAULT_EXPOSURE_VALUE
             self.saturation = DEFAULT_SATURATION
+            self.exposure_value = DEFAULT_EXPOSURE_VALUE
             self.sharpness = DEFAULT_SHARPNESS
             self.framerate = DEFAULT_FRAMERATE
             self.brightness = DEFAULT_BRIGHTNESS
@@ -151,18 +151,20 @@ class Raspicam:
             self.exposure_value = exposure_value
         if saturation is not None:
             self.saturation = saturation
+            self.saturation = self.saturation * 200/32
         if sharpness is not None:
             self.sharpness = sharpness
+            self.sharpness = self.sharpness * 50/16
         if framerate is not None:
             self.framerate = framerate
         if brightness is not None:
             self.brightness = brightness
+            self.brightness = (self.brightness+1) * 225/2 + 30
         if contrast is not None:
             self.contrast = contrast
+            self.contrast = self.contrast * 10/32
         if auto_brightness_value is not None:
             self.auto_brightness_value = auto_brightness_value
-        if self.use_usb:
-            self.convert_rpi_to_usb() # convert the values to the correct range
         self.check_attributes()
         if not self.use_usb:
             self.camera.set_controls({"ExposureValue": self.exposure_value, "Saturation": self.saturation, 
@@ -175,19 +177,6 @@ class Raspicam:
             self.camera.set(cv2.CAP_PROP_BRIGHTNESS, self.brightness)
             self.camera.set(cv2.CAP_PROP_CONTRAST, self.contrast)
 
-    def convert_rpi_to_usb(self) -> None:
-        """
-        Converts the RPi camera values to USB camera values.
-
-        Converts the RPi camera values to USB camera values. The values are converted to the range of the USB camera.
-
-        Returns:
-            None
-        """
-        self.saturation = self.saturation * 200/32
-        self.sharpness = self.sharpness * 50/16
-        self.brightness = (self.brightness+1) * 255/2
-        self.contrast = self.contrast * 10/32
 
     def set_default_controls(self):
         """

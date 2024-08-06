@@ -59,7 +59,7 @@ class RoiSelector(ctk.CTk):
         self.current_img_ref = photo_img
         self.background_img = self.canvas.create_image(0, 0, image=self.current_img_ref, anchor = tkinter.NW)
         time.sleep(10)
-        self.camera = Raspicam(use_usb=True)
+        self.camera = Raspicam(use_usb=False)
         self.video_thread = threading.Thread(target=self.update_video_stream)
         self.video_thread.start()
 

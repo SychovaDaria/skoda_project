@@ -203,7 +203,7 @@ class RoiSelector(ctk.CTk):
         #self.roi_settings = [] # TODO: for now, uniform and default
         self.drawn_lines = []
 
-        self.camera = Raspicam(use_usb=False)
+        self.camera = Raspicam(use_usb=True)
         img = self.camera.capture_img()
         img = cv2.resize(img, (self.canvas.winfo_width(), self.canvas.winfo_height()))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
