@@ -209,7 +209,6 @@ class RoiSelector(ctk.CTk):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
         self.background_img = self.canvas.create_image(0, 0, image=self.current_img_ref, anchor = tkinter.NW)
-        time.sleep(10)
         
         self.video_thread = threading.Thread(target=self.update_video_stream)
         self.video_thread.start()
@@ -255,7 +254,7 @@ class RoiSelector(ctk.CTk):
         # if i dont have the reference, garbage colector will delete the img and canvas will show jacksh*t :)
         self.canvas.itemconfigure(self.background_img, image=self.current_img_ref)
 
-        self.after(10, self.update_video_stream)
+        self.after(400, self.update_video_stream)
 
     def start_edge_detection(self, image, settings):
         edge = EdgeDetector(min_val=settings.min_val, max_val=settings.max_val, min_value_of_votes=settings.min_value_of_votes, 
