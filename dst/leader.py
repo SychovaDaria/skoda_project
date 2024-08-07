@@ -45,7 +45,6 @@ def start_gui_process(img_queue, result_queue, settings_queue_ai, settings_queue
     print("END GUI")
 
 def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
-    return
     """
     Starts the AI and trigger processes.
 
@@ -57,7 +56,7 @@ def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
     print("START AI")
     img = None
     settings = AiSettings()
-    settings.update_settings({'conf_thr': 0.7, 'model_path': 'final_best_model.pth'})
+    settings.update_settings({'conf_thr': 0.7, 'model_path': 'final_best_model.pth'}) #FIXME: bad model
     detector = PhoneDetector(model_path=settings.model_path, img_height=150, img_width=150, capture_interval=20)
     while True:
         # load the last img
