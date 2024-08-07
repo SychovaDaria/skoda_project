@@ -8,8 +8,6 @@ import time
 import os
 from raspicam import Raspicam
 from threading import Thread
-import tkinter as tk
-from tkinter import messagebox
 
 # Define the model
 class CustomCNN(nn.Module):
@@ -66,7 +64,7 @@ class PhoneDetector:
         ])
 
         # Create directory for saving images if it doesn't exist
-        os.makedirs('mobil', exist_ok=True)
+        os.makedirs('object', exist_ok=True)
 
     def preprocess_image(self, image):
         """Preprocess the image for the model."""
@@ -76,7 +74,7 @@ class PhoneDetector:
         return image
 
     def detect_phone(self, frame):
-        """Detect if there is a phone in the frame."""
+        """Detect if there is an object in the frame."""
         processed_image = self.preprocess_image(frame)
         with torch.no_grad():
             outputs = self.model(processed_image)
@@ -91,7 +89,7 @@ class PhoneDetector:
         """Capture three images when an object is detected."""
         for i in range(3):
             timestamp = time.strftime("%Y%m%d-%H%M%S")
-            filename = os.path.join('mobil', f'phone_detected_{timestamp}.jpg')
+            filename = os.path.join('object', f'object_detected_{timestamp}.jpg')
             cv2.imwrite(filename, frame)
             print(f'Object detected! Saved {filename}')
             time.sleep(0.5)  # Wait between captures
@@ -120,27 +118,3 @@ class PhoneDetector:
         # Cleanup
         self.camera.stop()
         cv2.destroyAllWindows()
-
-class GUI:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Object Detector")
-
-        self.start_button = tk.Button(root, text="Start Detection", command=self.start_detection)
-        self.start_button.pack(pady=20)
-
-    def start_detection(self):
-        self.start_button.config(state=tk.DISABLED)
-        self.detection_thread = Thread(target=self.run_detection)
-        self.detection_thread.start()
-
-    def run_detection(self):
-        detector = PhoneDetector(model_path='best_model_state_dict_f12.pth', img_height=150, img_width=150, capture_interval=20)
-        detector.run()
-        messagebox.showinfo("Info", "Detection Stopped!")
-        self.start_button.config(state=tk.NORMAL)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GUI(root)
-    root.mainloop()
