@@ -115,16 +115,66 @@ class RoiSelector(ctk.CTk):
         self.btn = ctk.CTkButton(self.btnFrame, text="Create ROI", command=self.create_roi)
         self.btn.grid(row=0, column=0, sticky="ew")
         
-        self.settingsNumOfPicturesLbl = ctk.CTkLabel(self.btnFrame, text="Number of pictures")
+        
+
+        self.settingsSaveBtn = ctk.CTkButton(self.btnFrame, text="Save settings", command=self.save_settings)
+        self.settingsSaveBtn.grid(row=23, column=0, sticky="ew")
+        
+        
+        self.canvasFrame = ctk.CTkFrame(self)
+        self.canvasFrame.grid(row=0, column=1, sticky="nsew", rowspan=2)
+        self.statsFrame = ctk.CTkFrame(self)
+        self.statsFrame.grid(row=1, column=0, sticky="ew")
+        self.canvas = tkinter.Canvas(self.canvasFrame)
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.bind("<Button-1>", self.on_click)
+        self.canvas.bind("<B1-Motion>", self.on_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.on_release)
+
+
+        self.statLbl = ctk.CTkLabel(self.statsFrame, text="Current ROI ID:")
+        self.statLbl.grid(row=0, column=0, sticky="ew")
+
+        self.roi = []
+        self.move_roi = False
+        self.resize_roi_left = False
+        self.resize_roi_right = False
+        self.offset_x = 0   
+        self.offset_y = 0
+        self.roi_id = NO_ROI_SELECTED
+        self.roi_list = []
+        self.roi_settings_list = []
+
+        #self.roi_settings = [] # TODO: for now, uniform and default
+        self.drawn_lines = []
+
+        self.camera = Raspicam(use_usb=True)
+        img = self.camera.capture_img()
+        img = cv2.resize(img, (self.canvas.winfo_width(), self.canvas.winfo_height()))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
+        self.background_img = self.canvas.create_image(0, 0, image=self.current_img_ref, anchor = tkinter.NW)
+        
+        self.video_thread = threading.Thread(target=self.update_video_stream)
+        self.video_thread.start()
+
+        
+
+    def open_roi_settings_window(self):
+        self.roi_settings_window = ctk.CTkToplevel(self, title="ROI settings")
+        self.roi_settings_window.geometry("400x400")
+        self.roi_settings_window.minsize(400, 400)
+        
+        self.settingsNumOfPicturesLbl = ctk.CTkLabel(self.roi_settings_window, text="Number of pictures")
         self.settingsNumOfPicturesLbl.grid(row=1, column=0, sticky="ew")
-        self.settingsNumOfPictures = ctk.CTkEntry(self.btnFrame, placeholder_text="Number of pictures")
-        self.settingsNumOfPictures.grid(row=2, column=0, sticky="ew")
+        self.settingsNumOfPictures = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Number of pictures")
+        self.settingsNumOfPictures.grid(row=1, column=1, sticky="ew")
         self.settingsNumOfPictures.insert(0, "1")
         self.settingsDelayBetweenPicturesLbl = ctk.CTkLabel(self.btnFrame, text="Delay between pictures")
-        self.settingsDelayBetweenPicturesLbl.grid(row=3, column=0, sticky="ew")
+        self.settingsDelayBetweenPicturesLbl.grid(row=2, column=0, sticky="ew")
         self.settingsDelayBetweenPictures = ctk.CTkEntry(self.btnFrame, placeholder_text="Delay between pictures")
-        self.settingsDelayBetweenPictures.grid(row=4, column=0, sticky="ew")
-        self.settingsDelayBetweenPictures.insert(0, "0")
+        self.settingsDelayBetweenPictures.grid(row=2, column=1, sticky="ew")
+        self.settingsDelayBetweenPictures.insert(0, str(self.settings))
         self.settingsFirstDelayLbl = ctk.CTkLabel(self.btnFrame, text="First delay")
         self.settingsFirstDelayLbl.grid(row=5, column=0, sticky="ew")
         self.settingsFirstDelay = ctk.CTkEntry(self.btnFrame, placeholder_text="First delay")
@@ -172,48 +222,7 @@ class RoiSelector(ctk.CTk):
         self.settingsAngleTolerance.insert(0, "10")
         
 
-        self.settingsSaveBtn = ctk.CTkButton(self.btnFrame, text="Save settings", command=self.save_settings)
-        self.settingsSaveBtn.grid(row=23, column=0, sticky="ew")
-        
-        
-        self.canvasFrame = ctk.CTkFrame(self)
-        self.canvasFrame.grid(row=0, column=1, sticky="nsew", rowspan=2)
-        self.statsFrame = ctk.CTkFrame(self)
-        self.statsFrame.grid(row=1, column=0, sticky="ew")
-        self.canvas = tkinter.Canvas(self.canvasFrame)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.bind("<Button-1>", self.on_click)
-        self.canvas.bind("<B1-Motion>", self.on_drag)
-        self.canvas.bind("<ButtonRelease-1>", self.on_release)
 
-
-        self.statLbl = ctk.CTkLabel(self.statsFrame, text="Current ROI ID:")
-        self.statLbl.grid(row=0, column=0, sticky="ew")
-
-        self.roi = []
-        self.move_roi = False
-        self.resize_roi_left = False
-        self.resize_roi_right = False
-        self.offset_x = 0   
-        self.offset_y = 0
-        self.roi_id = NO_ROI_SELECTED
-        self.roi_list = []
-        self.roi_settings_list = []
-
-        #self.roi_settings = [] # TODO: for now, uniform and default
-        self.drawn_lines = []
-
-        self.camera = Raspicam(use_usb=True)
-        img = self.camera.capture_img()
-        img = cv2.resize(img, (self.canvas.winfo_width(), self.canvas.winfo_height()))
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
-        self.background_img = self.canvas.create_image(0, 0, image=self.current_img_ref, anchor = tkinter.NW)
-        
-        self.video_thread = threading.Thread(target=self.update_video_stream)
-        self.video_thread.start()
-
-        
 
     def create_roi(self):
         """
