@@ -52,8 +52,8 @@ else:
 
 
 class App(tk.Tk):
-    def __init__(self, img_queue: multiprocessing.SimpleQueue, result_queue : multiprocessing.SimpleQueue,
-                  settings_queue_ai : multiprocessing.SimpleQueue, settings_queue_trigger : multiprocessing.SimpleQueue):
+    def __init__(self, img_queue: multiprocessing.Queue, result_queue : multiprocessing.Queue,
+                  settings_queue_ai : multiprocessing.Queue, settings_queue_trigger : multiprocessing.Queue):
         super().__init__()
 
         # the process queues
@@ -123,11 +123,17 @@ class App(tk.Tk):
             raise Exception("CHYBA: Chyba při načítání GUI")
 
 
+        img = self.camera.capture_img()
+        img = cv2.resize(img, (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height()))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
+        self.background_img = self.Imgcanvas.create_image(0, 0, image=self.current_img_ref, anchor = tk.NW)
+
         bgThread = threading.Thread(target=self.video_stream, daemon=True)
         bgThread.start()
         
-        trigThread = threading.Thread(target=self.show_ai_result, daemon=True)
-        trigThread.start()
+        #trigThread = threading.Thread(target=self.show_ai_result, daemon=True)
+        #trigThread.start()
         
 
 
@@ -153,10 +159,10 @@ class App(tk.Tk):
         self.Imgcanvas.grid(row=0, column=1, rowspan=4, padx=pad, pady=(pad), sticky="nsew")
 
         # video stream variables
-        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.new('RGB', (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height())))
-        self.backround_img = self.Imgcanvas.create_image(0,0, image=self.current_img_ref)
+        #self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.new('RGB', (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height())))
+        #self.backround_img = self.Imgcanvas.create_image(0,0, image=self.current_img_ref)
         
-
+        
         # Widgets - Left frame
 
         #self.logo_label = ttk.Label(self.frOvladani, text="", image =self.skoda_logo, style='Menu.TLabel')
@@ -326,16 +332,18 @@ class App(tk.Tk):
         print("done")
 
     def video_stream(self):
+        print("called")
         img = self.camera.capture_img()
-        
         if img is not None:
-            print("REE")
-            img = Image.fromarray(img)
+            print("Updated")
+            print("converted")
             #put the raw img into the queue
             self.img_queue.put(img)
+            print("put in the queue")
             img=cv2.resize(img, (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height()))
-            self.current_img_ref=PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img))
-            self.Imgcanvas.itemconfigure(self.backround_img, image=self.current_img_ref)
+            img = Image.fromarray(img)
+            self.current_img_ref=PIL.ImageTk.PhotoImage(img)
+            self.Imgcanvas.itemconfigure(self.background_img, image=self.current_img_ref)
 
         self.video=self.after(10, self.video_stream)
 
@@ -347,7 +355,7 @@ class App(tk.Tk):
             result = self.result_queue.get()
             print(result)
         #self.tabview.set(result
-        self.show = self.after(1000, self.show_ai_result)
+        #self.show = self.after(1000, self.show_ai_result)
 
     def selectTrainpicfolder(self):
         self.dataset_path=filedialog.askdirectory()

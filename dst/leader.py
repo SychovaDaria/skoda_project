@@ -45,6 +45,7 @@ def start_gui_process(img_queue, result_queue, settings_queue_ai, settings_queue
     print("END GUI")
 
 def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
+    return
     """
     Starts the AI and trigger processes.
 
@@ -79,8 +80,8 @@ def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
 
 if __name__ == "__main__":
     # define the queues
-    img_queue = multiprocessing.SimpleQueue()
-    result_queue = multiprocessing.SimpleQueue()
+    img_queue = multiprocessing.Queue()
+    result_queue = multiprocessing.Queue()
     settings_queue_ai = multiprocessing.SimpleQueue()
     settings_queue_trigger = multiprocessing.SimpleQueue()
     gui_process = multiprocessing.Process(target=start_gui_process, args=(img_queue,result_queue, settings_queue_ai, settings_queue_trigger))
