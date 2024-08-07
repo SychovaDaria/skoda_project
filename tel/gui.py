@@ -62,7 +62,7 @@ class App(ctk.CTk):
         # Loading variables at start
         self.variables_file_path = "values.txt"
         self.load_variables()
-        self.camera = Raspicam(use_usb=False)
+        self.camera = Raspicam(use_usb=True)
         self.initGUI()
 
         self.video_thread = threading.Thread(target=self.video_stream, daemon=True)
