@@ -33,6 +33,8 @@ import threading
 #import ikony  ##JP - ikony jsem přesunul do samostatnýho souboru
 from datetime import datetime
 import cv2
+from process_settings import AiSettings
+import multiprocessing
 
 Nadpis = "ŠKODA SmartCam"
 pad = 10
@@ -50,8 +52,18 @@ else:
 
 
 class App(tk.Tk):
-    def __init__(self):
+    def __init__(self, img_queue: multiprocessing.SimpleQueue, result_queue : multiprocessing.SimpleQueue,
+                  settings_queue_ai : multiprocessing.SimpleQueue, settings_queue_trigger : multiprocessing.SimpleQueue):
         super().__init__()
+
+        # the process queues
+        self.img_queue = img_queue
+        self.result_queue = result_queue
+        self.settings_queue_ai = settings_queue_ai
+        self.settings_queue_trigger = settings_queue_trigger
+
+        self.ai_settings = AiSettings()
+        self.settings_queue_ai.put(self.ai_settings) # intialize the settings
 
         # Window properties
         window_scale = 0.9 ##JP - % z obrazovky
@@ -63,7 +75,7 @@ class App(tk.Tk):
         self.dataset_path=""
         self.dataset2_path=os.path.dirname(__file__) + "/ar1"
         self.style = ttk.Style(self)
-        self.style.theme_use('vista')
+        #self.style.theme_use('vista')
 
         #self.style.configure('TFrame', background='#1a1a1a')
         self.style.configure('Menu.TFrame', background='#0e3a2f')
@@ -110,10 +122,15 @@ class App(tk.Tk):
         except:
             raise Exception("CHYBA: Chyba při načítání GUI")
 
+
         bgThread = threading.Thread(target=self.video_stream, daemon=True)
         bgThread.start()
         
+        trigThread = threading.Thread(target=self.show_ai_result, daemon=True)
+        trigThread.start()
         
+
+
 
     # GUI init
     def nactiGUI(self):
@@ -134,6 +151,10 @@ class App(tk.Tk):
 
         self.Imgcanvas= tk.Canvas (fr)
         self.Imgcanvas.grid(row=0, column=1, rowspan=4, padx=pad, pady=(pad), sticky="nsew")
+
+        # video stream variables
+        self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.new('RGB', (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height())))
+        self.backround_img = self.Imgcanvas.create_image(0,0, image=self.current_img_ref)
         
 
         # Widgets - Left frame
@@ -308,16 +329,25 @@ class App(tk.Tk):
         img = self.camera.capture_img()
         
         if img is not None:
-            
-            image = Image.fromarray(img)
-            self.current_img_ref= PIL.ImageTk.PhotoImage(image)
-            self.backround_img = self.Imgcanvas.create_image((self.Imgcanvas.winfo_width()/2),(self.Imgcanvas.winfo_height()/2), image=self.current_img_ref)
-        img=cv2.resize(img, (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height()))
-        self.current_img_ref=PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img))
-        self.Imgcanvas.itemconfigure(self.backround_img, image=self.current_img_ref)
-
+            print("REE")
+            img = Image.fromarray(img)
+            #put the raw img into the queue
+            self.img_queue.put(img)
+            img=cv2.resize(img, (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height()))
+            self.current_img_ref=PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img))
+            self.Imgcanvas.itemconfigure(self.backround_img, image=self.current_img_ref)
 
         self.video=self.after(10, self.video_stream)
+
+    def show_ai_result(self):
+        """
+        Just a placeholder function to know that everything is working
+        """
+        if not self.result_queue.empty():
+            result = self.result_queue.get()
+            print(result)
+        #self.tabview.set(result
+        self.show = self.after(1000, self.show_ai_result)
 
     def selectTrainpicfolder(self):
         self.dataset_path=filedialog.askdirectory()
@@ -362,6 +392,8 @@ class App(tk.Tk):
     # Closing routine for saving of variables and termination of window
     def on_closing(self):
         self.save_variables(self.variables_file_path)
+        self.ai_settings.set_end_message()
+        self.settings_queue_ai.put(self.ai_settings)
         self.camera.stop()
         self.destroy()
 

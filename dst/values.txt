@@ -1,5 +1,5 @@
 Sour=USB
-Res=640x480
+Res=1920x1080
 Bri=30.0
 Con=10.0
 Fram=-0.8

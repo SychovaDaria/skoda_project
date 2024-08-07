@@ -14,40 +14,81 @@ On the end of the program, the GUI process will send a END message using both se
 break their loops and join the main process.
 
 Author: Josef Kahoun
-Date: 7. 08. 2024
+Date: 7. 8. 2024
 """
 
-from GUI_ttk import App
 import multiprocessing
 from trigger import Trigger
+from GUI_ttk import App
+from ttoo3gui import PhoneDetector
+from process_settings import AiSettings
 
-def start_gui_process(data_queue, settings_queue_ai, settings_queue_trigger):
+new_settings_ready = multiprocessing.Condition()
+
+END_PROCESS_MESSAGE = "END"
+
+
+def start_gui_process(img_queue, result_queue, settings_queue_ai, settings_queue_trigger):
     """
     Starts the GUI process.
 
     Args:
-        data_queue (multiprocessing.Queue): The queue where the GUI process will get the results from the AI module.
-        settings_queue_ai (multiprocessing.Queue): The queue where the GUI process will send the settings to the AI module.
-        settings_queue_trigger (multiprocessing.Queue): The queue where the GUI process will send the settings to the trigger module.
+        img_queue (multiprocessing.Queue): Queue for the images from the AI process.
+        result_queue (multiprocessing.Queue): Queue for the results from the AI process.
+        settings_queue_ai (multiprocessing.Queue): Queue for the settings for the AI process.
+        settings_queue_trigger (multiprocessing.Queue): Queue for the settings for the trigger process.
     """
     print("START GUI")
-    app = App(data_queue, settings_queue_ai, settings_queue_trigger)
+    app = App(img_queue,result_queue, settings_queue_ai, settings_queue_trigger)
     app.protocol("WM_DELETE_WINDOW", app.on_closing)
     app.mainloop()
     print("END GUI")
 
-def start_ai_process(data_queue, settings_queue_ai):
-    pass
+def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
+    """
+    Starts the AI and trigger processes.
 
-def start_trigger_process(data_queue, settings_queue_trigger):
-    trigger = Trigger()
+    Args:
+        img_queue (multiprocessing.Queue): Queue for the images from the AI process.
+        result_queue (multiprocessing.Queue): Queue for the results from the AI process.
+        settings_queue_ai (multiprocessing.Queue): Queue for the settings for the AI process.
+    """
+    print("START AI")
+    img = None
+    settings = AiSettings()
+    settings.update_settings({'conf_thr': 0.7, 'model_path': 'final_best_model.pth'})
+    detector = PhoneDetector(model_path=settings.model_path, img_height=150, img_width=150, capture_interval=20)
+    while True:
+        # load the last img
+        while not img_queue.empty():
+            img = img_queue.get() 
+        # load last uploaded settings
+        while not settings_queue_ai.empty():
+            settings = settings_queue_ai.get()
+        # check if the end message was sent
+        if settings.is_end_message():
+            break
+        #TODO: load the settings for the AI module
+        detector.unpack_settings(settings) 
+        # check if the trigger should be started
+        if True:#settings.is_start_trigger(): #FIXME: ADD TO GUI
+            result = detector.detect_phone(img)
+            if result:
+                result_queue.put(result)
+    print("END AI")
 
 if __name__ == "__main__":
-    # start the gui process
-    data_queue = multiprocessing.SimpleQueue()
+    # define the queues
+    img_queue = multiprocessing.SimpleQueue()
+    result_queue = multiprocessing.SimpleQueue()
     settings_queue_ai = multiprocessing.SimpleQueue()
     settings_queue_trigger = multiprocessing.SimpleQueue()
-    gui_process = multiprocessing.Process(target=App, args=(data_queue, settings_queue_ai, settings_queue_trigger))
-    # start the computation process
+    gui_process = multiprocessing.Process(target=start_gui_process, args=(img_queue,result_queue, settings_queue_ai, settings_queue_trigger))
+    ai_process = multiprocessing.Process(target=start_ai_trigger, args=(img_queue, result_queue, settings_queue_ai))
+    # start the processes
     gui_process.start()
+    ai_process.start()
+    # join the processes
     gui_process.join()
+    ai_process.join()
+    print("END MAIN")
