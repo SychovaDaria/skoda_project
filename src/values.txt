@@ -4,5 +4,5 @@ Bri=30.0
 Con=10.0
 Fram=-0.8
 Exp=100.0
-Sat=72.1
+Sat=137.2
 Sha=0.8
