@@ -65,7 +65,7 @@ class App(tk.Tk):
         self.minsize(400, 300)
         self.title(Nadpis)
         self.dataset_path=""
-        self.dataset2_path=os.path.dirname(__file__) + "/ar1"
+        self.non_object_path=os.path.dirname(__file__) + "/ar1"
         self.style = ttk.Style(self)
         self.style.theme_use('vista')
 
@@ -436,9 +436,15 @@ class App(tk.Tk):
     def start_training(self):
         logging.info("Trénink spuštěn")
         self.set_all_buttons("disabled")
-        #TODO: start training
+        threading.Thread(target=self.run_training, args=(self.dataset_path, self.non_object_path), daemon=True).start()
 
-    
+    def run_training(self, object_folder, non_object_folder):
+        try:
+            self.trainer = ModelTrainer(object_folder=object_folder, non_object_folder=non_object_folder)
+            self.trainer.train()
+            messagebox.showinfo("Training", "Model training has started.")
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))
 
     def set_all_buttons(self,state:str)->None:
         if state!="normal" and state!="disabled":
