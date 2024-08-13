@@ -56,7 +56,7 @@ def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
     print("START AI")
     img = None
     settings = AiSettings()
-    settings.update_settings({'conf_thr': 0.7, 'model_path': 'final_best_model.pth'}) #FIXME: bad model
+    settings.update_settings({'conf_thr': 0.7, 'model_path': 'best_model_state_dict_f12.pth'}) #FIXME: bad model
     detector = PhoneDetector(model_path=settings.model_path, img_height=150, img_width=150, capture_interval=20)
     while True:
         # load the last img
@@ -87,8 +87,8 @@ if __name__ == "__main__":
     ai_process = multiprocessing.Process(target=start_ai_trigger, args=(img_queue, result_queue, settings_queue_ai))
     # start the processes
     gui_process.start()
-    ai_process.start()
+    #ai_process.start()
     # join the processes
     gui_process.join()
-    ai_process.join()
-    print("END MAIN")
+    #ai_process.join()
+    print("END MAIN")   
