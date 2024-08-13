@@ -20,7 +20,7 @@ Date: 7. 8. 2024
 import multiprocessing
 from trigger import Trigger
 from GUI_ttk import App
-from ttoo3gui import PhoneDetector
+from ttoo3 import PhoneDetector
 from process_settings import AiSettings
 
 new_settings_ready = multiprocessing.Condition()
@@ -57,7 +57,7 @@ def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
     img = None
     settings = AiSettings()
     settings.update_settings({'conf_thr': 0.7, 'model_path': 'best_model_state_dict_f12.pth'}) #FIXME: bad model
-    detector = PhoneDetector(model_path=settings.model_path, img_height=150, img_width=150, capture_interval=20)
+    detector = PhoneDetector(model_path=settings.model_path)
     while True:
         # load the last img
         while not img_queue.empty():
@@ -69,7 +69,7 @@ def start_ai_trigger(img_queue, result_queue, settings_queue_ai):
         if settings.is_end_message():
             break
         #TODO: load the settings for the AI module
-        detector.unpack_settings(settings) 
+        #detector.unpack_settings(settings) 
         # check if the trigger should be started
         if True:#settings.is_start_trigger(): #FIXME: ADD TO GUI
             result = detector.detect_phone(img)
@@ -87,8 +87,8 @@ if __name__ == "__main__":
     ai_process = multiprocessing.Process(target=start_ai_trigger, args=(img_queue, result_queue, settings_queue_ai))
     # start the processes
     gui_process.start()
-    #ai_process.start()
+    ai_process.start()
     # join the processes
     gui_process.join()
-    #ai_process.join()
+    ai_process.join()
     print("END MAIN")   

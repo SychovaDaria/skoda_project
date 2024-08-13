@@ -332,14 +332,10 @@ class App(tk.Tk):
         print("done")
 
     def video_stream(self):
-        print("called")
         img = self.camera.capture_img()
         if img is not None:
-            print("Updated")
-            print("converted")
             #put the raw img into the queue
             self.img_queue.put(img)
-            print("put in the queue")
             img=cv2.resize(img, (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height()))
             img = Image.fromarray(img)
             self.current_img_ref=PIL.ImageTk.PhotoImage(img)

@@ -6,8 +6,8 @@ from tkinter import filedialog, PhotoImage, messagebox
 import numpy as np
 import cv2
 from datetime import datetime
-from training_module2 import ModelTrainer
-from trigger_module2 import PhoneDetector
+from training_module import ModelTrainer
+from trigger_module import PhoneDetector
 from raspicam import Raspicam
 import io
 import base64
@@ -62,7 +62,7 @@ class App(ctk.CTk):
         # Loading variables at start
         self.variables_file_path = "values.txt"
         self.load_variables()
-        self.camera = Raspicam(use_usb=False)
+        self.camera = Raspicam(use_usb=True)
         self.initGUI()
 
         self.video_thread = threading.Thread(target=self.video_stream, daemon=True)
