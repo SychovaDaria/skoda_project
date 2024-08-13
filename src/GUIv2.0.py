@@ -35,6 +35,7 @@ from text_handler import TextHandler
 #import ikony  ##JP - ikony jsem přesunul do samostatnýho souboru
 from datetime import datetime
 import cv2
+from trigger_module2 import PhoneDetector
 import logging
 
 Nadpis = "ŠKODA SmartCam"
@@ -115,6 +116,7 @@ class App(tk.Tk):
 
         bgThread = threading.Thread(target=self.video_stream, daemon=True)
         bgThread.start()
+        self.trigger_run = False
         logging.info("Aplikace spuštěna")
         
         
@@ -283,7 +285,6 @@ class App(tk.Tk):
         self.Exp.trace_add("write", lambda *args: self.round_and_update_var(self.Exp))
         self.Sat.trace_add("write", lambda *args: (self.round_and_update_var(self.Sat), self.camera.set_controls(saturation=self.Sat.get())))
         self.Sha.trace_add("write", lambda *args: (self.round_and_update_var(self.Sha), self.camera.set_controls(sharpness=self.Sha.get())))
-        
         self.Res.trace_add("write", lambda *args: self.set_resolution())
         
 
@@ -356,7 +357,11 @@ class App(tk.Tk):
         img = self.camera.capture_img()
         
         if img is not None:
-            
+            if self.trigger_run:
+                detector = PhoneDetector(model_path=self.model_path)
+                if detector.detect_phone(img): # save img if phone detected
+                    logging.info("Telefon detekován")
+                    self.camera.capture_img_and_save(filename=datetime.now().strftime("%d_%m_%H_%M_%S") + ".png", folder_path=self.shots_path)
             image = Image.fromarray(img)
             self.current_img_ref= PIL.ImageTk.PhotoImage(image)
             self.backround_img = self.Imgcanvas.create_image((self.Imgcanvas.winfo_width()/2),(self.Imgcanvas.winfo_height()/2), image=self.current_img_ref)
@@ -424,6 +429,7 @@ class App(tk.Tk):
         self.set_all_buttons("disabled")
         self.btFunkce7.configure(state="normal")
         logging.info("Trigger spuštěn")
+        self.trigger_run = True
         # TODO: add trigger start
         
     def start_training(self):
@@ -453,6 +459,7 @@ class App(tk.Tk):
         if not os.path.isdir(self.dataset_path):
             self.btFunkce3.configure(state="disabled")
         self.btFunkce7.configure(state="disabled")
+        self.trigger_run = False
 
 
     # Closing routine for saving of variables and termination of window
