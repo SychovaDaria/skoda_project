@@ -1,43 +1,54 @@
 """""
-GUI for Raspberry/USB smart cam v.1.6
-Main window + settings window
-20.6. 2024 - Aded tab view, Variables - loading, saving, handling; Auto creation of settings file
-24.6. 2024 - Modified usage of tkinter variables
-5.7. 2024 - Škoda CI rulles added
-24.7. 2024 - Experiments with multithreading
+Main GUI for Raspberry/USB smart cam v.1.6
 
-škoda-(vyblednutí 10%) světlezelená -#86fbb6
-škoda-světlezelená - #78faae
-škoda-(tmavší 10%) světlezelená - #6ce19d
-škoda-(nejtmavší 30%) světleězelená -#54af7a
-škoda-(nejtmavší 50%) světleězelená - #3c7d57
 
-škoda- (vyblednutí10%) tmavězelená -#264e44
-škoda-tmavězelená - #0e3a2f
-škoda-(tmavší10%) tmavězelená - #0d342a
-škoda-(nejtmavší 50%) tmavězelená - #0a2921
+Updates:
+    20.6. 2024 - Aded tab view, Variables - loading, saving, handling; Auto creation of settings file
+    24.6. 2024 - Modified usage of tkinter variables
+    5.7. 2024 - Škoda CI rulles added
+    24.7. 2024 - Experiments with multithreading
+    14. 8. 2024 - Added docstrings and type hints - JK
+    
+
+TODO:
+    Add comments
+    Add settings for the trigger (f.e. only trigger on rising/falling edge, wait time between triggers, number of pictures
+    to take, time between the pictures, etc.)
+    Delete commented code
+    Rename variables to more descriptive names (And in English)
+
+Notes:
+    škoda-(vyblednutí 10%) světlezelená -#86fbb6
+    škoda-světlezelená - #78faae
+    škoda-(tmavší 10%) světlezelená - #6ce19d
+    škoda-(nejtmavší 30%) světleězelená -#54af7a
+    škoda-(nejtmavší 50%) světleězelená - #3c7d57
+
+    škoda- (vyblednutí10%) tmavězelená -#264e44
+    škoda-tmavězelená - #0e3a2f
+    škoda-(tmavší10%) tmavězelená - #0d342a
+    škoda-(nejtmavší 50%) tmavězelená - #0a2921
 """""
 
-
-import PIL.Image
-#import customtkinter as 
-import tkinter as tk
-from tkinter import ttk
-import tkinter.scrolledtext as ScrolledText
-import PIL
+# standard
+import cv2
+from datetime import datetime
+import logging
 import os
-from PIL import Image, ImageTk
+import PIL
+import PIL.Image
 import PIL.ImageTk
-from camera_module import Raspicam  # Assuming the camera module code is saved as camera_module.py
+from PIL import Image, ImageTk
+import tkinter as tk
+import tkinter.scrolledtext as ScrolledText
+from tkinter import ttk
 from tkinter import filedialog, PhotoImage
 import threading
+# local (our modules)
+from camera_module import Raspicam  # TODO: change to import the raspicam module
 from text_handler import TextHandler
-#import ikony  ##JP - ikony jsem přesunul do samostatnýho souboru
-from datetime import datetime
-import cv2
 from trigger_module3 import PhoneDetector
 from training_module2 import ModelTrainer
-import logging
 
 Nadpis = "ŠKODA SmartCam"
 pad = 10
@@ -55,6 +66,34 @@ else:
 
 
 class App(tk.Tk):
+    """
+    Class for the main GUI application.
+
+    Creates a GUI window created in Tkinter, consisting of buttons, logging text window and a camera stream. The user can adjust the 
+    camera settings, set the path for saving the training images, start training the AI, choose the AI model, start and stop the picture 
+    aquisition (trigger), and set multiple settings regarding the trigger.
+    The GUI also contains a logging window for displaying the application's log.
+
+    Attributes:
+        dataset_path (str): Path to the folder where the training images are saved.
+        non_object_path (str): Path to the folder with non-object images.
+        model_path (str): Path to the AI model.
+        shots_path (str): Path to the folder where the trigger will save
+        trigger_ready (list): List of two booleans, indicating if the model and the shots path are selected.
+        trigger_run (bool): Boolean indicating if the trigger is running. #TODO: can maybe delete????
+        camera (Raspicam): Camera object.
+        Sour (tk.StringVar): Variable for camera source.
+        Res (tk.StringVar): Variable for camera resolution.
+        Bri (tk.DoubleVar): Variable for camera brightness.
+        Con (tk.DoubleVar): Variable for camera contrast.
+        Fram (tk.DoubleVar): Variable for camera framerate.
+        Exp (tk.DoubleVar): Variable for camera exposure.
+        Sat (tk.DoubleVar): Variable for camera saturation.
+        Sha (tk.DoubleVar): Variable for camera sharpness.
+        variables_file_path (str): Path to the file with the variables.
+        style (ttk.Style): Style of the GUI.
+        Frames and widgets of the GUI. (not listed for brevity)
+    """
     def __init__(self):
         super().__init__()
 
@@ -66,7 +105,7 @@ class App(tk.Tk):
         self.minsize(400, 300)
         self.title(Nadpis)
         self.dataset_path=""
-        self.non_object_path=os.path.dirname(__file__) + "/ar1"
+        self.non_object_path=os.path.dirname(__file__) + "/ar1" # the folder with non-object images
         self.style = ttk.Style(self)
         self.style.theme_use('vista')
 
@@ -108,15 +147,14 @@ class App(tk.Tk):
         except:
             raise Exception("CHYBA: Chyba při načítání proměnných")
 
-        self.camera = Raspicam()
-        #self.camera = cv2.VideoCapture(0)
+        self.camera = Raspicam() # start the camera
         try:
             self.nactiGUI()
         except:
             raise Exception("CHYBA: Chyba při načítání GUI")
 
-        bgThread = threading.Thread(target=self.video_stream, daemon=True)
-        bgThread.start()
+        self.bgThread = threading.Thread(target=self.video_stream, daemon=True) # thread for the video stream
+        self.bgThread.start()
         self.trigger_run = False
         logging.info("Aplikace spuštěna")
         
@@ -127,7 +165,7 @@ class App(tk.Tk):
         """
         Loads the GUI and its components.
 
-        Arguments:
+        Args:
             None
 
         Returns:
@@ -218,7 +256,7 @@ class App(tk.Tk):
         """
         Opens the settings window for the camera.
 
-        Arguments:
+        Args:
             None
         
         Returns:
@@ -290,10 +328,16 @@ class App(tk.Tk):
         
 
     # Loading of variables values
-    def load_variables(self, path:str):
+    def load_variables(self, path:str) -> None:
         """
-        Pokusí se načíst proměnné z cesty path.
-        Pokud soubor neexistuje, nastaví vše do defaultu.
+        Loads the camera settings from the file.
+        If the file does not exist, sets the default values.
+
+        Args:
+            path (str): Path to the file with the variables.
+        
+        Returns:
+            None
         """
         default_values = {"Sour": "USB", "Res": "640x480", "Bri": 1, "Con": 6, "Fram": 0.8, "Exp": 0.8, "Sat": 0.8, "Sha": 0.8}
 
@@ -326,8 +370,16 @@ class App(tk.Tk):
 
 
     # Saving variables values
-    def save_variables(self, path:str):
-        """ Uloží aktuální nastavení proměnných do souboru path """
+    def save_variables(self, path:str) -> None:
+        """
+        Saves the current camera settings to the file.
+
+        Args:
+            path (str): Path to the file with the variables.
+        
+        Returns:
+            None
+        """
         with open(path, 'w') as file:
             file.write(f"Sour={self.Sour.get()}\n")
             file.write(f"Res={self.Res.get()}\n")
@@ -339,29 +391,45 @@ class App(tk.Tk):
             file.write(f"Sha={self.Sha.get()}\n")
 
     #Funtion for rounding of  DoubleVar
-    def round_and_update_var(self, var):
+    def round_and_update_var(self, var): #??????
         # Round the DoubleVar value to one decimal place
         rounded_value = round(var.get(), 1)
         # Set the rounded value back to the DoubleVar
         var.set(rounded_value)
 
-    def set_resolution(self):
-        print("start")
+    def set_resolution(self) -> None:
+        """
+        Sets the camera resolution to the selected value.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         resolution_str=self.Res.get()
         width, height = map(int, resolution_str.split('x'))
-        print(width)
-        print(height)
         self.camera.change_resolution((width,height))
-        print("done")
+        logging.info(f"Rozlišení kamery změněno na {resolution_str}")
 
-    def video_stream(self):
+    def video_stream(self) -> None:
+        """
+        Updates the canvas widget with the camera stream.
+        Updates the camera stream in GUI, also calls the AI detector if trigger was started. Is called by own thread.
+
+        Args:
+            None
+        
+        Returns:
+            None
+        """
         img = self.camera.capture_img()
         
         if img is not None:
             if self.trigger_run:
                 detector = PhoneDetector(model_path=self.model_path)
                 if detector.detect_phone(img): # save img if phone detected
-                    logging.info("Telefon detekován")
+                    logging.info("Objekt detekován")
                     self.camera.capture_img_and_save(filename=datetime.now().strftime("%d_%m_%H_%M_%S") + ".png", folder_path=self.shots_path)
                     #TODO: add trigger settings 
             image = Image.fromarray(img)
@@ -372,9 +440,18 @@ class App(tk.Tk):
         self.Imgcanvas.itemconfigure(self.backround_img, image=self.current_img_ref)
 
 
-        self.video=self.after(10, self.video_stream)
+        self.video=self.after(10, self.video_stream) # loop
 
-    def selectTrainpicfolder(self):
+    def selectTrainpicfolder(self) -> None:
+        """
+        Selects and saves the folder for the training images.
+
+        Args:
+            None
+        
+        Returns:
+            None        
+        """
         self.dataset_path=filedialog.askdirectory()
         if self.dataset_path == "" or not os.path.isdir(self.dataset_path): # check if the folder is selected
             logging.info("Složka pro ukládání trénovacích fotek nebyla vybrána")
@@ -384,14 +461,33 @@ class App(tk.Tk):
             self.btFunkce2.configure(state="normal")
             self.btFunkce3.configure(state="normal")
 
-    def capturephoto(self):
+    def capturephoto(self) -> None:
+        """
+        Function for manually capturing the photos.
+        Saves the photo in .png format to the previously selected training folder, with the current date and time as the filename.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         if not os.path.isdir(self.dataset_path): # check if the folder still exists
             logging.info("Složka pro ukládání trénovacích fotek nebyla nalezena")
         else:
             self.camera.capture_img_and_save(filename=datetime.now().strftime("%d_%m_%H_%M_%S") + ".png", folder_path=self.dataset_path)
             logging.info("Fotka uložena")
 
-    def selectmodelpath(self):
+    def selectmodelpath(self) -> None:
+        """
+        Selects the file with the AI model.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         self.model_path=filedialog.askopenfilename(title="Vyber model", filetypes=[("Model files", "*.pth")])
         if self.model_path == "" or not os.path.isfile(self.model_path): # check if the folder is selected
             logging.info("Model nebyl vybrán")
@@ -401,7 +497,16 @@ class App(tk.Tk):
             self.trigger_ready[0] = True
             self.enable_trigger()
 
-    def selectshotsfolder(self):
+    def selectshotsfolder(self) -> None:
+        """
+        Selects the folder for saving the aquired images.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         self.shots_path=filedialog.askdirectory()
         if self.shots_path == "" or not os.path.isdir(self.shots_path): # check if the folder is selected
             logging.info("Složka nebyla vybrána")
@@ -411,13 +516,25 @@ class App(tk.Tk):
             self.trigger_ready[1] = True
             self.enable_trigger()
 
-    def enable_trigger(self):
+    def enable_trigger(self) -> None:
+        """
+        Enables the trigger button if both the model and the folder for shots are selected.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         #print(self.trigger_ready)
         if self.trigger_ready[0] and self.trigger_ready[1]:
             logging.info("Trigger je připraven")
             self.btFunkce6.configure(state="normal")
 
-    def start_trigger(self):
+    def start_trigger(self) -> None:
+        """
+        Starts the AI trigger (image aquisition).
+        """
         # check if both the model and the folder for shots are selected
         if not os.path.isfile(self.model_path):
             logging.info("Model nebyl vybrán")
@@ -432,14 +549,32 @@ class App(tk.Tk):
         self.btFunkce7.configure(state="normal")
         logging.info("Trigger spuštěn")
         self.trigger_run = True
-        # TODO: add trigger start
         
-    def start_training(self):
+    def start_training(self) -> None:
+        """
+        Starts the training of the AI model.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         logging.info("Trénink spuštěn")
         self.set_all_buttons("disabled")
         threading.Thread(target=self.run_training, args=(self.dataset_path, self.non_object_path), daemon=True).start()
 
-    def run_training(self, object_folder, non_object_folder):
+    def run_training(self, object_folder, non_object_folder) -> None:
+        """
+        Function for running the training of the AI model, is called by a separate thread.
+
+        Args:
+            object_folder (str): Path to the folder with the object images.
+            non_object_folder (str): Path to the folder with the non-object images.
+
+        Returns:
+            None
+        """
         try:
             self.trainer = ModelTrainer(object_folder=object_folder, non_object_folder=non_object_folder)
             self.trainer.train()
@@ -448,7 +583,16 @@ class App(tk.Tk):
             #ttk.messagebox.showerror("Error", str(e))
             logging.info("Chyba při tréninku modelu")
 
-    def set_all_buttons(self,state:str)->None:
+    def set_all_buttons(self, state:str)->None:
+        """
+        Sets the state of all buttons in the GUI to be either normal or disabled.
+
+        Args:
+            state (str): State to set the buttons to. Can be either "normal" or "disabled".
+
+        Returns:
+            None
+        """
         if state!="normal" and state!="disabled":
             raise ValueError("Neplatný stav tlačítka")
         self.btNastaveni.configure(state=state)
@@ -460,10 +604,17 @@ class App(tk.Tk):
         self.btFunkce6.configure(state=state)
         self.btFunkce7.configure(state=state)
 
-    def stop_trigger(self):
+    def stop_trigger(self) -> None:
+        """
+        Stops the trigger.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         logging.info("Trigger zastaven")
-        #TODO: stop the trigger
-        #self.tabview.set("Webcam")
         self.set_all_buttons("normal")
         if not os.path.isdir(self.dataset_path):
             self.btFunkce3.configure(state="disabled")
@@ -471,8 +622,16 @@ class App(tk.Tk):
         self.trigger_run = False
 
 
-    # Closing routine for saving of variables and termination of window
-    def on_closing(self):
+    def on_closing(self) -> None:
+        """
+        Closes the GUI, stops the camera and saves the settings variables into a file.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         self.save_variables(self.variables_file_path)
         self.camera.release()
         self.destroy()

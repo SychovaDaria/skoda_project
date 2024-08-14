@@ -18,9 +18,9 @@ Improvements:
 import cv2
 import numpy as np
 import os
+from typing import List, Tuple
 
 from picamera2 import Picamera2
-from typing import List, Tuple
 
 
 # Constants for default values
