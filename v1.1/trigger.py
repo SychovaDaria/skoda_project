@@ -89,7 +89,7 @@ class Trigger:
                 raise ValueError("The length of the times_between_pictures list must be equal to num_of_pictures - 1., or times_between_pictures must be a float.")
         else:
             raise ValueError("The times_between_pictures attribute must be a non-negative float or a list of non-negative floats.")
-        if not (isinstance(self.folder_name, str) and os.path.isdir(self.folder_name)):
+        if self.folder_name is not None and (not (isinstance(self.folder_name, str) and os.path.isdir(self.folder_name))):
             raise ValueError("The folder_name attribute must be a string representing a valid directory path.")
         if not isinstance(self.trigger_mode, TriggerModes):
             raise ValueError("The trigger_mode attribute must be an instance of the TriggerModes enum.")

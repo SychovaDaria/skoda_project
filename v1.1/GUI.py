@@ -158,6 +158,7 @@ class App(tk.Tk):
         self.bgThread = threading.Thread(target=self.video_stream, daemon=True) # thread for the video stream
         self.bgThread.start()
         self.trigger_run = False
+        self.trigger = Trigger(None)
         logging.info("Aplikace spuštěna")
         
         
@@ -430,10 +431,7 @@ class App(tk.Tk):
         if img is not None:
             if self.trigger_run:
                 detector = PhoneDetector(model_path=self.model_path)
-                if detector.detect_phone(img): # save img if phone detected
-                    logging.info("Objekt detekován")
-                    self.camera.capture_img_and_save(filename=datetime.now().strftime("%d_%m_%H_%M_%S") + ".png", folder_path=self.shots_path)
-                    #TODO: add trigger settings 
+                self.trigger.process_trigger_signal(img, detector.detect_phone(img)) # FIXME: no idea if it works, didnt test it :DDD
             image = Image.fromarray(img)
             self.current_img_ref= PIL.ImageTk.PhotoImage(image)
             self.backround_img = self.Imgcanvas.create_image((self.Imgcanvas.winfo_width()/2),(self.Imgcanvas.winfo_height()/2), image=self.current_img_ref)
@@ -516,6 +514,7 @@ class App(tk.Tk):
         else:
             logging.info(f"Vybrána složka pro ukládání fotek: {self.shots_path}")
             self.trigger_ready[1] = True
+            self.trigger.set_config(folder_name=self.shots_path)
             self.enable_trigger()
 
     def enable_trigger(self) -> None:
