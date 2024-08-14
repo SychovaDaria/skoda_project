@@ -1,3 +1,7 @@
+"""
+Module to train a custom CNN model for object detection.
+"""
+
 import os
 from sklearn.model_selection import train_test_split
 import torch
@@ -28,6 +32,17 @@ class CustomDataset(Dataset):
         return image, label
 
 class CustomCNN(nn.Module):
+    """
+    Class containing the custom CNN model for object detection.
+
+    Args:
+        layers (list): A list containing the number of output channels for each layer of the CNN model.
+        img_height (int): The height of the input
+    
+    Attributes:
+        layers (nn.ModuleList): A list containing the layers of the CNN model.
+        classifier (nn.Sequential): A sequence of layers for the classifier part of the model.
+    """
     def __init__(self, layers, img_height):
         super(CustomCNN, self).__init__()
         self.layers = nn.ModuleList()
@@ -58,7 +73,34 @@ class CustomCNN(nn.Module):
         return x
 
 class ModelTrainer:
-    def __init__(self, object_folder, non_object_folder, img_height=150, img_width=150, batch_size=32, epochs=30):
+    """
+    Class to train a custom CNN model for object detection.
+
+    Args:
+        object_folder (str): The path to the folder containing images of the object to be detected.
+        non_object_folder (str): The path to the folder containing images of non-object items.
+        img_height (int): The height of the input image.
+        img_width (int): The width of the input image.
+        batch_size (int): The batch size for training.
+        epochs (int): The number of epochs for training.
+
+    Attributes:
+        object_folder (str): The path to the folder containing images of the object to be detected.
+        non_object_folder (str): The path to the folder containing images of non-object items.
+        img_height (int): The height of the input image.
+        img_width (int): The width of the input image.
+        batch_size (int): The batch size for training.
+        epochs (int): The number of epochs for training.
+        transform (torchvision.transforms.Compose): A series of image transformations to be applied to the input images.
+        model (CustomCNN): The custom CNN model for object detection.
+        optimizer (torch.optim.Adam): The optimizer for training the model.
+        criterion (torch.nn.CrossEntropyLoss): The loss function for training the model.
+        train_loader (torch.utils.data.DataLoader): The data loader for the training dataset.
+        val_loader (torch.utils.data.DataLoader): The data loader for the validation dataset.
+    """
+
+    def __init__(self, object_folder: str, non_object_folder: str, img_height: int = 150, 
+                 img_width: int = 150, batch_size: int = 32, epochs: int = 30):
         self.object_folder = object_folder
         self.non_object_folder = non_object_folder
         self.img_height = img_height
@@ -79,7 +121,17 @@ class ModelTrainer:
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.00001)  
         self.criterion = nn.CrossEntropyLoss()
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
+        """
+        Prepare the training and validation datasets.
+        This method reads the images from the object and non-object folders, creates a dataset, and splits it into training and validation sets.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         data = []
         labels = []
 
@@ -112,7 +164,16 @@ class ModelTrainer:
         self.train_loader = DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
         self.val_loader = DataLoader(val_dataset, batch_size=self.batch_size, shuffle=False)
 
-    def train_and_validate(self):
+    def train_and_validate(self) -> None:
+        """
+        Train and validate the custom CNN model.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         train_losses = []
         val_losses = []
         val_accuracies = []
@@ -163,13 +224,15 @@ class ModelTrainer:
 
             print(f'Epoch {epoch + 1}/{self.epochs} - Training Loss: {train_losses[-1]:.4f}, Validation Loss: {val_losses[-1]:.4f}, Validation Accuracy: {val_accuracy:.4f}, Validation F1 Score: {val_f1:.4f}')
 
-    def train(self):
+    def train(self) -> None:
+        """
+        A callable function that prepares the data and trains the model.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         self.prepare_data()
         self.train_and_validate()
-
-
-if __name__ == "__main__":
-    import sys
-    dataset_path = sys.argv[1]
-    trainer = ModelTrainer(dataset_path=dataset_path, img_height=150, img_width=150, batch_size=32, epochs=30)
-    trainer.train()

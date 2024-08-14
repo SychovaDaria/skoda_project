@@ -18,6 +18,7 @@ Improvements:
 import cv2
 import numpy as np
 import os
+import sys
 from typing import List, Tuple
 
 from picamera2 import Picamera2
@@ -119,7 +120,10 @@ class Raspicam:
                           framerate=framerate,brightness=brightness, contrast=contrast)
             self.camera.start()
         else:
-            self.camera = cv2.VideoCapture(0) # TODO: automatically learn index of the camera
+            if sys.platform == "win32":
+                self.camera = cv2.VideoCapture(0, cv2.CAP_DSHOW) # TODO: automatically learn index of the camera
+            else:
+                self.camera = cv2.VideoCapture(0, cv2.CAP_ANY)
             self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution[0])
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution[1])
             self.set_controls(exposure_value=exposure_value,saturation=saturation,sharpness=sharpness,
@@ -151,18 +155,23 @@ class Raspicam:
             self.exposure_value = exposure_value
         if saturation is not None:
             self.saturation = saturation
-            self.saturation = self.saturation * 200/32
+            if not self.use_usb:
+                self.saturation = self.saturation * 32/200
         if sharpness is not None:
             self.sharpness = sharpness
-            self.sharpness = self.sharpness * 50/16
+            if not self.use_usb:
+                self.sharpness = self.sharpness * 16/50
         if framerate is not None:
             self.framerate = framerate
         if brightness is not None:
             self.brightness = brightness
-            self.brightness = (self.brightness+1) * 225/2 + 30
+            if not self.use_usb:
+                self.brightness = ((self.brightness-30)*2/255)-1
         if contrast is not None:
             self.contrast = contrast
-            self.contrast = self.contrast * 10/32
+            if not self.use_usb:
+                self.contrast = self.contrast * 32/10
+        #FIXME: not tested the conversion, rather check when testing on raspberry
         if auto_brightness_value is not None:
             self.auto_brightness_value = auto_brightness_value
         self.check_attributes()
@@ -374,7 +383,7 @@ class Raspicam:
 
         return mean_brightness
     
-    def check_attributes(self):
+    def check_attributes(self) -> None:
         """
         Check if the attributes are valid.
 
@@ -397,7 +406,7 @@ class Raspicam:
             else:
                 self.check_attributes_picamera()
     
-    def check_attributes_usb(self):
+    def check_attributes_usb(self) -> None:
         """
         Checks the attributes for USB camera
 
@@ -414,7 +423,7 @@ class Raspicam:
             raise ValueError("The USB contrast attribute must be a float in range [0; 10].")
         
 
-    def check_attributes_picamera(self):
+    def check_attributes_picamera(self) -> None:
         """
         Checks the attributes for picamera
 
@@ -432,4 +441,5 @@ class Raspicam:
         if not isinstance(self.contrast, float|int) or self.contrast < 0.0 or self.contrast > 32.0:
             raise ValueError("The picamera2 contrast attribute must be a float in range [0.0; 32.0]")
     
-        
+    def release(self):
+        self.camera.release()

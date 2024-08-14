@@ -45,7 +45,7 @@ from tkinter import ttk
 from tkinter import filedialog, PhotoImage
 import threading
 # local (our modules)
-from camera_module import Raspicam  # TODO: change to import the raspicam module
+from raspicam import Raspicam  # TODO: change to import the raspicam module
 from text_handler import TextHandler
 from trigger_module3 import PhoneDetector
 from training_module2 import ModelTrainer
@@ -147,7 +147,7 @@ class App(tk.Tk):
         except:
             raise Exception("CHYBA: Chyba při načítání proměnných")
 
-        self.camera = Raspicam() # start the camera
+        self.camera = Raspicam(use_usb=True) # start the camera
         try:
             self.nactiGUI()
         except:

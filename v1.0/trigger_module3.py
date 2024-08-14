@@ -1,15 +1,34 @@
+"""
+Module for detecting objects in a video frame.
+
+This module contains a class for detecting objects in a video frame using a custom CNN model. The class takes a pre
+trained model and a image (frame from video stream) and returns if the object is detected in the frame.
+"""
+
 import cv2
 import numpy as np
+import os
+from PIL import Image
+from threading import Thread
+import time
 import torch
 import torch.nn as nn
 from torchvision import transforms
-from PIL import Image
-import time
-import os
-from threading import Thread
+from typing import List
 
 class CustomCNN(nn.Module):
-    def __init__(self, layers, img_height=150):
+    """
+    Class containing the custom CNN model for object detection.
+
+    Args:
+        layers (list): A list containing the number of output channels for each layer of the CNN model.
+        img_height (int): The height of the input
+    
+    Attributes:
+        layers (nn.ModuleList): A list containing the layers of the CNN model.
+        classifier (nn.Sequential): A sequence of layers for the classifier part of the model.
+    """
+    def __init__(self, layers: List[int], img_height: int = 150):
         super(CustomCNN, self).__init__()
         self.layers = nn.ModuleList()
         input_channels = 3  # Используем 3 канала (RGB)
@@ -40,14 +59,28 @@ class CustomCNN(nn.Module):
 
 
 class PhoneDetector:
-    def __init__(self, model_path, img_height=150, img_width=150, capture_interval=20, update_ui_callback=None):
+    """
+    Class for detecting objects (right now a phone, hence the name) in a video frame using a custom CNN model.
+
+    Args:
+        model_path (str): The path to the pre trained model.
+        confidence_threshold (float): The confidence threshold for object detection.
+        img_height (int): The height of the input image.
+        img_width (int): The width of the input image.
+    
+    Attributes:
+        img_height (int): The height of the input image.
+        img_width (int): The width of the input image.
+        confidence_threshold (float): The confidence threshold for object detection.
+        model (CustomCNN): The custom CNN model for object detection.
+        transform (torchvision.transforms.Compose): A series of image transformations to be applied to the input image.
+    """
+    def __init__(self, model_path: str,confidence_threshold: float = 0.9, img_height: int = 150, img_width: int = 150):
         self.img_height = img_height
         self.img_width = img_width
-        self.capture_interval = capture_interval
-        self.last_detection_time = 0
+        self.confidence_threshold = confidence_threshold
         
-        
-        # Загрузка модели
+        # load the model
         self.model = CustomCNN([64, 128, 256], img_height=self.img_height)
         self.model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
         self.model.eval()
@@ -59,58 +92,36 @@ class PhoneDetector:
         ])
         
         os.makedirs('object', exist_ok=True)
-        self.running = True
 
-    def preprocess_image(self, image):
+    def preprocess_image(self, image: np.ndarray) -> torch.Tensor:
+        """
+        Preprocesses the input image for object detection.
+
+        Args:
+            image (np.ndarray): The input image as a numpy array.
+
+        Returns:
+            torch.Tensor: The preprocessed image as a PyTorch tensor.
+        """
         image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         image = self.transform(image)
         image = image.unsqueeze(0)
         return image
 
-    def detect_phone(self, frame):
+    def detect_phone(self, frame: np.ndarray) -> bool:
+        """
+        Detects a phone in the input image.
+
+        Args:
+            frame (np.ndarray): The input image as a numpy array.
+
+        Returns:
+            bool: True if a phone is detected in the image, False otherwise.
+        """
         processed_image = self.preprocess_image(frame)
         with torch.no_grad():
             outputs = self.model(processed_image)
             probabilities = torch.softmax(outputs, dim=1)
             confidence, predicted = torch.max(probabilities, 1)
-        print(f'Predicted: {predicted.item()}, Confidence: {confidence.item()}')
-        return predicted.item() == 1 and confidence.item() >= 0.95
-
-    def capture_images(self, frame):
-        for i in range(3):
-            timestamp = time.strftime("%Y%m%d-%H%M%S")
-            filename = os.path.join('object', f'object_detected_{timestamp}.jpg')
-            cv2.imwrite(filename, frame)
-            time.sleep(0.5)
-
-    def run(self):
-        while self.running:
-            current_time = time.time()
-            frame = self.camera_stream  # Получаем кадр из потока, переданного из GUI
-            
-            if frame is not None:
-                frame = cv2.flip(frame, -1)
-
-                if current_time - self.last_detection_time > self.capture_interval:
-                    if self.detect_phone(frame):
-                        capture_thread = Thread(target=self.capture_images, args=(frame,))
-                        capture_thread.start()
-                        self.last_detection_time = time.time()
-                    else:
-                        print("No object detected.")
-
-                if self.update_ui_callback:
-                    self.update_ui_callback(frame)
-
-            time.sleep(0.02)
-
-    def stop(self):
-        self.running = False
-
-
-if __name__ == "__main__":
-    import sys
-    model_path = sys.argv[1]
-    camera = Raspicam(use_usb=False)  # Инициализация камеры
-    detector = PhoneDetector(model_path=model_path, camera=camera, img_height=150, img_width=150, capture_interval=20)
-    detector.run()
+        #print(f'Predicted: {predicted.item()}, Confidence: {confidence.item()}')
+        return predicted.item() == 1 and confidence.item() >= self.confidence_threshold

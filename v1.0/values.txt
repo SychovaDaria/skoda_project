@@ -1,8 +1,8 @@
 Sour=USB
 Res=640x480
-Bri=1.0
-Con=6.0
+Bri=255.0
+Con=1.5
 Fram=0.8
-Exp=0.8
-Sat=0.8
+Exp=22.1
+Sat=153.5
 Sha=0.8
