@@ -158,7 +158,7 @@ class App(tk.Tk):
         self.bgThread = threading.Thread(target=self.video_stream, daemon=True) # thread for the video stream
         self.bgThread.start()
         self.trigger_run = False
-        self.trigger = Trigger(None)
+        self.trigger = Trigger(None, trigger_delay=5, num_of_pictures= 3, times_between_pictures= 5)
         logging.info("Aplikace spuštěna")
         
         
@@ -331,7 +331,7 @@ class App(tk.Tk):
         
 
     # Loading of variables values
-    def load_variables(self, path:str) -> None:
+    def load_variables(self, path: str) -> None:
         """
         Loads the camera settings from the file.
         If the file does not exist, sets the default values.
@@ -373,7 +373,7 @@ class App(tk.Tk):
 
 
     # Saving variables values
-    def save_variables(self, path:str) -> None:
+    def save_variables(self, path: str) -> None:
         """
         Saves the current camera settings to the file.
 
@@ -430,8 +430,8 @@ class App(tk.Tk):
         
         if img is not None:
             if self.trigger_run:
-                detector = PhoneDetector(model_path=self.model_path)
-                self.trigger.process_trigger_signal(img, detector.detect_phone(img)) # FIXME: no idea if it works, didnt test it :DDD
+                detector = PhoneDetector(model_path=self.model_path,confidence_threshold=0.5)
+                self.trigger.process_trigger_signal(detector.detect_phone(img), img) # FIXME: no idea if it works, didnt test it :DDD
             image = Image.fromarray(img)
             self.current_img_ref= PIL.ImageTk.PhotoImage(image)
             self.backround_img = self.Imgcanvas.create_image((self.Imgcanvas.winfo_width()/2),(self.Imgcanvas.winfo_height()/2), image=self.current_img_ref)

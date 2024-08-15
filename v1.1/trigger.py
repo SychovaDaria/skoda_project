@@ -54,16 +54,20 @@ class Trigger:
         folder_name (str): The folder where the pictures will be saved.
     """
     def __init__(self, folder_name : str, trigger_delay : float = DEFAULT_TRIGGER_DELAY,
-                 num_of_pictures : int = 1, 
+                 num_of_pictures : int = 1, time_to_reset : float = 0,
                  times_between_pictures : float|List[float] = DEFAULT_TIMES_BETWEEN_PICTURES,
                  trigger_mode: TriggerModes = TriggerModes.ALWAYS) -> None:
         self.trigger_delay = trigger_delay
+        self.time_to_reset = time_to_reset
         self.num_of_pictures = num_of_pictures
         self.times_between_pictures = times_between_pictures
+        if isinstance(self.times_between_pictures, float|int):
+                self.times_between_pictures = [self.times_between_pictures] * (self.num_of_pictures - 1)
         self.folder_name = folder_name
         self.trigger_mode = trigger_mode
         self.last_trigger_signal = False
         self.last_trigger_time = time.time()
+        self.first_trigger_time = time.time()
         self.capturing = False
         self.delay_number = 0
         self.check_attributes()
@@ -77,6 +81,8 @@ class Trigger:
         """
         if not isinstance(self.trigger_delay, float|int) or self.trigger_delay < 0:
             raise ValueError("The trigger_delay attribute must be a non-negative float.")
+        if not isinstance(self.time_to_reset, float|int) or self.time_to_reset < 0:
+            raise ValueError("The time_to_reset attribute must be a non-negative float.")
         if not isinstance(self.num_of_pictures, int) or self.num_of_pictures < 1:
             raise ValueError("The num_of_pictures attribute must be a positive integer.")
         if isinstance(self.times_between_pictures, float|int):
@@ -94,7 +100,7 @@ class Trigger:
         if not isinstance(self.trigger_mode, TriggerModes):
             raise ValueError("The trigger_mode attribute must be an instance of the TriggerModes enum.")
 
-    def set_config(self, folder_name : str = None, trigger_delay : float = None,
+    def set_config(self, folder_name : str = None, trigger_delay : float = None, time_to_reset : float = None,
                    num_of_pictures: int = None, times_between_pictures : float|List[float] = None,
                    trigger_mode: TriggerModes = None) -> None:
         """
@@ -113,6 +119,8 @@ class Trigger:
             self.folder_name = folder_name
         if trigger_delay is not None:
             self.trigger_delay = trigger_delay
+        if time_to_reset is not None:
+            self.time_to_reset = time_to_reset
         if num_of_pictures is not None:
             self.num_of_pictures = num_of_pictures
         if times_between_pictures is not None:
@@ -139,13 +147,15 @@ class Trigger:
         """
         if (not self.capturing and 
             (
-            (self.trigger_mode == TriggerModes.ALWAYS and trigger_signal) or 
-            (self.trigger_mode == TriggerModes.RISING_EDGE and trigger_signal and not self.last_trigger_signal) or 
-            (self.trigger_mode == TriggerModes.FALLING_EDGE and not trigger_signal and self.last_trigger_signal)
+            ((self.trigger_mode == TriggerModes.ALWAYS) and trigger_signal) or 
+            ((self.trigger_mode == TriggerModes.RISING_EDGE) and trigger_signal and not self.last_trigger_signal) or 
+            ((self.trigger_mode == TriggerModes.FALLING_EDGE) and not trigger_signal and self.last_trigger_signal)
             )
         ):
+            print("Started capturing")
             self.capturing = True
             self.last_trigger_time = time.time()
+            self.first_trigger_time = self.last_trigger_time
         self.last_trigger_signal = trigger_signal
         if self.capturing:
             self.capture_imgs(img)
@@ -163,22 +173,28 @@ class Trigger:
         """
         # wait for the initial delay
         if self.delay_number == 0:
+            print("waiting for the initial delay")
             if not self.wait_for_delay(self.last_trigger_time, self.trigger_delay):
                 return
-            self.delay_number += 1
             self.last_trigger_time = time.time()
-            self.save_img(img,self.delay_number-1)
+            self.save_img(img,self.delay_number)
+            self.delay_number += 1
         # the delays between the pictures
-        if self.delay_number <= self.num_of_pictures:
+        if self.delay_number < self.num_of_pictures:
+            print(f"waiting for the delay number {self.delay_number}")
             wait_time = self.times_between_pictures[self.delay_number - 1]
             if not self.wait_for_delay(self.last_trigger_time, wait_time):
                 return
             self.last_trigger_time = time.time()
-            self.save_img(img,self.delay_number-1)
+            self.save_img(img,self.delay_number)
             self.delay_number += 1
-        else:
+        else: 
+            # wait for the reset delay, the start capturing again
+            if not self.wait_for_delay(self.first_trigger_time, self.time_to_reset):
+                return
             self.capturing = False
-        
+            self.delay_number = 0
+    
     def wait_for_delay(self, start_time: float, delay_time: float) -> bool:
         """
         Returns True if the delay has passed, False otherwise.
@@ -202,8 +218,7 @@ class Trigger:
         Returns:
             None
         """
-        current_time = time.strftime("%m%d_%H%M%S")
-        filename = f"{current_time}_{num_of_img}.jpg"
+        filename = f"{self.first_trigger_time}_{num_of_img}.jpg"
         cv2.imwrite(self.folder_name+"/"+filename,img)
         
     '''

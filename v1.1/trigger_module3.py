@@ -123,5 +123,5 @@ class PhoneDetector:
             outputs = self.model(processed_image)
             probabilities = torch.softmax(outputs, dim=1)
             confidence, predicted = torch.max(probabilities, 1)
-        #print(f'Predicted: {predicted.item()}, Confidence: {confidence.item()}')
+        print(f'Predicted: {predicted.item()}, Confidence: {confidence.item()}')
         return predicted.item() == 1 and confidence.item() >= self.confidence_threshold

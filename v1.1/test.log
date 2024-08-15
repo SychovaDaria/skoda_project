@@ -8,3 +8,62 @@
 2024-08-14 09:48:37,164 - INFO - Aplikace spuštìna
 2024-08-14 09:50:03,791 - INFO - Aplikace spuštìna
 2024-08-14 09:50:47,655 - INFO - Aplikace spuštìna
+2024-08-15 08:10:56,636 - INFO - Aplikace spuštìna
+2024-08-15 08:11:05,059 - INFO - Model nebyl vybrán
+2024-08-15 08:16:06,932 - INFO - Aplikace spuštìna
+2024-08-15 08:16:19,685 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:16:31,919 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/test_img/test
+2024-08-15 08:16:31,919 - INFO - Trigger je pøipraven
+2024-08-15 08:16:32,979 - INFO - Trigger spuštìn
+2024-08-15 08:17:54,784 - INFO - Aplikace spuštìna
+2024-08-15 08:18:09,466 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:18:11,981 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:18:11,981 - INFO - Trigger je pøipraven
+2024-08-15 08:18:12,565 - INFO - Trigger spuštìn
+2024-08-15 08:19:05,331 - INFO - Aplikace spuštìna
+2024-08-15 08:19:10,169 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:19:12,294 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:19:12,294 - INFO - Trigger je pøipraven
+2024-08-15 08:19:12,839 - INFO - Trigger spuštìn
+2024-08-15 08:19:41,416 - INFO - Aplikace spuštìna
+2024-08-15 08:19:44,965 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:19:47,340 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:19:47,340 - INFO - Trigger je pøipraven
+2024-08-15 08:19:48,101 - INFO - Trigger spuštìn
+2024-08-15 08:20:52,409 - INFO - Aplikace spuštìna
+2024-08-15 08:20:56,247 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:20:59,403 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:20:59,403 - INFO - Trigger je pøipraven
+2024-08-15 08:21:00,515 - INFO - Trigger spuštìn
+2024-08-15 08:21:46,102 - INFO - Aplikace spuštìna
+2024-08-15 08:21:53,169 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:21:56,356 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:21:56,356 - INFO - Trigger je pøipraven
+2024-08-15 08:21:56,877 - INFO - Trigger spuštìn
+2024-08-15 08:24:00,674 - INFO - Aplikace spuštìna
+2024-08-15 08:24:08,169 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:24:10,481 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:24:10,481 - INFO - Trigger je pøipraven
+2024-08-15 08:24:11,166 - INFO - Trigger spuštìn
+2024-08-15 08:24:39,870 - INFO - Aplikace spuštìna
+2024-08-15 08:24:43,918 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:24:46,513 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.1
+2024-08-15 08:24:46,513 - INFO - Trigger je pøipraven
+2024-08-15 08:24:49,252 - INFO - Trigger spuštìn
+2024-08-15 08:28:19,950 - INFO - Aplikace spuštìna
+2024-08-15 08:28:25,590 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:28:33,215 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/test_img/test
+2024-08-15 08:28:33,215 - INFO - Trigger je pøipraven
+2024-08-15 08:28:34,370 - INFO - Trigger spuštìn
+2024-08-15 08:30:22,766 - INFO - Aplikace spuštìna
+2024-08-15 08:30:28,168 - INFO - Model nebyl vybrán
+2024-08-15 08:30:30,622 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/test_img/test
+2024-08-15 08:30:38,418 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:30:38,418 - INFO - Trigger je pøipraven
+2024-08-15 08:30:39,777 - INFO - Trigger spuštìn
+2024-08-15 08:32:03,423 - INFO - Aplikace spuštìna
+2024-08-15 08:32:08,887 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.1/best_model_state_dict_f1.pth
+2024-08-15 08:32:15,747 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/test_img/test
+2024-08-15 08:32:15,747 - INFO - Trigger je pøipraven
+2024-08-15 08:32:17,008 - INFO - Trigger spuštìn
+2024-08-15 08:32:56,410 - INFO - Trigger zastaven
