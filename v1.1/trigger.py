@@ -220,27 +220,3 @@ class Trigger:
         """
         filename = f"{self.first_trigger_time}_{num_of_img}.jpg"
         cv2.imwrite(self.folder_name+"/"+filename,img)
-        
-    '''
-    def trigg(self) -> None:
-        """
-        Take pictures from the camera using the settings in the attributes.
-
-        Returns:
-            None
-        """
-        current_time = time.strftime("%Y%m%d_%H%M%S")
-        # wait for the trigger delay
-        time.sleep(self.trigger_delay)
-        # transform times_between_pictures to a list if it is a float
-        if isinstance(self.times_between_pictures, float|int):
-            times_between_pictures = [self.times_between_pictures] * (self.num_of_pictures - 1)
-        else:
-            times_between_pictures = self.times_between_pictures
-        # capture the imgs
-        for i in range(self.num_of_pictures):
-            filename = f"{current_time}_{i}.jpg" # create the filename
-            self.camera.capture_img_and_save(filename=filename, folder_path=self.folder_name)
-            if i < self.num_of_pictures - 1:
-                time.sleep(times_between_pictures[i])
-    '''

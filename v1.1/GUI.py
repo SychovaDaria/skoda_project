@@ -634,7 +634,6 @@ class App(tk.Tk):
             None
         """
         self.save_variables(self.variables_file_path)
-        self.camera.release()
         self.destroy()
 
 if __name__ == "__main__":
