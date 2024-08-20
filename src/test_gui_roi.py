@@ -24,6 +24,8 @@ import PIL
 import time
 from edges import EdgeDetector
 from typing import List
+import datetime
+import os
 
 CORNER_THRESHOLD = 10
 NO_ROI_SELECTED = -1
@@ -115,10 +117,12 @@ class RoiSelector(ctk.CTk):
         self.btn = ctk.CTkButton(self.btnFrame, text="Create ROI", command=self.create_roi)
         self.btn.grid(row=0, column=0, sticky="ew")
         
+        #self.open_settings_btn = ctk.CTkButton(self.btnFrame, text="Open settings", command=self.open_roi_settings_window)
+        #self.open_settings_btn.grid(row=1, column=0, sticky="ew")
         
 
         self.settingsSaveBtn = ctk.CTkButton(self.btnFrame, text="Save settings", command=self.save_settings)
-        self.settingsSaveBtn.grid(row=23, column=0, sticky="ew")
+        self.settingsSaveBtn.grid(row=2, column=0, sticky="ew")
         
         
         self.canvasFrame = ctk.CTkFrame(self)
@@ -145,6 +149,12 @@ class RoiSelector(ctk.CTk):
         self.roi_list = []
         self.roi_settings_list = []
 
+        self.min_length = 60
+        self.angle = 0
+        self.angle_tolerance = 10
+
+        self.folder_name = "test"
+
         #self.roi_settings = [] # TODO: for now, uniform and default
         self.drawn_lines = []
 
@@ -161,7 +171,7 @@ class RoiSelector(ctk.CTk):
         
 
     def open_roi_settings_window(self):
-        self.roi_settings_window = ctk.CTkToplevel(self, title="ROI settings")
+        self.roi_settings_window = ctk.CTkToplevel(self)
         self.roi_settings_window.geometry("400x400")
         self.roi_settings_window.minsize(400, 400)
         
@@ -170,54 +180,54 @@ class RoiSelector(ctk.CTk):
         self.settingsNumOfPictures = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Number of pictures")
         self.settingsNumOfPictures.grid(row=1, column=1, sticky="ew")
         self.settingsNumOfPictures.insert(0, "1")
-        self.settingsDelayBetweenPicturesLbl = ctk.CTkLabel(self.btnFrame, text="Delay between pictures")
+        self.settingsDelayBetweenPicturesLbl = ctk.CTkLabel(self.roi_settings_window, text="Delay between pictures")
         self.settingsDelayBetweenPicturesLbl.grid(row=2, column=0, sticky="ew")
-        self.settingsDelayBetweenPictures = ctk.CTkEntry(self.btnFrame, placeholder_text="Delay between pictures")
+        self.settingsDelayBetweenPictures = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Delay between pictures")
         self.settingsDelayBetweenPictures.grid(row=2, column=1, sticky="ew")
-        self.settingsDelayBetweenPictures.insert(0, str(self.settings))
-        self.settingsFirstDelayLbl = ctk.CTkLabel(self.btnFrame, text="First delay")
+        self.settingsDelayBetweenPictures.insert(0, "0")
+        self.settingsFirstDelayLbl = ctk.CTkLabel(self.roi_settings_window, text="First delay")
         self.settingsFirstDelayLbl.grid(row=5, column=0, sticky="ew")
-        self.settingsFirstDelay = ctk.CTkEntry(self.btnFrame, placeholder_text="First delay")
+        self.settingsFirstDelay = ctk.CTkEntry(self.roi_settings_window, placeholder_text="First delay")
         self.settingsFirstDelay.grid(row=6, column=0, sticky="ew")
         self.settingsFirstDelay.insert(0, "0")
-        self.settingsAfterDelayLbl = ctk.CTkLabel(self.btnFrame, text="After delay")
+        self.settingsAfterDelayLbl = ctk.CTkLabel(self.roi_settings_window, text="After delay")
         self.settingsAfterDelayLbl.grid(row=7, column=0, sticky="ew")
-        self.settingsAfterDelay = ctk.CTkEntry(self.btnFrame, placeholder_text="After delay")
+        self.settingsAfterDelay = ctk.CTkEntry(self.roi_settings_window, placeholder_text="After delay")
         self.settingsAfterDelay.grid(row=8, column=0, sticky="ew")
         self.settingsAfterDelay.insert(0, "0")
-        self.settingsMinValLbl = ctk.CTkLabel(self.btnFrame, text="Min val")
+        self.settingsMinValLbl = ctk.CTkLabel(self.roi_settings_window, text="Min val")
         self.settingsMinValLbl.grid(row=9, column=0, sticky="ew")
-        self.settingsMinVal = ctk.CTkEntry(self.btnFrame, placeholder_text="Min val")
+        self.settingsMinVal = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Min val")
         self.settingsMinVal.grid(row=10, column=0, sticky="ew")
         self.settingsMinVal.insert(0, "10")
-        self.settingsMaxValLbl = ctk.CTkLabel(self.btnFrame, text="Max val")
+        self.settingsMaxValLbl = ctk.CTkLabel(self.roi_settings_window, text="Max val")
         self.settingsMaxValLbl.grid(row=11, column=0, sticky="ew")
-        self.settingsMaxVal = ctk.CTkEntry(self.btnFrame, placeholder_text="Max val")
+        self.settingsMaxVal = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Max val")
         self.settingsMaxVal.grid(row=12, column=0, sticky="ew")
         self.settingsMaxVal.insert(0, "50")
-        self.settingsMinValueOfVotesLbl = ctk.CTkLabel(self.btnFrame, text="Min value of votes")
+        self.settingsMinValueOfVotesLbl = ctk.CTkLabel(self.roi_settings_window, text="Min value of votes")
         self.settingsMinValueOfVotesLbl.grid(row=13, column=0, sticky="ew")
-        self.settingsMinValueOfVotes = ctk.CTkEntry(self.btnFrame, placeholder_text="Min value of votes")
+        self.settingsMinValueOfVotes = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Min value of votes")
         self.settingsMinValueOfVotes.grid(row=14, column=0, sticky="ew")
         self.settingsMinValueOfVotes.insert(0, "90")
-        self.settingsMinLengthOfStraightLineLbl = ctk.CTkLabel(self.btnFrame, text="Min length of straight line")
+        self.settingsMinLengthOfStraightLineLbl = ctk.CTkLabel(self.roi_settings_window, text="Min length of straight line")
         self.settingsMinLengthOfStraightLineLbl.grid(row=15, column=0, sticky="ew")
-        self.settingsMinLengthOfStraightLine = ctk.CTkEntry(self.btnFrame, placeholder_text="Min length of straight line")
+        self.settingsMinLengthOfStraightLine = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Min length of straight line")
         self.settingsMinLengthOfStraightLine.grid(row=16, column=0, sticky="ew")
         self.settingsMinLengthOfStraightLine.insert(0, "60")
-        self.settingsMaxGapBetweenLinesLbl = ctk.CTkLabel(self.btnFrame, text="Max gap between lines")
+        self.settingsMaxGapBetweenLinesLbl = ctk.CTkLabel(self.roi_settings_window, text="Max gap between lines")
         self.settingsMaxGapBetweenLinesLbl.grid(row=17, column=0, sticky="ew")
-        self.settingsMaxGapBetweenLines = ctk.CTkEntry(self.btnFrame, placeholder_text="Max gap between lines")
+        self.settingsMaxGapBetweenLines = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Max gap between lines")
         self.settingsMaxGapBetweenLines.grid(row=18, column=0, sticky="ew")
         self.settingsMaxGapBetweenLines.insert(0, "4")
-        self.settingsAngleLbl = ctk.CTkLabel(self.btnFrame, text="Angle")
+        self.settingsAngleLbl = ctk.CTkLabel(self.roi_settings_window, text="Angle")
         self.settingsAngleLbl.grid(row=19, column=0, sticky="ew")
-        self.settingsAngle = ctk.CTkEntry(self.btnFrame, placeholder_text="Angle")
+        self.settingsAngle = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Angle")
         self.settingsAngle.grid(row=20, column=0, sticky="ew")
         self.settingsAngle.insert(0, "0")
-        self.settingsAngleToleranceLbl = ctk.CTkLabel(self.btnFrame, text="Angle tolerance")
+        self.settingsAngleToleranceLbl = ctk.CTkLabel(self.roi_settings_window, text="Angle tolerance")
         self.settingsAngleToleranceLbl.grid(row=21, column=0, sticky="ew")
-        self.settingsAngleTolerance = ctk.CTkEntry(self.btnFrame, placeholder_text="Angle tolerance")
+        self.settingsAngleTolerance = ctk.CTkEntry(self.roi_settings_window, placeholder_text="Angle tolerance")
         self.settingsAngleTolerance.grid(row=22, column=0, sticky="ew")
         self.settingsAngleTolerance.insert(0, "10")
         
@@ -240,12 +250,14 @@ class RoiSelector(ctk.CTk):
             self.statLbl.configure(text="Current ROI ID:"+"   "+"None")
         else:
             self.statLbl.configure(text="Current ROI ID:"+"   "+str(self.roi_id))
-        if self.roi_id != NO_ROI_SELECTED:
-            self.load_settings()
+        #if self.roi_id != NO_ROI_SELECTED:
+        #    self.load_settings()
 
     def update_video_stream(self):
+        save_picture = False
         img = self.camera.capture_img()
-        for line in self.drawn_lines:
+        save_img = img.copy()
+        for line in self.drawn_lines: # delete previously drawn lines
             self.canvas.delete(line)
         img_height,img_width,_ = np.shape(img)
         for roi in self.roi_list:
@@ -254,15 +266,21 @@ class RoiSelector(ctk.CTk):
             image = img[y1:y2,x1:x2,:]
             lines = self.start_edge_detection(image, self.roi_settings_list[self.roi_list.index(roi)])
             for line in lines:
+                line_length = np.linalg.norm(np.array(line[0:2])-np.array(line[2:4]))
+                line_angle = self.get_line_angle(line)
+                if line_length < self.min_length or (line_angle < self.angle-self.angle_tolerance or line_angle > self.angle+self.angle_tolerance):
+                    continue
                 x0,y0,x1,y2 = self.img_to_canvas_coords(line, img_width, img_height) + np.array(np.concatenate((cur_roi_coords[0:2],cur_roi_coords[0:2])))
                 can_line = self.canvas.create_line(x0,y0,x1,y2)
                 self.drawn_lines.append(can_line)
+                save_picture = True
         img = cv2.resize(img, (self.canvas.winfo_width(), self.canvas.winfo_height()))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
         # if i dont have the reference, garbage colector will delete the img and canvas will show jacksh*t :)
         self.canvas.itemconfigure(self.background_img, image=self.current_img_ref)
-
+        if save_picture:
+            self.save_img(save_img)
         self.after(400, self.update_video_stream)
 
     def start_edge_detection(self, image, settings):
@@ -272,7 +290,15 @@ class RoiSelector(ctk.CTk):
                                  angle_tolerance=settings.angle_tolerance)
         return edge.get_lines(image)
         
-   
+    def save_img(self, img:np.array) -> None:
+        """
+        Saves the image to the file.
+        """
+        print("saving image")
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        file_name = f"{current_time}.jpg"
+        file_path = os.path.join(self.folder_name, file_name)
+        cv2.imwrite(file_path, img)
  
     def canvas_to_img_coords(self, coords:List[int], img_width:int, img_height:int) -> List[int]:
         x1,y1,x2,y2 = coords
@@ -294,7 +320,18 @@ class RoiSelector(ctk.CTk):
         y2 = int(np.floor(y2/img_height*can_height))
         return [x1,y1,x2,y2]
 
+    def get_line_angle(self, line_coords: List[int|float]) -> float:
+        """
+        Returns the angle of the line in degrees.
 
+        Args:
+            line_coords (List[int|float]): The coordinates of the line.
+        
+        Returns:
+            float: The angle of the line in degrees.
+        """
+        x1,y1,x2,y2 = line_coords
+        return np.arctan2(y2-y1, x2-x1)*180/np.pi
 
     def on_click(self, event):
         # check if i am clicking near the top left and bottom right corners of the roi
@@ -390,8 +427,8 @@ class RoiSelector(ctk.CTk):
         Saves the settings for current ROI.
         """
         index = self.roi_list.index(self.roi_id)
-        settings = self.roi_settings_list[index]
-        settings.update_settings(int(self.settingsNumOfPictures.get()), int(self.settingsDelayBetweenPictures.get()), int(self.settingsFirstDelay.get()), int(self.settingsAfterDelay.get()), 
+        self.settings = self.roi_settings_list[index]
+        self.settings.update_settings(int(self.settingsNumOfPictures.get()), int(self.settingsDelayBetweenPictures.get()), int(self.settingsFirstDelay.get()), int(self.settingsAfterDelay.get()), 
                                  int(self.settingsMinVal.get()), int(self.settingsMaxVal.get()), int(self.settingsMinValueOfVotes.get()), int(self.settingsMinLengthOfStraightLine.get()),
                                  int(self.settingsMaxGapBetweenLines.get()), int(self.settingsAngle.get()), int(self.settingsAngleTolerance.get()))
 
