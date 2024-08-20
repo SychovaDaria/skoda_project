@@ -431,14 +431,13 @@ class App(tk.Tk):
         if img is not None:
             if self.trigger_run:
                 detector = PhoneDetector(model_path=self.model_path,confidence_threshold=0.5)
-                self.trigger.process_trigger_signal(detector.detect_phone(img), img) # FIXME: no idea if it works, didnt test it :DDD
+                self.trigger.process_trigger_signal(detector.detect_phone(img), img)
             image = Image.fromarray(img)
             self.current_img_ref= PIL.ImageTk.PhotoImage(image)
             self.backround_img = self.Imgcanvas.create_image((self.Imgcanvas.winfo_width()/2),(self.Imgcanvas.winfo_height()/2), image=self.current_img_ref)
         img=cv2.resize(img, (self.Imgcanvas.winfo_width(), self.Imgcanvas.winfo_height()))
         self.current_img_ref=PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img))
         self.Imgcanvas.itemconfigure(self.backround_img, image=self.current_img_ref)
-
 
         self.video=self.after(10, self.video_stream) # loop
 

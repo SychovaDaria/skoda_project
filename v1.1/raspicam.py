@@ -267,7 +267,7 @@ class Raspicam:
         print(f"\tFramerate: {self.framerate}")
         print(f"\tBrightness: {self.brightness}")
         print(f"\tContrast: {self.contrast}")
-        print(f"\tAuto Exposure On: {self.auto_exposure_on}")
+        print(f"\tAuto Exposure On: {self.turn_auto_exposure_on}")
         print(f"\tAuto Brightness Value: {self.auto_brightness_value}")
 
 
@@ -284,7 +284,7 @@ class Raspicam:
                 raise KeyError("Failed to read image from USB camera")
         else:
             image = self.camera.capture_array()
-            image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
+            #image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
             if self.turn_auto_exposure_on: # only turn auto brightness on picamera2, not when using USB
                 self.auto_brightness(image)
         image = np.flip(image, axis = (0,1))

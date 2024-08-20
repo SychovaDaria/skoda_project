@@ -13,6 +13,10 @@ img_fn = ['../test_img/hdr_imgs/hdr_1.jpeg','../test_img/hdr_imgs/hdr_2.jpeg', '
 img_list = [cv2.imread(fn) for fn in img_fn]
 exp_times = np.array([1/15, 1/5, 1/1500, 1/8000], dtype = np.float32)
 
+"""
+for hdr imgs, rpi has to be reset every time to change the exposure time, so maybe just change the exposure value and take multiple pictures
+"""
+
 # Merge images
 # Debevec's algorithm
 debevec = cv2.createMergeDebevec()
