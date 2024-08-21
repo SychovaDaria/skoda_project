@@ -70,6 +70,7 @@ class Trigger:
         self.first_trigger_time = time.time()
         self.capturing = False
         self.delay_number = 0
+        self.file_name = None
         self.check_attributes()
     
     def check_attributes(self) -> None:
@@ -99,10 +100,12 @@ class Trigger:
             raise ValueError("The folder_name attribute must be a string representing a valid directory path.")
         if not isinstance(self.trigger_mode, TriggerModes):
             raise ValueError("The trigger_mode attribute must be an instance of the TriggerModes enum.")
+        if self.file_name is not None and not(isinstance(self.file_name, str)):
+            raise ValueError("The file_name attribute must be a string.")
 
     def set_config(self, folder_name : str = None, trigger_delay : float = None, time_to_reset : float = None,
                    num_of_pictures: int = None, times_between_pictures : float|List[float] = None,
-                   trigger_mode: TriggerModes = None) -> None:
+                   trigger_mode: TriggerModes = None, file_name: str = None) -> None:
         """
         Set the configuration of the trigger.
 
@@ -130,7 +133,8 @@ class Trigger:
                 self.times_between_pictures = [self.times_between_pictures] * (self.num_of_pictures - 1)
         if trigger_mode is not None:
             self.trigger_mode = trigger_mode
-        
+        if file_name is not None:
+            self.file_name = file_name
         self.check_attributes()
 
 
@@ -218,5 +222,8 @@ class Trigger:
         Returns:
             None
         """
-        filename = f"{self.first_trigger_time}_{num_of_img}.jpg"
+        if self.file_name is not None:
+            filename = f"{self.file_name}_{self.first_trigger_time}_{num_of_img}.jpg"
+        else:
+            filename = f"{self.first_trigger_time}_{num_of_img}.jpg"
         cv2.imwrite(self.folder_name+"/"+filename,img)
