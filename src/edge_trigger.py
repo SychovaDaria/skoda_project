@@ -29,6 +29,7 @@ import os
 
 CORNER_THRESHOLD = 10
 NO_ROI_SELECTED = -1
+DELAY_TIME = 5
 
 
 class RoiSettings():
@@ -267,6 +268,8 @@ class RoiSelector(ctk.CTk):
             x1,y1,x2,y2 = self.canvas_to_img_coords(cur_roi_coords, img_width, img_height)
             image = img[y1:y2,x1:x2,:]
             lines = self.start_edge_detection(image, self.roi_settings_list[self.roi_list.index(roi)])
+            if len(lines) > 0:
+                save_picture = True
             for line in lines:
                 #line_length = np.linalg.norm(np.array(line[0:2])-np.array(line[2:4]))
                 #line_angle = self.get_line_angle(line)
@@ -275,7 +278,6 @@ class RoiSelector(ctk.CTk):
                 x0,y0,x1,y2 = self.img_to_canvas_coords(line, img_width, img_height) + np.array(np.concatenate((cur_roi_coords[0:2],cur_roi_coords[0:2])))
                 can_line = self.canvas.create_line(x0,y0,x1,y2)
                 self.drawn_lines.append(can_line)
-                save_picture = True
         img = cv2.resize(img, (self.canvas.winfo_width(), self.canvas.winfo_height()))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.current_img_ref = PIL.ImageTk.PhotoImage(PIL.Image.fromarray(img)) 
@@ -284,7 +286,8 @@ class RoiSelector(ctk.CTk):
         if save_picture:
             self.save_img(save_img)
             # TODO: add a delay maybe :DD
-        self.after(400, self.update_video_stream)
+            time.sleep(DELAY_TIME)
+        self.after(100, self.update_video_stream)
 
     def start_edge_detection(self, image, settings):
         edge = EdgeDetector(min_val=settings.min_val, max_val=settings.max_val, min_value_of_votes=settings.min_value_of_votes, 
