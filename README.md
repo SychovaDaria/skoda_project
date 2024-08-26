@@ -54,13 +54,12 @@ class implemented in codes_detector.py
 cv2.Stitcher_create(), but its not perfect. Good for creating panorama, but fe if we would have a moving part on a conveyer belt, then it would try to stitch it according to the background if it was visible an non-uniform (fe on all white background this is not a problem, but when there are a lot of features, it is). Could be fixed by either cropping all the images, or make a roi where the algorhytm would look for the features, but that would mean to write our own algo (img to grayscale, extract features from roi, knn, RANSAC, ..., but cv2 has most of this implemented so its not that hard)
 
 # Connecting to rapsberry pi remotely
-## Raspberry pi connect
-Very easy way to do this, but since it goes through the raspberry servers we can't use it, but if you want to use it just for development, check the [Rasberry Pi Connect](https://www.raspberrypi.com/software/connect/) webpage.
-## VNC server
-Start a VNC server on the raspberry and then connect through a VNC reader app, for example [RealVNC Viewer](https://www.realvnc.com/en/connect/download/viewer/?lai_sr=0-4&lai_sl=l,).
-## NoVNC
-This should be a way so no app is needed, you are supposed to just open a link in a browser, but I could not get it to work, here is the link to their github: https://github.com/novnc/noVNC#browser-requirements
-
+You can use SSH with X11 forwarding. Steps:
+1. Ensure that you are on the same wifi as the raspberry, or that you are connected using Ethernet. (If you are using ethernet cable, make sure to configure static IP adresses on your machine and on the raspberry)
+2. Download Xming (a software to show the X11 forwarded data)
+3. Either through Putty (cmd emulator) or through command line, connect to the raspberry.
+    If you are using Putty, enable X11 forwarding before starting the session. (I have not been able to get it to work through command line, so I suggest Putty)
+4. Start the software on the command line.
 # Pepa tasks:
 - Threads
 - Raspicam auto brightness just based on ROI
