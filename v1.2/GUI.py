@@ -48,7 +48,7 @@ import threading
 from raspicam import Raspicam  # TODO: change to import the raspicam module
 from text_handler import TextHandler
 from training_module2 import ModelTrainer
-from trigger import Trigger
+from trigger import Trigger, TriggerModes
 from trigger_module3 import PhoneDetector
 
 
@@ -140,8 +140,6 @@ class App(tk.Tk):
         self.Exp = tk.DoubleVar()
         self.Sat = tk.DoubleVar()
         self.Sha = tk.DoubleVar()
-        # Trigger vars
-        
 
         # Loading variables at start
         self.variables_file_path = os.path.join(os.path.dirname(__file__),"values.txt")
@@ -345,12 +343,105 @@ class App(tk.Tk):
         self.trig_window = tk.Toplevel(self,)
         self.trig_window.title("ŠKODA SmartCam - Nastavení")
         self.trig_window.resizable(False, False)
+        # Widgets
+
         # Nadpis
         ttk.Label(self.trig_window, text="Nastavení akvizice fotek", anchor="center").grid(row=0, column=0, padx=pad, pady=pad, columnspan=3, sticky="nsew")
 
         # Settings Item
-        
+        # initial delay
+        ttk.Label(self.trig_window, text="První delay:", anchor='w').grid(row=1, column=0, padx=pad, pady=pad, sticky='nsew')
 
+        init_delay_entry = ttk.Entry(self.trig_window)
+        init_delay_entry.grid(row=1, column=1, padx=pad, pady=pad)
+        init_delay_entry.insert(0, self.trigger.trigger_delay)
+
+        # time to reset
+        ttk.Label(self.trig_window, text="Reset time:", anchor='w').grid(row=2, column=0, padx=pad, pady=pad, sticky='nsew')
+
+        reset_time_entry = ttk.Entry(self.trig_window)
+        reset_time_entry.grid(row=2, column=1, padx=pad, pady=pad)
+        reset_time_entry.insert(0, self.trigger.time_to_reset)
+
+        # number of pictures
+        ttk.Label(self.trig_window, text="Počet fotek:", anchor='w').grid(row=3, column=0, padx=pad, pady=pad, sticky='nsew')
+
+        num_pics_entry = ttk.Entry(self.trig_window)
+        num_pics_entry.grid(row=3, column=1, padx=pad, pady=pad)    
+        num_pics_entry.insert(0, self.trigger.num_of_pictures)
+
+        # time between pictures
+        ttk.Label(self.trig_window, text="Čas mezi fotkami:", anchor='w').grid(row=4, column=0, padx=pad, pady=pad, sticky='nsew')
+        
+        time_between_pics_entry = ttk.Entry(self.trig_window)
+        time_between_pics_entry.grid(row=4, column=1, padx=pad, pady=pad)
+        if self.trigger.num_of_pictures > 1:
+            time_between_pics_entry.insert(0, self.trigger.times_between_pictures[0])
+        else:
+            time_between_pics_entry.insert(0, self.trigger.times_between_pictures)
+        # folder name --> already set in the selectshotsfolder function
+
+        # trigger mode
+        trigger_mode = self.trigger.trigger_mode
+        ttk.Label(self.trig_window, text="Režim:", anchor='w').grid(row=5, column=0, padx=pad, pady=pad, sticky='nsew')
+        trigger_mode_string = tk.StringVar()
+        if trigger_mode == TriggerModes.ALWAYS:
+            trigger_mode_string.set("Always")
+        elif trigger_mode == TriggerModes.RISING_EDGE:
+            trigger_mode_string.set("Rising edge")
+        else:
+            trigger_mode_string.set("Falling edge")
+        trigger_mode_entry = ttk.OptionMenu(self.trig_window, trigger_mode_string, trigger_mode_string.get(), *["Always", "Rising edge", "Falling edge"])
+        trigger_mode_entry.grid(row=5, column=1, padx=pad, pady=pad)
+
+        ttk.Label(self.trig_window, text="Název souborů:", anchor='w').grid(row=6, column=0, padx=pad, pady=pad, sticky='nsew')
+
+        file_name_entry = ttk.Entry(self.trig_window)
+        file_name_entry.grid(row=6, column=1, padx=pad, pady=pad)
+        file_name_entry.insert(0, self.trigger.file_name)
+
+        # Save settings button
+        ttk.Button(self.trig_window, text="Uložit", command = lambda: self.save_trigger_vars(
+            init_delay_entry.get(),num_pics_entry.get(),
+            time_between_pics_entry.get(),reset_time_entry.get(),trigger_mode_string.get(),file_name_entry.get()
+        )).grid(row=7, column=0,columnspan=2, padx=pad, pady=pad, sticky='nsew')
+
+    def save_trigger_vars(self, initial_delay, num_of_pictures, time_between_pictures, reset_time, trigger_mode, file_name) -> None:
+        """
+        Saves the trigger settings.
+
+        Args:
+            initial_delay (float): Initial delay of the trigger.
+            num_of_pictures (int): Number of pictures to take.
+            time_between_pictures (float): Time between the pictures.
+            reset_time (float): Time to reset the trigger.
+            trigger_mode (TriggerModes): Mode of the trigger.
+            file_name (str): Name of the file to save the pictures to.
+
+        Returns:
+            None
+        """
+        if trigger_mode == "Always":
+            trigger_mode = TriggerModes.ALWAYS
+        elif trigger_mode == "Rising edge":
+            trigger_mode = TriggerModes.RISING_EDGE
+        else:
+            trigger_mode = TriggerModes.FALLING_EDGE
+        # check the parameters:
+        if float(initial_delay) < 0:
+            logging.info("Chyba: První delay musí být kladné číslo")
+            return
+        if int(num_of_pictures) < 1:
+            logging.info("Chyba: Počet fotek musí být kladné celé číslo")
+            return
+        if float(time_between_pictures) < 0:
+            logging.info("Chyba: Čas mezi fotkami musí být kladné číslo")
+            return
+        if float(reset_time) < 0:
+            logging.info("Chyba: Reset time musí být kladné číslo")
+            return
+        self.trigger.set_config(trigger_delay=float(initial_delay), num_of_pictures=int(num_of_pictures), times_between_pictures=float(time_between_pictures), time_to_reset=float(reset_time), trigger_mode=trigger_mode, file_name=file_name)
+        
 
     # Loading of variables values
     def load_variables(self, path: str) -> None:

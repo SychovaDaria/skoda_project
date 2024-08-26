@@ -72,3 +72,12 @@
 2024-08-21 08:27:30,107 - INFO - Aplikace spuštìna
 2024-08-21 08:27:47,796 - INFO - Aplikace spuštìna
 2024-08-21 08:28:21,579 - INFO - Aplikace spuštìna
+2024-08-26 08:09:04,481 - INFO - Aplikace spuštìna
+2024-08-26 08:09:11,019 - INFO - Složka pro ukládání trénovacích fotek nebyla vybrána
+2024-08-26 08:09:21,128 - INFO - Vybrán model ze souboru: C:/Me/skoda/raspicam_project/skoda_project/v1.2/best_model_state_dict.pth
+2024-08-26 08:09:26,081 - INFO - Vybrána složka pro ukládání fotek: C:/Me/skoda/raspicam_project/skoda_project/v1.2
+2024-08-26 08:09:26,081 - INFO - Trigger je pøipraven
+2024-08-26 08:09:28,334 - INFO - Trigger spuštìn
+2024-08-26 08:09:32,990 - INFO - Trigger zastaven
+2024-08-26 08:12:13,699 - INFO - Aplikace spuštìna
+2024-08-26 08:20:21,141 - INFO - Aplikace spuštìna

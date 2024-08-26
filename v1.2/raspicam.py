@@ -293,11 +293,11 @@ class Raspicam:
 
     def capture_img_and_save(self, filename: str, folder_path: str = "") -> None:
         """
-        Saves the current img to the desired folder.
+        Saves the current img to the desired folder. (if folder doesn't exist, it creates it)
+        using the provided filename.
 
         Saves the current img to the desired folder. If the folder doesn't exist, it creates it
         using the provided folder_path name. Can save pictures in .jpg and in .png format.
-        
         Args:
             filename (str): The name of the image file.
             folder_path (str, optional): The path of the folder where the image will be saved.
@@ -441,3 +441,6 @@ class Raspicam:
             raise ValueError("The picamera2 brightness attribute must be a float in range [-1.0; 1.0]")
         if not isinstance(self.contrast, float|int) or self.contrast < 0.0 or self.contrast > 32.0:
             raise ValueError("The picamera2 contrast attribute must be a float in range [0.0; 32.0]")
+    
+    def release(self):
+        self.camera.release()
