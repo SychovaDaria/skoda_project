@@ -389,14 +389,14 @@ class App(tk.Tk):
 
         # Settings Item
         # Source
-        ttk.Label(self.topLevel, text="Zdroj:",anchor='w').grid(row=1, column=0, padx=pad, pady=pad, sticky='nsew')
+        #ttk.Label(self.topLevel, text="Zdroj:",anchor='w').grid(row=1, column=0, padx=pad, pady=pad, sticky='nsew')
 
-        ttk.OptionMenu(self.topLevel, self.Sour, self.Sour.get(),*["RasPi", "USB"], direction='below').grid(row=1, column=1, padx=pad, pady=pad)
+        #ttk.OptionMenu(self.topLevel, self.Sour, self.Sour.get(),*["RasPi", "USB"], direction='below').grid(row=1, column=1, padx=pad, pady=pad)
 
         # Resolution
-        ttk.Label(self.topLevel, text="Rozlišení:", anchor='w').grid(row=2, column=0, padx=pad, pady=pad, sticky='nsew')
+        #ttk.Label(self.topLevel, text="Rozlišení:", anchor='w').grid(row=2, column=0, padx=pad, pady=pad, sticky='nsew')
 
-        ttk.OptionMenu(self.topLevel, self.Res, self.Res.get(), *["1920x1080","1280x720", "640x480"]).grid(row=2, column=1, padx=pad, pady=pad)
+        #ttk.OptionMenu(self.topLevel, self.Res, self.Res.get(), *["1920x1080","1280x720", "640x480"]).grid(row=2, column=1, padx=pad, pady=pad)
 
         # Brightness
         ttk.Label(self.topLevel, text="Jas:", anchor='w').grid(row=3, column=0, padx=pad, pady=pad, sticky='nsew')
@@ -411,16 +411,16 @@ class App(tk.Tk):
         ttk.Label(self.topLevel, textvariable=self.Con, anchor='w').grid(row=4, column=2, padx=pad, pady=pad, sticky='nsew')
 
         # Framerate
-        ttk.Label(self.topLevel, text="Framerate:", anchor='w').grid(row=5, column=0, padx=pad, pady=pad, sticky='nsew')
+        #ttk.Label(self.topLevel, text="Framerate:", anchor='w').grid(row=5, column=0, padx=pad, pady=pad, sticky='nsew')
 
-        ttk.Scale(self.topLevel, from_=-0.8, to=0.8, variable=self.Fram).grid(row=5, column=1, padx=pad, pady=pad)
-        ttk.Label(self.topLevel, textvariable=self.Fram, anchor='w').grid(row=5, column=2, padx=pad, pady=pad, sticky='nsew')
+        #ttk.Scale(self.topLevel, from_=-0.8, to=0.8, variable=self.Fram).grid(row=5, column=1, padx=pad, pady=pad)
+        #ttk.Label(self.topLevel, textvariable=self.Fram, anchor='w').grid(row=5, column=2, padx=pad, pady=pad, sticky='nsew')
 
         # Exposure
-        ttk.Label(self.topLevel, text="Expozice:", anchor='w').grid(row=6, column=0, padx=pad, pady=pad, sticky='nsew')
+        #ttk.Label(self.topLevel, text="Expozice:", anchor='w').grid(row=6, column=0, padx=pad, pady=pad, sticky='nsew')
 
-        ttk.Scale(self.topLevel, from_=0, to=100, variable=self.Exp).grid(row=6, column=1, padx=pad, pady=pad)
-        ttk.Label(self.topLevel, textvariable=self.Exp, anchor='w').grid(row=6, column=2, padx=pad, pady=pad, sticky='nsew')
+        #ttk.Scale(self.topLevel, from_=0, to=100, variable=self.Exp).grid(row=6, column=1, padx=pad, pady=pad)
+        #ttk.Label(self.topLevel, textvariable=self.Exp, anchor='w').grid(row=6, column=2, padx=pad, pady=pad, sticky='nsew')
 
         # Saturation
         ttk.Label(self.topLevel, text="Saturace:", anchor='w').grid(row=7, column=0, padx=pad, pady=pad, sticky='nsew')
@@ -434,16 +434,36 @@ class App(tk.Tk):
         ttk.Scale(self.topLevel, from_=0, to=50, variable=self.Sha).grid(row=8, column=1, padx=pad, pady=pad)
         ttk.Label(self.topLevel, textvariable=self.Sha, anchor='w').grid(row=8, column=2, padx=pad, pady=pad, sticky='nsew')
 
-        #Definition of  Doublevar tracing - for rounding them 
-        self.topLevel.attributes('-topmost', 'true')
-        self.Bri.trace_add("write", lambda *args: (self.round_and_update_var(self.Bri), self.camera.set_controls(brightness=self.Bri.get())))
-        self.Con.trace_add("write", lambda *args: (self.round_and_update_var(self.Con), self.camera.set_controls(contrast=self.Con.get())))
-        self.Fram.trace_add("write", lambda *args: self.round_and_update_var(self.Fram))
-        self.Exp.trace_add("write", lambda *args: self.round_and_update_var(self.Exp))
-        self.Sat.trace_add("write", lambda *args: (self.round_and_update_var(self.Sat), self.camera.set_controls(saturation=self.Sat.get())))
-        self.Sha.trace_add("write", lambda *args: (self.round_and_update_var(self.Sha), self.camera.set_controls(sharpness=self.Sha.get())))
-        self.Res.trace_add("write", lambda *args: self.set_resolution())
+        # Save settings button
+        ttk.Button(self.topLevel, text="Uložit", command = self.save_camera_settings).grid(row=9, column=0,columnspan=3, padx=pad, pady=pad, sticky='nsew')
         
+        #self.Bri.trace_add("write", lambda: self.format_value(self.Bri))
+        #self.Con.trace_add("write", lambda: self.format_value(self.Con))
+        #self.Sat.trace_add("write", lambda: self.format_value(self.Sat))
+        #self.Sha.trace_add("write", lambda: self.format_value(self.Sha))
+        
+
+    def format_value(self, double_var: tk.DoubleVar) -> None:
+        """
+        formats the double variable value to one decimal place
+        """
+        # Get the raw value from DoubleVar, format it to one decimal
+        formatted_value = round(double_var.get(),1)
+        # Set the formatted value back into the variable
+        double_var.set(formatted_value)
+
+    def save_camera_settings(self) -> None:
+        """
+        Saves the camera settings.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        self.camera.set_controls(saturation=self.Sat.get(), sharpness=self.Sha.get(), brightness=self.Bri.get(), contrast=self.Con.get())
+        self.save_variables(self.variables_file_path)
 
     # Loading of variables values
     def load_variables(self, path: str) -> None:
@@ -457,7 +477,7 @@ class App(tk.Tk):
         Returns:
             None
         """
-        default_values = {"Sour": "USB", "Res": "640x480", "Bri": 1, "Con": 6, "Fram": 0.8, "Exp": 0.8, "Sat": 0.8, "Sha": 0.8}
+        default_values = {"Sour": "USB", "Res": "640x480", "Bri": 50, "Con": 6, "Fram": 0.8, "Exp": 0.8, "Sat": 0.8, "Sha": 0.8}
 
         if os.path.exists(path):
             with open(path, 'r') as file:
