@@ -14,6 +14,10 @@ from enum import Enum
 import numpy as np
 from raspicam import Raspicam
 from typing import List
+import torch
+import torch.nn as nn
+from torchvision import transforms
+from PIL import Image
 import os
 import time
 
@@ -226,4 +230,66 @@ class Trigger:
             filename = f"{self.first_trigger_time}_{num_of_img}.jpg"
         else:
             filename = f"{self.file_name}_{self.first_trigger_time}_{num_of_img}.jpg"
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         cv2.imwrite(self.folder_name+"/"+filename,img)
+
+class CustomCNN(nn.Module):
+    def __init__(self, layers: List[int], img_height: int = 150):
+        super(CustomCNN, self).__init__()
+        self.layers = nn.ModuleList()
+        input_channels = 3
+
+        for output_channels in layers:
+            self.layers.append(nn.Conv2d(input_channels, output_channels, kernel_size=3, padding=1))
+            self.layers.append(nn.BatchNorm2d(output_channels))
+            self.layers.append(nn.ReLU())
+            self.layers.append(nn.MaxPool2d(2))
+            input_channels = output_channels
+
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(input_channels * (img_height // 2**len(layers))**2, 256),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(128, 2)
+        )
+
+    def forward(self, x):
+        for layer in self.layers:
+            x = layer(x)
+        x = self.classifier(x)
+        return x
+
+class PhoneDetector:
+    def __init__(self, model_path: str, confidence_threshold: float = 0.85, img_height: int = 150, img_width: int = 150):
+        self.img_height = img_height
+        self.img_width = img_width
+        self.confidence_threshold = confidence_threshold
+
+        self.model = CustomCNN([64, 128, 256], img_height=self.img_height)
+        self.model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+        self.model.eval()
+
+        self.transform = transforms.Compose([
+            transforms.Resize((img_height, img_width)),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+
+    def preprocess_image(self, image: np.ndarray) -> torch.Tensor:
+        image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        image = self.transform(image)
+        image = image.unsqueeze(0)
+        return image
+
+    def detect_phone(self, frame: np.ndarray) -> (bool, float):
+        processed_image = self.preprocess_image(frame)
+        with torch.no_grad():
+            outputs = self.model(processed_image)
+            probabilities = torch.softmax(outputs, dim=1)
+            confidence, predicted = torch.max(probabilities, 1)
+        print(f'Predicted: {predicted.item()}, Confidence: {confidence.item()}')
+        return (predicted.item() == 1) and (confidence.item()>self.confidence_threshold)
