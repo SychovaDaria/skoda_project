@@ -1,0 +1,620 @@
+2024-08-26 08:39:47,914 - INFO - Aplikace spu�t�na
+2024-08-26 08:50:19,958 - INFO - Aplikace spu�t�na
+2024-08-26 08:50:21,860 - INFO - 5
+2024-08-26 08:52:18,297 - INFO - Aplikace spu�t�na
+2024-08-26 08:52:20,335 - INFO - 5
+2024-08-26 08:53:30,828 - INFO - Aplikace spu�t�na
+2024-08-26 08:53:32,632 - INFO - 5
+2024-08-26 08:53:47,771 - INFO - Aplikace spu�t�na
+2024-08-26 08:53:49,383 - INFO - 5
+2024-08-26 08:55:06,536 - INFO - Aplikace spu�t�na
+2024-08-26 08:56:46,660 - INFO - Aplikace spu�t�na
+2024-08-26 09:23:54,173 - INFO - Aplikace spu�t�na
+2024-08-26 09:25:49,347 - INFO - Aplikace spu�t�na
+2024-08-26 09:26:39,680 - INFO - Aplikace spu�t�na
+2024-08-26 09:27:09,505 - INFO - Aplikace spu�t�na
+2024-08-26 09:27:54,231 - INFO - Aplikace spu�t�na
+2024-08-26 09:28:19,181 - INFO - Aplikace spu�t�na
+2024-08-26 09:29:06,025 - INFO - Aplikace spu�t�na
+2024-08-26 09:49:37,001 - INFO - Aplikace spu�t�na
+2024-08-26 09:52:04,345 - INFO - Aplikace spu�t�na
+2024-08-26 10:01:20,985 - INFO - Aplikace spu�t�na
+2024-08-26 10:05:07,031 - INFO - Aplikace spu�t�na
+2024-08-26 10:06:26,174 - INFO - Aplikace spu�t�na
+2024-08-26 10:08:32,580 - INFO - Aplikace spu�t�na
+2024-08-26 10:09:19,297 - INFO - Aplikace spu�t�na
+2024-08-26 10:10:07,973 - INFO - Aplikace spu�t�na
+2024-08-26 10:33:10,386 - INFO - Aplikace spu�t�na
+2024-08-26 10:33:32,695 - INFO - Aplikace spu�t�na
+2024-08-26 10:34:51,007 - INFO - Aplikace spu�t�na
+2024-08-27 07:20:30,890 - INFO - Aplikace spu�t�na
+2024-08-27 08:42:09,282 - INFO - Aplikace spu�t�na
+2024-08-27 08:42:15,956 - INFO - Slo�ka pro ukl�d�n� tr�novac�ch fotek nebyla vybr�na
+2024-08-27 08:42:26,387 - INFO - Aplikace spu�t�na
+2024-08-27 08:42:31,612 - INFO - Slo�ka pro ukl�d�n� tr�novac�ch fotek nebyla vybr�na
+2024-09-02 12:41:37,028 - INFO - Aplikace spuštěna
+2024-09-02 12:42:20,052 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-02 12:42:23,663 - INFO - Fotka uložena
+2024-09-02 12:43:13,502 - INFO - Camera stopped
+2024-09-02 12:43:13,704 - INFO - Camera closed successfully.
+2024-09-02 12:46:37,380 - INFO - Aplikace spuštěna
+2024-09-02 12:46:42,131 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-02 12:46:43,513 - INFO - Fotka uložena
+2024-09-02 12:46:49,406 - INFO - Camera stopped
+2024-09-02 12:46:49,608 - INFO - Camera closed successfully.
+2024-09-02 12:47:08,580 - INFO - Aplikace spuštěna
+2024-09-02 12:47:16,846 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-02 12:47:18,471 - INFO - Fotka uložena
+2024-09-02 12:47:22,001 - INFO - Fotka uložena
+2024-09-02 12:47:25,036 - INFO - Fotka uložena
+2024-09-02 12:47:28,103 - INFO - Fotka uložena
+2024-09-02 12:47:31,315 - INFO - Fotka uložena
+2024-09-02 12:47:35,065 - INFO - Fotka uložena
+2024-09-02 12:47:38,608 - INFO - Fotka uložena
+2024-09-02 12:47:42,124 - INFO - Fotka uložena
+2024-09-02 12:47:45,415 - INFO - Fotka uložena
+2024-09-02 12:47:48,507 - INFO - Fotka uložena
+2024-09-02 12:47:51,069 - INFO - Fotka uložena
+2024-09-02 12:47:54,135 - INFO - Fotka uložena
+2024-09-02 12:47:56,971 - INFO - Fotka uložena
+2024-09-02 12:48:00,700 - INFO - Fotka uložena
+2024-09-02 12:48:07,741 - INFO - Fotka uložena
+2024-09-02 12:48:11,259 - INFO - Fotka uložena
+2024-09-02 12:48:13,164 - INFO - Fotka uložena
+2024-09-02 12:48:13,865 - INFO - Fotka uložena
+2024-09-02 12:48:18,280 - INFO - Fotka uložena
+2024-09-02 12:48:20,850 - INFO - Fotka uložena
+2024-09-02 12:48:21,818 - INFO - Fotka uložena
+2024-09-02 12:48:22,556 - INFO - Fotka uložena
+2024-09-02 12:48:26,566 - INFO - Fotka uložena
+2024-09-02 12:48:26,943 - INFO - Fotka uložena
+2024-09-02 12:48:29,914 - INFO - Fotka uložena
+2024-09-02 12:48:30,257 - INFO - Fotka uložena
+2024-09-02 12:48:33,059 - INFO - Fotka uložena
+2024-09-02 12:48:33,311 - INFO - Fotka uložena
+2024-09-02 12:48:36,172 - INFO - Fotka uložena
+2024-09-02 12:48:36,410 - INFO - Fotka uložena
+2024-09-02 12:48:36,754 - INFO - Fotka uložena
+2024-09-02 12:48:39,373 - INFO - Fotka uložena
+2024-09-02 12:48:39,738 - INFO - Fotka uložena
+2024-09-02 12:48:40,058 - INFO - Fotka uložena
+2024-09-02 12:48:40,309 - INFO - Fotka uložena
+2024-09-02 12:48:44,832 - INFO - Fotka uložena
+2024-09-02 12:48:45,173 - INFO - Fotka uložena
+2024-09-02 12:48:45,419 - INFO - Fotka uložena
+2024-09-02 12:48:46,017 - INFO - Fotka uložena
+2024-09-02 12:48:50,433 - INFO - Fotka uložena
+2024-09-02 12:48:54,768 - INFO - Fotka uložena
+2024-09-02 12:48:55,117 - INFO - Fotka uložena
+2024-09-02 12:48:55,583 - INFO - Fotka uložena
+2024-09-02 12:48:55,941 - INFO - Fotka uložena
+2024-09-02 12:48:59,958 - INFO - Fotka uložena
+2024-09-02 12:49:00,300 - INFO - Fotka uložena
+2024-09-02 12:49:00,760 - INFO - Fotka uložena
+2024-09-02 12:49:01,106 - INFO - Fotka uložena
+2024-09-02 12:49:09,586 - INFO - Fotka uložena
+2024-09-02 12:49:11,012 - INFO - Fotka uložena
+2024-09-02 12:49:14,516 - INFO - Fotka uložena
+2024-09-02 12:49:15,678 - INFO - Fotka uložena
+2024-09-02 12:49:19,673 - INFO - Fotka uložena
+2024-09-02 12:49:20,749 - INFO - Fotka uložena
+2024-09-02 12:49:23,348 - INFO - Fotka uložena
+2024-09-02 12:49:24,267 - INFO - Fotka uložena
+2024-09-02 12:49:27,579 - INFO - Fotka uložena
+2024-09-02 12:49:28,558 - INFO - Fotka uložena
+2024-09-02 12:49:31,606 - INFO - Fotka uložena
+2024-09-02 12:49:32,305 - INFO - Fotka uložena
+2024-09-02 12:49:34,389 - INFO - Fotka uložena
+2024-09-02 12:49:38,146 - INFO - Fotka uložena
+2024-09-02 12:49:38,881 - INFO - Fotka uložena
+2024-09-02 12:49:39,841 - INFO - Fotka uložena
+2024-09-02 12:49:43,821 - INFO - Fotka uložena
+2024-09-02 12:49:44,802 - INFO - Fotka uložena
+2024-09-02 12:49:45,292 - INFO - Fotka uložena
+2024-09-02 12:49:48,358 - INFO - Fotka uložena
+2024-09-02 12:49:49,186 - INFO - Fotka uložena
+2024-09-02 12:49:51,333 - INFO - Fotka uložena
+2024-09-02 12:49:52,266 - INFO - Fotka uložena
+2024-09-02 12:49:53,089 - INFO - Fotka uložena
+2024-09-02 12:49:53,844 - INFO - Fotka uložena
+2024-09-02 12:49:57,179 - INFO - Fotka uložena
+2024-09-02 12:49:57,911 - INFO - Fotka uložena
+2024-09-02 12:49:58,860 - INFO - Fotka uložena
+2024-09-02 12:50:02,119 - INFO - Fotka uložena
+2024-09-02 12:50:03,059 - INFO - Fotka uložena
+2024-09-02 12:50:03,980 - INFO - Fotka uložena
+2024-09-02 12:50:04,918 - INFO - Fotka uložena
+2024-09-02 12:50:07,952 - INFO - Fotka uložena
+2024-09-02 12:50:08,651 - INFO - Fotka uložena
+2024-09-02 12:50:09,585 - INFO - Fotka uložena
+2024-09-02 12:50:10,527 - INFO - Fotka uložena
+2024-09-02 12:50:11,696 - INFO - Fotka uložena
+2024-09-02 12:50:14,736 - INFO - Fotka uložena
+2024-09-02 12:50:15,946 - INFO - Fotka uložena
+2024-09-02 12:50:17,165 - INFO - Fotka uložena
+2024-09-02 12:50:18,354 - INFO - Fotka uložena
+2024-09-02 12:50:19,164 - INFO - Fotka uložena
+2024-09-02 12:50:26,485 - INFO - Fotka uložena
+2024-09-02 12:50:27,932 - INFO - Fotka uložena
+2024-09-02 12:50:28,903 - INFO - Fotka uložena
+2024-09-02 12:50:31,988 - INFO - Fotka uložena
+2024-09-02 12:50:33,182 - INFO - Fotka uložena
+2024-09-02 12:50:34,345 - INFO - Fotka uložena
+2024-09-02 12:50:35,507 - INFO - Fotka uložena
+2024-09-02 12:50:39,945 - INFO - Fotka uložena
+2024-09-02 12:50:40,874 - INFO - Fotka uložena
+2024-09-02 12:50:45,074 - INFO - Fotka uložena
+2024-09-02 12:50:46,007 - INFO - Fotka uložena
+2024-09-02 12:50:47,207 - INFO - Fotka uložena
+2024-09-02 12:50:48,136 - INFO - Fotka uložena
+2024-09-02 12:50:52,811 - INFO - Fotka uložena
+2024-09-02 12:50:53,786 - INFO - Fotka uložena
+2024-09-02 12:50:54,497 - INFO - Fotka uložena
+2024-09-02 12:50:57,762 - INFO - Fotka uložena
+2024-09-02 12:50:59,191 - INFO - Fotka uložena
+2024-09-02 12:51:00,178 - INFO - Fotka uložena
+2024-09-02 12:51:05,900 - INFO - Fotka uložena
+2024-09-02 12:51:07,301 - INFO - Fotka uložena
+2024-09-02 12:51:10,566 - INFO - Fotka uložena
+2024-09-02 12:51:11,787 - INFO - Fotka uložena
+2024-09-02 12:51:12,972 - INFO - Fotka uložena
+2024-09-02 12:53:59,358 - INFO - Camera stopped
+2024-09-02 12:53:59,560 - INFO - Camera closed successfully.
+2024-09-02 12:55:25,540 - INFO - Aplikace spuštěna
+2024-09-02 12:55:31,317 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/ar1
+2024-09-02 12:55:33,402 - INFO - Fotka uložena
+2024-09-02 12:55:37,797 - INFO - Fotka uložena
+2024-09-02 12:55:40,461 - INFO - Fotka uložena
+2024-09-02 12:55:42,266 - INFO - Fotka uložena
+2024-09-02 12:55:44,524 - INFO - Fotka uložena
+2024-09-02 12:55:46,440 - INFO - Fotka uložena
+2024-09-02 12:55:49,748 - INFO - Fotka uložena
+2024-09-02 12:55:51,760 - INFO - Fotka uložena
+2024-09-02 12:55:53,359 - INFO - Fotka uložena
+2024-09-02 12:55:54,925 - INFO - Fotka uložena
+2024-09-02 12:55:59,120 - INFO - Fotka uložena
+2024-09-02 12:56:00,475 - INFO - Fotka uložena
+2024-09-02 12:56:02,460 - INFO - Fotka uložena
+2024-09-02 12:56:04,282 - INFO - Fotka uložena
+2024-09-02 12:56:05,287 - INFO - Fotka uložena
+2024-09-02 12:56:05,754 - INFO - Fotka uložena
+2024-09-02 12:56:06,342 - INFO - Fotka uložena
+2024-09-02 12:56:06,794 - INFO - Fotka uložena
+2024-09-02 12:56:07,136 - INFO - Fotka uložena
+2024-09-02 12:56:07,599 - INFO - Fotka uložena
+2024-09-02 12:56:07,944 - INFO - Fotka uložena
+2024-09-02 12:56:08,279 - INFO - Fotka uložena
+2024-09-02 12:56:08,521 - INFO - Fotka uložena
+2024-09-02 12:56:08,863 - INFO - Fotka uložena
+2024-09-02 12:56:09,327 - INFO - Fotka uložena
+2024-09-02 12:56:09,685 - INFO - Fotka uložena
+2024-09-02 12:56:10,025 - INFO - Fotka uložena
+2024-09-02 12:56:10,274 - INFO - Fotka uložena
+2024-09-02 12:56:10,617 - INFO - Fotka uložena
+2024-09-02 12:56:10,962 - INFO - Fotka uložena
+2024-09-02 12:56:11,329 - INFO - Fotka uložena
+2024-09-02 12:56:11,569 - INFO - Fotka uložena
+2024-09-02 12:56:11,918 - INFO - Fotka uložena
+2024-09-02 12:56:12,272 - INFO - Fotka uložena
+2024-09-02 12:56:12,734 - INFO - Fotka uložena
+2024-09-02 12:56:13,081 - INFO - Fotka uložena
+2024-09-02 12:56:13,325 - INFO - Fotka uložena
+2024-09-02 12:56:13,669 - INFO - Fotka uložena
+2024-09-02 12:56:14,019 - INFO - Fotka uložena
+2024-09-02 12:56:14,270 - INFO - Fotka uložena
+2024-09-02 12:56:14,613 - INFO - Fotka uložena
+2024-09-02 12:56:14,958 - INFO - Fotka uložena
+2024-09-02 12:56:15,312 - INFO - Fotka uložena
+2024-09-02 12:56:15,786 - INFO - Fotka uložena
+2024-09-02 12:56:17,404 - INFO - Složka pro ukládání trénovacích fotek nebyla vybrána
+2024-09-02 12:56:27,387 - INFO - Trénink spuštěn
+2024-09-02 12:56:44,646 - INFO - Camera stopped
+2024-09-02 12:56:44,848 - INFO - Camera closed successfully.
+2024-09-02 12:58:06,116 - INFO - Aplikace spuštěna
+2024-09-02 12:58:11,197 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-02 12:58:12,780 - INFO - Trénink spuštěn
+2024-09-03 06:17:43,192 - INFO - Camera stopped
+2024-09-03 06:17:43,395 - INFO - Camera closed successfully.
+2024-09-03 06:17:52,516 - INFO - Aplikace spuštěna
+2024-09-03 06:18:17,021 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-03 06:18:21,286 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 06:18:21,286 - INFO - Trigger je připraven
+2024-09-03 06:18:23,915 - INFO - Trigger spuštěn
+2024-09-03 06:19:02,920 - INFO - Trigger zastaven
+2024-09-03 06:23:04,604 - INFO - Trigger spuštěn
+2024-09-03 06:23:24,850 - INFO - Trigger zastaven
+2024-09-03 06:23:31,490 - INFO - Složka nebyla vybrána
+2024-09-03 06:31:17,785 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 06:31:17,786 - INFO - Trigger je připraven
+2024-09-03 06:31:31,299 - INFO - Trigger spuštěn
+2024-09-03 06:33:22,516 - INFO - Trigger zastaven
+2024-09-03 06:33:47,608 - INFO - Trigger spuštěn
+2024-09-03 06:34:19,242 - INFO - Trigger zastaven
+2024-09-03 06:35:00,359 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-03 06:35:00,359 - INFO - Trigger je připraven
+2024-09-03 06:35:07,009 - INFO - Trigger spuštěn
+2024-09-03 06:35:51,461 - INFO - Trigger zastaven
+2024-09-03 06:36:15,358 - INFO - Trigger spuštěn
+2024-09-03 06:36:26,937 - INFO - Trigger zastaven
+2024-09-03 06:36:31,096 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 06:36:31,097 - INFO - Trigger je připraven
+2024-09-03 06:36:36,627 - INFO - Trigger spuštěn
+2024-09-03 06:37:05,774 - INFO - Trigger zastaven
+2024-09-03 06:37:10,725 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 06:37:10,726 - INFO - Trigger je připraven
+2024-09-03 06:37:19,488 - INFO - Trigger spuštěn
+2024-09-03 06:38:22,075 - INFO - Trigger zastaven
+2024-09-03 06:43:23,773 - INFO - Trigger spuštěn
+2024-09-03 06:45:22,956 - INFO - Trigger zastaven
+2024-09-03 07:21:08,964 - INFO - Trigger spuštěn
+2024-09-03 07:23:23,538 - INFO - Trigger zastaven
+2024-09-03 07:23:28,831 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 07:23:28,833 - INFO - Trigger je připraven
+2024-09-03 07:23:31,860 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 07:23:31,861 - INFO - Trigger je připraven
+2024-09-03 07:23:34,918 - INFO - Trigger spuštěn
+2024-09-03 07:25:59,193 - INFO - Trigger zastaven
+2024-09-03 07:27:52,470 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 07:27:52,470 - INFO - Trigger je připraven
+2024-09-03 07:27:53,498 - INFO - Trigger spuštěn
+2024-09-03 07:30:45,930 - INFO - Trigger zastaven
+2024-09-03 07:30:49,480 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 07:30:49,481 - INFO - Trigger je připraven
+2024-09-03 07:31:00,262 - INFO - Trigger spuštěn
+2024-09-03 07:32:41,539 - INFO - Trigger zastaven
+2024-09-03 07:32:43,826 - INFO - Camera stopped
+2024-09-03 07:32:44,028 - INFO - Camera closed successfully.
+2024-09-03 07:32:51,141 - INFO - Aplikace spuštěna
+2024-09-03 07:32:57,439 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 07:33:02,334 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 07:33:02,335 - INFO - Trigger je připraven
+2024-09-03 07:33:04,367 - INFO - Trigger spuštěn
+2024-09-03 07:35:17,121 - INFO - Trigger zastaven
+2024-09-03 07:35:24,383 - INFO - Trigger spuštěn
+2024-09-03 07:37:15,633 - INFO - Trigger zastaven
+2024-09-03 07:37:54,543 - INFO - Camera stopped
+2024-09-03 07:37:54,745 - INFO - Camera closed successfully.
+2024-09-03 07:38:02,468 - INFO - Aplikace spuštěna
+2024-09-03 07:38:09,944 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 07:38:12,577 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 07:38:12,578 - INFO - Trigger je připraven
+2024-09-03 07:38:13,977 - INFO - Trigger spuštěn
+2024-09-03 07:41:27,748 - INFO - Aplikace spuštěna
+2024-09-03 07:41:37,346 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 07:41:42,755 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 07:41:42,755 - INFO - Trigger je připraven
+2024-09-03 07:41:53,036 - INFO - Trigger spuštěn
+2024-09-03 07:43:20,842 - INFO - Trigger zastaven
+2024-09-03 07:43:24,615 - INFO - Trigger spuštěn
+2024-09-03 07:46:35,280 - INFO - Trigger zastaven
+2024-09-03 07:46:39,946 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-03 07:46:39,946 - INFO - Trigger je připraven
+2024-09-03 07:46:44,091 - INFO - Trigger spuštěn
+2024-09-03 07:48:05,878 - INFO - Camera stopped
+2024-09-03 07:48:06,080 - INFO - Camera closed successfully.
+2024-09-03 08:09:21,607 - INFO - Aplikace spuštěna
+2024-09-03 08:10:20,359 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict.pth
+2024-09-03 08:10:24,857 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5
+2024-09-03 08:10:24,857 - INFO - Trigger je připraven
+2024-09-03 08:10:29,751 - INFO - Trigger spuštěn
+2024-09-03 08:10:50,963 - INFO - Trigger zastaven
+2024-09-09 08:04:53,015 - INFO - Aplikace spuštěna
+2024-09-09 08:06:04,936 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-09 08:06:07,914 - INFO - Fotka uložena
+2024-09-09 08:06:11,014 - INFO - Fotka uložena
+2024-09-09 08:06:12,163 - INFO - Fotka uložena
+2024-09-09 08:06:16,797 - INFO - Fotka uložena
+2024-09-09 08:06:19,677 - INFO - Fotka uložena
+2024-09-09 08:07:06,469 - INFO - Fotka uložena
+2024-09-09 08:07:08,264 - INFO - Fotka uložena
+2024-09-09 08:07:09,402 - INFO - Fotka uložena
+2024-09-09 08:07:10,555 - INFO - Fotka uložena
+2024-09-09 08:07:12,575 - INFO - Fotka uložena
+2024-09-09 08:07:13,497 - INFO - Trénink spuštěn
+2024-09-09 10:35:19,045 - INFO - Camera stopped
+2024-09-09 10:35:19,247 - INFO - Camera closed successfully.
+2024-09-09 10:35:25,521 - INFO - Aplikace spuštěna
+2024-09-09 10:35:30,143 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 10:36:16,649 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 10:36:16,650 - INFO - Trigger je připraven
+2024-09-09 10:36:19,349 - INFO - Trigger spuštěn
+2024-09-09 10:37:44,169 - INFO - Camera stopped
+2024-09-09 10:37:44,371 - INFO - Camera closed successfully.
+2024-09-09 10:37:51,025 - INFO - Aplikace spuštěna
+2024-09-09 11:09:40,908 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-09 11:09:43,105 - INFO - Fotka uložena
+2024-09-09 11:09:44,534 - INFO - Fotka uložena
+2024-09-09 11:09:45,732 - INFO - Fotka uložena
+2024-09-09 11:09:47,143 - INFO - Fotka uložena
+2024-09-09 11:09:48,354 - INFO - Fotka uložena
+2024-09-09 11:09:49,276 - INFO - Fotka uložena
+2024-09-09 11:09:51,193 - INFO - Fotka uložena
+2024-09-09 11:09:52,131 - INFO - Fotka uložena
+2024-09-09 11:09:53,554 - INFO - Fotka uložena
+2024-09-09 11:09:54,982 - INFO - Fotka uložena
+2024-09-09 11:09:56,622 - INFO - Fotka uložena
+2024-09-09 11:10:21,032 - INFO - Fotka uložena
+2024-09-09 11:10:23,184 - INFO - Fotka uložena
+2024-09-09 11:10:24,799 - INFO - Fotka uložena
+2024-09-09 11:10:25,755 - INFO - Fotka uložena
+2024-09-09 11:10:27,166 - INFO - Fotka uložena
+2024-09-09 11:10:28,121 - INFO - Fotka uložena
+2024-09-09 11:10:29,070 - INFO - Fotka uložena
+2024-09-09 11:10:33,264 - INFO - Fotka uložena
+2024-09-09 11:10:34,706 - INFO - Fotka uložena
+2024-09-09 11:10:36,140 - INFO - Fotka uložena
+2024-09-09 11:10:38,719 - INFO - Fotka uložena
+2024-09-09 11:10:43,850 - INFO - Fotka uložena
+2024-09-09 11:10:50,525 - INFO - Fotka uložena
+2024-09-09 11:10:53,113 - INFO - Fotka uložena
+2024-09-09 11:10:54,509 - INFO - Fotka uložena
+2024-09-09 11:10:55,928 - INFO - Fotka uložena
+2024-09-09 11:10:58,023 - INFO - Fotka uložena
+2024-09-09 11:10:58,982 - INFO - Fotka uložena
+2024-09-09 11:11:20,033 - INFO - Fotka uložena
+2024-09-09 11:11:21,230 - INFO - Fotka uložena
+2024-09-09 11:11:25,195 - INFO - Fotka uložena
+2024-09-09 11:11:28,232 - INFO - Fotka uložena
+2024-09-09 11:11:31,507 - INFO - Fotka uložena
+2024-09-09 11:11:31,834 - INFO - Fotka uložena
+2024-09-09 11:11:35,333 - INFO - Fotka uložena
+2024-09-09 11:11:36,130 - INFO - Fotka uložena
+2024-09-09 11:11:39,868 - INFO - Fotka uložena
+2024-09-09 11:11:40,341 - INFO - Fotka uložena
+2024-09-09 11:12:22,276 - INFO - Fotka uložena
+2024-09-09 11:12:23,038 - INFO - Fotka uložena
+2024-09-09 11:12:23,732 - INFO - Fotka uložena
+2024-09-09 11:12:28,191 - INFO - Fotka uložena
+2024-09-09 11:12:28,647 - INFO - Fotka uložena
+2024-09-09 11:12:32,602 - INFO - Fotka uložena
+2024-09-09 11:12:33,142 - INFO - Fotka uložena
+2024-09-09 11:12:39,216 - INFO - Fotka uložena
+2024-09-09 11:12:39,686 - INFO - Fotka uložena
+2024-09-09 11:12:40,380 - INFO - Fotka uložena
+2024-09-09 11:13:08,781 - INFO - Fotka uložena
+2024-09-09 11:13:09,313 - INFO - Fotka uložena
+2024-09-09 11:13:09,765 - INFO - Fotka uložena
+2024-09-09 11:13:10,715 - INFO - Fotka uložena
+2024-09-09 11:13:12,370 - INFO - Fotka uložena
+2024-09-09 11:13:13,341 - INFO - Fotka uložena
+2024-09-09 11:13:14,118 - INFO - Fotka uložena
+2024-09-09 11:13:14,812 - INFO - Fotka uložena
+2024-09-09 11:13:17,587 - INFO - Fotka uložena
+2024-09-09 11:13:18,535 - INFO - Fotka uložena
+2024-09-09 11:13:19,689 - INFO - Fotka uložena
+2024-09-09 11:13:20,627 - INFO - Fotka uložena
+2024-09-09 11:13:21,557 - INFO - Fotka uložena
+2024-09-09 11:13:22,476 - INFO - Fotka uložena
+2024-09-09 11:13:23,391 - INFO - Fotka uložena
+2024-09-09 11:13:24,550 - INFO - Fotka uložena
+2024-09-09 11:13:25,825 - INFO - Fotka uložena
+2024-09-09 11:13:26,750 - INFO - Fotka uložena
+2024-09-09 11:13:27,709 - INFO - Fotka uložena
+2024-09-09 11:13:28,618 - INFO - Fotka uložena
+2024-09-09 11:13:29,560 - INFO - Fotka uložena
+2024-09-09 11:13:34,010 - INFO - Fotka uložena
+2024-09-09 11:13:35,418 - INFO - Fotka uložena
+2024-09-09 11:13:37,516 - INFO - Fotka uložena
+2024-09-09 11:13:38,697 - INFO - Fotka uložena
+2024-09-09 11:13:39,853 - INFO - Fotka uložena
+2024-09-09 11:13:41,712 - INFO - Fotka uložena
+2024-09-09 11:13:43,310 - INFO - Fotka uložena
+2024-09-09 11:14:00,201 - INFO - Fotka uložena
+2024-09-09 11:14:00,881 - INFO - Fotka uložena
+2024-09-09 11:14:01,322 - INFO - Fotka uložena
+2024-09-09 11:14:01,797 - INFO - Fotka uložena
+2024-09-09 11:14:02,225 - INFO - Fotka uložena
+2024-09-09 11:14:02,720 - INFO - Fotka uložena
+2024-09-09 11:14:09,112 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-09 11:14:10,717 - INFO - Fotka uložena
+2024-09-09 11:14:10,986 - INFO - Fotka uložena
+2024-09-09 11:14:11,416 - INFO - Fotka uložena
+2024-09-09 11:14:11,685 - INFO - Fotka uložena
+2024-09-09 11:14:12,180 - INFO - Fotka uložena
+2024-09-09 11:14:14,552 - INFO - Fotka uložena
+2024-09-09 11:14:15,494 - INFO - Fotka uložena
+2024-09-09 11:14:16,425 - INFO - Fotka uložena
+2024-09-09 11:14:17,370 - INFO - Fotka uložena
+2024-09-09 11:14:18,286 - INFO - Fotka uložena
+2024-09-09 11:14:19,247 - INFO - Fotka uložena
+2024-09-09 11:14:20,165 - INFO - Fotka uložena
+2024-09-09 11:14:21,084 - INFO - Fotka uložena
+2024-09-09 11:14:22,267 - INFO - Fotka uložena
+2024-09-09 11:14:23,461 - INFO - Fotka uložena
+2024-09-09 11:14:24,616 - INFO - Fotka uložena
+2024-09-09 11:14:26,029 - INFO - Fotka uložena
+2024-09-09 11:14:27,631 - INFO - Fotka uložena
+2024-09-09 11:14:29,243 - INFO - Fotka uložena
+2024-09-09 11:14:31,536 - INFO - Fotka uložena
+2024-09-09 11:14:32,948 - INFO - Fotka uložena
+2024-09-09 11:14:34,070 - INFO - Fotka uložena
+2024-09-09 11:14:35,217 - INFO - Fotka uložena
+2024-09-09 11:14:36,563 - INFO - Fotka uložena
+2024-09-09 11:14:43,211 - INFO - Trénink spuštěn
+2024-09-09 14:32:37,008 - INFO - Camera stopped
+2024-09-09 14:32:37,210 - INFO - Camera closed successfully.
+2024-09-09 14:32:44,753 - INFO - Aplikace spuštěna
+2024-09-09 14:33:21,260 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 14:33:27,871 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 14:33:27,872 - INFO - Trigger je připraven
+2024-09-09 14:33:30,773 - INFO - Trigger spuštěn
+2024-09-09 14:39:20,047 - INFO - Trigger zastaven
+2024-09-09 14:40:35,044 - INFO - Camera stopped
+2024-09-09 14:40:35,246 - INFO - Camera closed successfully.
+2024-09-09 14:41:23,662 - INFO - Camera stopped
+2024-09-09 14:41:23,669 - INFO - Camera closed successfully.
+2024-09-09 14:45:52,046 - INFO - Camera stopped
+2024-09-09 14:45:52,248 - INFO - Camera closed successfully.
+2024-09-09 14:49:50,124 - INFO - Camera stopped
+2024-09-09 14:49:50,332 - INFO - Camera closed successfully.
+2024-09-09 14:53:56,910 - INFO - Camera stopped
+2024-09-09 14:53:56,917 - INFO - Camera closed successfully.
+2024-09-09 14:56:42,256 - INFO - Aplikace spuštěna
+2024-09-09 14:57:00,530 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 14:57:10,142 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 14:57:10,142 - INFO - Trigger je připraven
+2024-09-09 14:57:12,221 - INFO - Trigger spuštěn
+2024-09-09 14:59:43,792 - INFO - Camera stopped
+2024-09-09 14:59:43,995 - INFO - Camera closed successfully.
+2024-09-09 15:01:08,593 - INFO - Aplikace spuštěna
+2024-09-09 15:01:13,829 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:01:24,115 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:01:24,115 - INFO - Trigger je připraven
+2024-09-09 15:01:25,428 - INFO - Trigger spuštěn
+2024-09-09 15:03:39,414 - INFO - Camera stopped
+2024-09-09 15:03:39,616 - INFO - Camera closed successfully.
+2024-09-09 15:03:48,913 - INFO - Aplikace spuštěna
+2024-09-09 15:03:57,209 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:04:05,645 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:04:05,645 - INFO - Trigger je připraven
+2024-09-09 15:04:17,934 - INFO - Trigger spuštěn
+2024-09-09 15:05:11,954 - INFO - Camera stopped
+2024-09-09 15:05:12,156 - INFO - Camera closed successfully.
+2024-09-09 15:05:21,746 - INFO - Aplikace spuštěna
+2024-09-09 15:05:29,758 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:05:34,800 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:05:34,800 - INFO - Trigger je připraven
+2024-09-09 15:05:36,334 - INFO - Trigger spuštěn
+2024-09-09 15:24:42,737 - INFO - Aplikace spuštěna
+2024-09-09 15:24:53,362 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:25:00,875 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:25:00,876 - INFO - Trigger je připraven
+2024-09-09 15:25:03,638 - INFO - Trigger spuštěn
+2024-09-09 15:28:30,629 - INFO - Camera stopped
+2024-09-09 15:28:30,830 - INFO - Camera closed successfully.
+2024-09-09 15:32:06,161 - INFO - Aplikace spuštěna
+2024-09-09 15:32:26,064 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:32:48,804 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:32:48,804 - INFO - Trigger je připraven
+2024-09-09 15:33:35,179 - INFO - Trigger spuštěn
+2024-09-09 15:35:07,628 - INFO - Camera stopped
+2024-09-09 15:35:07,830 - INFO - Camera closed successfully.
+2024-09-09 15:35:14,451 - INFO - Aplikace spuštěna
+2024-09-09 15:35:22,406 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:35:27,925 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:35:27,925 - INFO - Trigger je připraven
+2024-09-09 15:35:30,300 - INFO - Trigger spuštěn
+2024-09-09 15:35:53,739 - INFO - Camera stopped
+2024-09-09 15:35:53,941 - INFO - Camera closed successfully.
+2024-09-09 15:37:11,508 - INFO - Aplikace spuštěna
+2024-09-09 15:37:15,674 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-09 15:37:21,530 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-09 15:37:21,530 - INFO - Trigger je připraven
+2024-09-09 15:37:22,633 - INFO - Trigger spuštěn
+2024-09-09 15:38:42,297 - INFO - Trigger zastaven
+2024-09-09 15:38:46,170 - INFO - Camera stopped
+2024-09-09 15:38:46,372 - INFO - Camera closed successfully.
+2024-09-10 07:54:49,935 - INFO - Aplikace spuštěna
+2024-09-10 07:55:13,992 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 07:55:20,135 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 07:55:20,137 - INFO - Trigger je připraven
+2024-09-10 07:55:22,153 - INFO - Trigger spuštěn
+2024-09-10 07:59:29,200 - INFO - Trigger zastaven
+2024-09-10 08:32:23,563 - INFO - Trigger spuštěn
+2024-09-10 08:34:01,589 - INFO - Trigger zastaven
+2024-09-10 08:34:26,643 - INFO - Camera stopped
+2024-09-10 08:34:26,650 - INFO - Camera closed successfully.
+2024-09-10 08:34:32,844 - INFO - Aplikace spuštěna
+2024-09-10 08:34:41,867 - INFO - Model nebyl vybrán
+2024-09-10 08:35:17,105 - INFO - Vybrána složka pro ukládání trénovacích fotek: /home/rpi/final/v1.5/object
+2024-09-10 08:35:18,923 - INFO - Fotka uložena
+2024-09-10 08:35:28,925 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 08:35:40,761 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 08:35:40,763 - INFO - Trigger je připraven
+2024-09-10 08:35:42,406 - INFO - Trigger spuštěn
+2024-09-10 08:36:05,081 - INFO - Trigger zastaven
+2024-09-10 08:36:09,747 - INFO - Trigger spuštěn
+2024-09-10 08:37:10,186 - INFO - Aplikace spuštěna
+2024-09-10 08:37:14,901 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 08:37:19,845 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 08:37:19,845 - INFO - Trigger je připraven
+2024-09-10 08:37:21,039 - INFO - Trigger spuštěn
+2024-09-10 08:39:09,451 - INFO - Trigger zastaven
+2024-09-10 08:40:06,211 - INFO - Camera stopped
+2024-09-10 08:40:06,413 - INFO - Camera closed successfully.
+2024-09-10 08:40:13,194 - INFO - Aplikace spuštěna
+2024-09-10 08:40:27,574 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 08:40:33,276 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 08:40:33,276 - INFO - Trigger je připraven
+2024-09-10 08:40:35,051 - INFO - Trigger spuštěn
+2024-09-10 08:44:07,429 - INFO - Trigger zastaven
+2024-09-10 08:44:15,673 - INFO - Trigger spuštěn
+2024-09-10 08:45:45,107 - INFO - Trigger zastaven
+2024-09-10 08:50:56,580 - INFO - Camera stopped
+2024-09-10 08:50:56,781 - INFO - Camera closed successfully.
+2024-09-10 08:51:07,850 - INFO - Aplikace spuštěna
+2024-09-10 08:51:17,012 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 08:51:29,003 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 08:51:29,003 - INFO - Trigger je připraven
+2024-09-10 08:51:31,442 - INFO - Trigger spuštěn
+2024-09-10 08:54:14,788 - INFO - Trigger zastaven
+2024-09-10 09:03:37,873 - INFO - Trigger spuštěn
+2024-09-10 09:04:22,752 - INFO - Trigger zastaven
+2024-09-10 09:04:28,380 - INFO - Camera stopped
+2024-09-10 09:04:28,387 - INFO - Camera closed successfully.
+2024-09-10 09:04:34,794 - INFO - Aplikace spuštěna
+2024-09-10 09:04:39,209 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 09:04:46,569 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 09:04:46,569 - INFO - Trigger je připraven
+2024-09-10 09:04:48,369 - INFO - Trigger spuštěn
+2024-09-10 09:05:45,885 - INFO - Trigger zastaven
+2024-09-10 10:08:39,613 - INFO - Trigger spuštěn
+2024-09-10 10:09:51,844 - INFO - Trigger zastaven
+2024-09-10 10:48:09,578 - INFO - Trigger spuštěn
+2024-09-10 10:50:01,098 - INFO - Trigger zastaven
+2024-09-10 11:01:40,854 - INFO - Trigger spuštěn
+2024-09-10 11:03:30,622 - INFO - Trigger zastaven
+2024-09-10 11:41:56,125 - INFO - Trigger spuštěn
+2024-09-10 11:42:05,231 - INFO - Trigger zastaven
+2024-09-10 11:56:20,497 - INFO - Trigger spuštěn
+2024-09-10 11:58:24,420 - INFO - Trigger zastaven
+2024-09-10 11:59:09,681 - INFO - Trigger spuštěn
+2024-09-10 11:59:43,512 - INFO - Trigger zastaven
+2024-09-10 11:59:46,826 - INFO - Trigger spuštěn
+2024-09-10 12:00:02,354 - INFO - Trigger zastaven
+2024-09-10 12:04:18,753 - INFO - Trigger spuštěn
+2024-09-10 12:04:49,251 - INFO - Trigger zastaven
+2024-09-10 12:13:17,016 - INFO - Trigger spuštěn
+2024-09-10 12:14:46,177 - INFO - Trigger zastaven
+2024-09-10 12:52:09,729 - INFO - Trigger spuštěn
+2024-09-10 12:52:42,546 - INFO - Trigger zastaven
+2024-09-10 13:27:57,056 - INFO - Trigger spuštěn
+2024-09-10 13:30:14,178 - INFO - Trigger zastaven
+2024-09-10 14:41:14,070 - INFO - Aplikace spuštěna
+2024-09-10 14:41:20,015 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 14:41:42,234 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-10 14:41:47,733 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-10 14:41:47,734 - INFO - Trigger je připraven
+2024-09-10 14:42:05,453 - INFO - Trigger spuštěn
+2024-09-10 14:42:38,398 - INFO - Trigger zastaven
+2024-09-10 14:44:07,012 - INFO - Camera stopped
+2024-09-10 14:44:07,214 - INFO - Camera closed successfully.
+2024-09-11 06:22:08,647 - INFO - Aplikace spuštěna
+2024-09-11 06:22:17,266 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-11 06:22:22,468 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-11 06:22:22,469 - INFO - Trigger je připraven
+2024-09-11 06:22:26,322 - INFO - Trigger spuštěn
+2024-09-11 06:23:01,557 - INFO - Trigger zastaven
+2024-09-11 06:23:08,952 - INFO - Trigger spuštěn
+2024-09-11 06:23:28,827 - INFO - Trigger zastaven
+2024-09-11 06:23:30,493 - INFO - Camera stopped
+2024-09-11 06:23:30,695 - INFO - Camera closed successfully.
+2024-09-11 06:23:38,628 - INFO - Aplikace spuštěna
+2024-09-11 06:23:49,381 - INFO - Vybrán model ze souboru: /home/rpi/final/v1.5/best_model_state_dict_f1.pth
+2024-09-11 06:23:56,194 - INFO - Vybrána složka pro ukládání fotek: /home/rpi/final/v1.5/trig
+2024-09-11 06:23:56,194 - INFO - Trigger je připraven
+2024-09-11 06:23:57,810 - INFO - Trigger spuštěn
+2024-09-11 06:25:51,143 - INFO - Trigger zastaven
+2024-09-11 06:30:41,721 - INFO - Trigger spuštěn
+2024-09-11 06:31:05,641 - INFO - Trigger zastaven
+2024-09-11 06:33:09,552 - INFO - Trigger spuštěn
+2024-09-11 06:33:24,702 - INFO - Trigger zastaven
+2024-09-11 06:50:13,961 - INFO - Trigger spuštěn
+2024-09-11 06:50:33,917 - INFO - Trigger zastaven
+2024-09-11 07:21:43,855 - INFO - Složka pro ukládání trénovacích fotek nebyla nalezena
+2024-09-11 07:23:30,175 - INFO - Trigger spuštěn
+2024-09-11 07:23:54,291 - INFO - Trigger zastaven
+2024-09-11 07:41:18,715 - INFO - Trigger spuštěn
+2024-09-11 07:44:10,502 - INFO - Trigger zastaven
+2024-09-11 08:00:49,985 - INFO - Camera stopped
+2024-09-11 08:00:50,187 - INFO - Camera closed successfully.
